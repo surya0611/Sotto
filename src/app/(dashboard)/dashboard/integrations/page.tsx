@@ -1,0 +1,45 @@
+import { createClient } from '@/lib/supabase/server';
+import type { Metadata } from 'next';
+import { IntegrationCards } from './integration-cards';
+
+export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Integrations',
+};
+
+export default async function IntegrationsPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  let accountId = '';
+  let secrets: Record<string, string> = {};
+
+  if (user) {
+    const { data: membership } = await supabase
+      .from('account_members')
+      .select('account_id, accounts(integration_secrets)')
+      .eq('user_id', user.id)
+      .single();
+      
+    if (membership) {
+      accountId = membership.account_id;
+      secrets = (membership.accounts as any)?.integration_secrets || {};
+    }
+  }
+
+  return (
+    <div className="animate-fade-in">
+      <div style={{ marginBottom: 'var(--space-6)' }}>
+        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 600, marginBottom: 'var(--space-2)' }}>
+          Integrations
+        </h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+          Connect your tools to start capturing events automatically.
+        </p>
+      </div>
+
+      <IntegrationCards accountId={accountId} secrets={secrets} />
+    </div>
+  );
+}

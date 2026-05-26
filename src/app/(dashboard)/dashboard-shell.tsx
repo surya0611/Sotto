@@ -1,0 +1,183 @@
+'use client';
+
+import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+
+interface DashboardShellProps {
+  user: {
+    email: string;
+    name: string;
+  };
+  account: {
+    id: string;
+    name: string;
+    plan: 'free' | 'boutique' | 'enterprise';
+  } | null;
+  children: React.ReactNode;
+}
+
+const NAV_ITEMS = [
+  { label: 'Overview', href: '/dashboard', icon: '◫' },
+  { label: 'Events', href: '/dashboard/events', icon: '☰' },
+  { label: 'Integrations', href: '/dashboard/integrations', icon: '⚡' },
+  { label: 'Widget', href: '/dashboard/widget', icon: '◧' },
+  { label: 'Appearance', href: '/dashboard/appearance', icon: '◑' },
+  { label: 'Embed Code', href: '/dashboard/embed', icon: '⟨/⟩' },
+  { label: 'Analytics', href: '/dashboard/analytics', icon: '◔' },
+  { label: 'Settings', href: '/dashboard/settings', icon: '⚙' },
+];
+
+export function DashboardShell({ user, account, children }: DashboardShellProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const supabase = createClient();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+    router.refresh();
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const isActive = (href: string) => {
+    if (href === '/dashboard') return pathname === '/dashboard';
+    return pathname.startsWith(href);
+  };
+
+  const getPageTitle = () => {
+    const item = NAV_ITEMS.find((item) => isActive(item.href));
+    return item?.label || 'Dashboard';
+  };
+
+  const planLabels: Record<string, string> = {
+    free: 'Free',
+    boutique: 'Boutique',
+    enterprise: 'Enterprise',
+  };
+
+  return (
+    <div className="layout-dashboard">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            zIndex: 99,
+          }}
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+        <div className="sidebar-header">
+          <Link href="/dashboard" className="sidebar-logo">
+            <div className="sidebar-logo-icon">S</div>
+            <span>Sotto</span>
+          </Link>
+        </div>
+
+        <nav className="sidebar-nav">
+          <div className="sidebar-section-label">Menu</div>
+          {NAV_ITEMS.slice(0, 3).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`sidebar-link ${isActive(item.href) ? 'active' : ''}`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+
+          <div className="sidebar-section-label">Configure</div>
+          {NAV_ITEMS.slice(3, 6).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`sidebar-link ${isActive(item.href) ? 'active' : ''}`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+
+          <div className="sidebar-section-label">Insights</div>
+          {NAV_ITEMS.slice(6).map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`sidebar-link ${isActive(item.href) ? 'active' : ''}`}
+              onClick={() => setSidebarOpen(false)}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="sidebar-footer">
+          <div className="sidebar-user">
+            <div className="sidebar-avatar">{getInitials(user.name)}</div>
+            <div className="sidebar-user-info">
+              <div className="sidebar-user-name">{user.name}</div>
+              <div className="sidebar-user-email">{user.email}</div>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="btn btn-ghost btn-sm w-full"
+            style={{ marginTop: '8px', justifyContent: 'flex-start', paddingLeft: '12px' }}
+          >
+            ↪ Sign out
+          </button>
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <div className="layout-main">
+        <header className="topbar">
+          <div className="topbar-left">
+            <button
+              className="topbar-menu-btn"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              aria-label="Toggle menu"
+            >
+              ☰
+            </button>
+            <h1 className="topbar-title">{getPageTitle()}</h1>
+            {account && (
+              <span className="badge badge-accent">{planLabels[account.plan] || 'Free'}</span>
+            )}
+          </div>
+          <div className="topbar-right">
+            {account && (
+              <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
+                {account.name}
+              </span>
+            )}
+          </div>
+        </header>
+
+        <main className="layout-content">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}

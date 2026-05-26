@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acme Co — Premium Italian Sweaters</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .header {
+      background: #fff;
+      padding: 20px 40px;
+      border-bottom: 1px solid #eaeaea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+      background: #fff;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .product-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+    .product-img {
+      width: 100%;
+      height: 250px;
+      background: #eee;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div style="font-weight: bold; font-size: 1.2rem; letter-spacing: -0.5px;">ACME CO</div>
+    <div>Cart (0)</div>
+  </div>
+
+  <div class="hero">
+    <h1>The Winter Collection</h1>
+    <p style="color: #666; font-size: 1.2rem;">Premium Cashmere, ethically sourced from Italy.</p>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-img"></div>
+      <h3>Turtleneck Sweater</h3>
+      <p>$450.00</p>
+      <button style="padding: 10px 20px; background: #000; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+    </div>
+    <div class="product-card">
+      <div class="product-img"></div>
+      <h3>Cashmere Scarf</h3>
+      <p>$120.00</p>
+      <button style="padding: 10px 20px; background: #000; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Add to Cart</button>
+    </div>
+  </div>
+
+  <!-- Sotto Widget Embed (ACCOUNT ID HARDCODED FOR TESTING) -->
+  <script src="http://localhost:3000/widget.js" data-account-id="b36d99dc-8ab8-4248-a35f-3e0f0bcb2eab" defer></script>
+
+</body>
+</html>
