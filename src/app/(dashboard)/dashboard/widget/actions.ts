@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 
 export async function updateWidgetConfig(formData: FormData) {
@@ -37,7 +38,7 @@ export async function updateWidgetConfig(formData: FormData) {
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+  const supabaseAdmin = createAdminClient(supabaseUrl, supabaseServiceKey);
 
   const { error } = await supabaseAdmin
     .from('accounts')
