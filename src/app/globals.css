@@ -1046,6 +1046,7 @@ a:hover {
   min-height: 100vh;
   padding: var(--space-6);
   background: var(--bg-deep);
+  animation: fadeIn var(--transition-base) ease-out;
 }
 
 .auth-card {
