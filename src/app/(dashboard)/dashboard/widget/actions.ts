@@ -35,7 +35,11 @@ export async function updateWidgetConfig(formData: FormData) {
 
   const existingConfig = account?.widget_config || {};
 
-  const { error } = await supabase
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+
+  const { error } = await supabaseAdmin
     .from('accounts')
     .update({
       widget_config: {

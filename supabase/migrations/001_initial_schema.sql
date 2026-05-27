@@ -66,9 +66,7 @@ CREATE POLICY "Users can view own accounts"
   ON public.accounts FOR SELECT
   USING (id IN (SELECT account_id FROM public.account_members WHERE user_id = auth.uid()));
 
-CREATE POLICY "Users can update own accounts"
-  ON public.accounts FOR UPDATE
-  USING (id IN (SELECT account_id FROM public.account_members WHERE user_id = auth.uid()));
+
 
 CREATE POLICY "Users can view own events"
   ON public.events FOR SELECT

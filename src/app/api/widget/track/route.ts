@@ -40,9 +40,27 @@ export async function POST(request: NextRequest) {
       .single();
 
     const origin = request.headers.get('origin') || request.headers.get('referer');
-    if (account && origin && account.domain && !origin.includes(account.domain)) {
-      if (!origin.includes('localhost')) {
-        return NextResponse.json({ error: 'Unauthorized domain' }, { status: 403, headers: corsHeaders() });
+    
+    if (origin && origin.includes('localhost')) {
+      // Allow localhost for local development testing
+    } else {
+      if (!account || !account.domain) {
+        return NextResponse.json({ error: 'Domain not configured for this account' }, { status: 403, headers: corsHeaders() });
+      }
+      if (!origin) {
+        return NextResponse.json({ error: 'Missing origin' }, { status: 403, headers: corsHeaders() });
+      }
+
+      try {
+        const originUrl = new URL(origin);
+        const originHost = originUrl.hostname.toLowerCase();
+        const accountHost = account.domain.toLowerCase();
+
+        if (originHost !== accountHost && !originHost.endsWith('.' + accountHost)) {
+          return NextResponse.json({ error: 'Unauthorized domain' }, { status: 403, headers: corsHeaders() });
+        }
+      } catch {
+        return NextResponse.json({ error: 'Invalid origin' }, { status: 403, headers: corsHeaders() });
       }
     }
 
