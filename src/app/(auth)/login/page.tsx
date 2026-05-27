@@ -42,8 +42,9 @@ export default function LoginPage() {
     <div className="auth-card animate-fade-in">
       <div className="auth-header">
         <div className="auth-logo">
-          <div className="sidebar-logo-icon">S</div>
-          Sotto
+          <div className="brand-logo-container">
+            S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
+          </div>
         </div>
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Sign in to your dashboard</p>

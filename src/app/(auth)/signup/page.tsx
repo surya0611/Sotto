@@ -55,8 +55,9 @@ export default function SignupPage() {
     <div className="auth-card animate-fade-in">
       <div className="auth-header">
         <div className="auth-logo">
-          <div className="sidebar-logo-icon">S</div>
-          Sotto
+          <div className="brand-logo-container">
+            S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
+          </div>
         </div>
         <h1 className="auth-title">Create your account</h1>
         <p className="auth-subtitle">Start showing social proof in minutes</p>

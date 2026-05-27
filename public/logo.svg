@@ -1,0 +1,23 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <title>Sotto favicon</title>
+  <defs>
+    <clipPath id="favicon-clip">
+      <rect x="0" y="0" width="300" height="300" rx="44"/>
+    </clipPath>
+  </defs>
+
+  <!-- Gold square -->
+  <rect x="0" y="0" width="300" height="300" rx="44" fill="#C49B6A"/>
+
+  <!-- Rotated dark square clipped to gold block -->
+  <rect
+    x="65" y="65" width="170" height="170" rx="16"
+    fill="#2C3527"
+    transform="rotate(18 150 150)"
+    clip-path="url(#favicon-clip)"
+  />
+
+  <!-- Cream ring -->
+  <circle cx="150" cy="150" r="52" fill="none" stroke="#FDFBF7" stroke-width="14"/>
+
+</svg>

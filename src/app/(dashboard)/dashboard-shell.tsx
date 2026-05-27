@@ -84,9 +84,10 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <Link href="/dashboard" className="sidebar-logo">
-            <div className="sidebar-logo-icon">S</div>
-            <span>Sotto</span>
+          <Link href="/dashboard" className="sidebar-logo" style={{ textDecoration: 'none' }}>
+            <div className="brand-logo-container" style={{ fontSize: '1.25rem' }}>
+              S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
+            </div>
           </Link>
         </div>
 
