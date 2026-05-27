@@ -22,7 +22,7 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Sotto — Social Proof for Premium Brands',
+    default: 'Sotto',
     template: '%s | Sotto',
   },
   description: 'Social proof engine for premium DTC brands. Show real purchase activity to boost conversions.',
