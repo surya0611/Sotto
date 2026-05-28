@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Metadata } from 'next';
+import { Zap, Eye, PointerClick, ShoppingBagIcon, BarChart } from '@/components/icons';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,7 +61,7 @@ export default async function AnalyticsPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Total Events</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>⚡</span>
+              <Zap width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{totalEvents}</div>
@@ -70,7 +71,7 @@ export default async function AnalyticsPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Impressions</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>👁</span>
+              <Eye width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{impressions}</div>
@@ -80,7 +81,7 @@ export default async function AnalyticsPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Clicks</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>👆</span>
+              <PointerClick width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{clicks}</div>
@@ -90,7 +91,7 @@ export default async function AnalyticsPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Conversions</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>🛍</span>
+              <ShoppingBagIcon width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{conversions}</div>
@@ -100,7 +101,7 @@ export default async function AnalyticsPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Click-through Rate</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>📊</span>
+              <BarChart width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{ctr}%</div>

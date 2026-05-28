@@ -5,6 +5,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 
+import { OverviewIcon, ListIcon, Zap, WidgetIcon, PaletteIcon, CodeIcon, Eye, SettingsIcon } from '@/components/icons';
+
 interface DashboardShellProps {
   user: {
     email: string;
@@ -19,14 +21,14 @@ interface DashboardShellProps {
 }
 
 const NAV_ITEMS = [
-  { label: 'Overview', href: '/dashboard', icon: '◫' },
-  { label: 'Events', href: '/dashboard/events', icon: '☰' },
-  { label: 'Integrations', href: '/dashboard/integrations', icon: '⚡' },
-  { label: 'Widget', href: '/dashboard/widget', icon: '◧' },
-  { label: 'Appearance', href: '/dashboard/appearance', icon: '◑' },
-  { label: 'Embed Code', href: '/dashboard/embed', icon: '⟨/⟩' },
-  { label: 'Analytics', href: '/dashboard/analytics', icon: '◔' },
-  { label: 'Settings', href: '/dashboard/settings', icon: '⚙' },
+  { label: 'Overview', href: '/dashboard', icon: <OverviewIcon width="16" height="16" /> },
+  { label: 'Events', href: '/dashboard/events', icon: <ListIcon width="16" height="16" /> },
+  { label: 'Integrations', href: '/dashboard/integrations', icon: <Zap width="16" height="16" /> },
+  { label: 'Widget', href: '/dashboard/widget', icon: <WidgetIcon width="16" height="16" /> },
+  { label: 'Appearance', href: '/dashboard/appearance', icon: <PaletteIcon width="16" height="16" /> },
+  { label: 'Embed Code', href: '/dashboard/embed', icon: <CodeIcon width="16" height="16" /> },
+  { label: 'Analytics', href: '/dashboard/analytics', icon: <Eye width="16" height="16" /> },
+  { label: 'Settings', href: '/dashboard/settings', icon: <SettingsIcon width="16" height="16" /> },
 ];
 
 export function DashboardShell({ user, account, children }: DashboardShellProps) {

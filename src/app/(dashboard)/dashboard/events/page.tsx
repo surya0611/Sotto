@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Metadata } from 'next';
+import { Zap } from '@/components/icons';
 import { formatRelativeTime } from '@/lib/utils';
 import { SottoEvent } from '@/types';
 import { ExportButton } from './export-button';
@@ -52,8 +53,8 @@ export default async function EventsPage() {
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {events.length === 0 ? (
           <div className="empty-state" style={{ padding: 'var(--space-12) var(--space-6)' }}>
-            <div className="empty-state-icon">
-              <span style={{ fontSize: '1.5rem' }}>⚡</span>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-accent-light)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+              <Zap width="20" height="20" />
             </div>
             <h4 className="empty-state-title">No events yet</h4>
             <p className="empty-state-description">

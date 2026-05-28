@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Metadata } from 'next';
+import { Zap, Eye, PointerClick, BarChart } from '@/components/icons';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,7 +65,7 @@ export default async function DashboardPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Total Events</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>⚡</span>
+              <Zap width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{totalEvents}</div>
@@ -77,7 +78,7 @@ export default async function DashboardPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Impressions</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>👁</span>
+              <Eye width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{impressions}</div>
@@ -90,7 +91,7 @@ export default async function DashboardPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Click-throughs</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>👆</span>
+              <PointerClick width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{clickThroughs}</div>
@@ -103,7 +104,7 @@ export default async function DashboardPage() {
           <div className="stats-card-header">
             <span className="stats-card-label">Click-through Rate</span>
             <div className="stats-card-icon">
-              <span style={{ fontSize: '1rem' }}>📊</span>
+              <BarChart width="16" height="16" />
             </div>
           </div>
           <div className="stats-card-value">{clickThroughRate}%</div>
@@ -162,8 +163,8 @@ export default async function DashboardPage() {
         </div>
         <div className="card-content">
           <div className="empty-state" style={{ padding: 'var(--space-10) var(--space-6)' }}>
-            <div className="empty-state-icon">
-              <span style={{ fontSize: '1.5rem' }}>⚡</span>
+            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-accent-light)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Zap width="20" height="20" />
             </div>
             <h4 className="empty-state-title">No events yet</h4>
             <p className="empty-state-description">
