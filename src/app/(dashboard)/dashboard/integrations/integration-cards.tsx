@@ -45,6 +45,14 @@ const INTEGRATIONS: Integration[] = [
     secretKeyLabel: 'Sotto Secret (Custom Header)',
     placeholder: 'Enter a secure random string'
   },
+  { 
+    id: 'easebuzz', 
+    name: 'Easebuzz', 
+    description: 'Track successful payments via Easebuzz', 
+    icon: '⚡',
+    secretKeyLabel: 'Easebuzz Salt',
+    placeholder: 'Enter your merchant salt'
+  },
 ];
 
 export function IntegrationCards({ 

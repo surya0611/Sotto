@@ -33,5 +33,5 @@ export const NAV_ITEMS = [
   { label: 'Settings', href: '/dashboard/settings', icon: 'settings' },
 ] as const;
 
-export const EVENT_SOURCES = ['shopify', 'razorpay', 'typeform', 'google_forms', 'sotto_pixel'] as const;
+export const EVENT_SOURCES = ['shopify', 'razorpay', 'typeform', 'google_forms', 'sotto_pixel', 'easebuzz'] as const;
 export const EVENT_TYPES = ['purchase', 'signup', 'form_submission', 'impression', 'click', 'conversion'] as const;
