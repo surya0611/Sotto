@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { saveIntegrationSecret } from './actions';
+import { CopyButton } from '@/components/copy-button';
 
 interface Integration {
   id: string;
@@ -146,7 +147,10 @@ export function IntegrationCards({
             <form onSubmit={handleSave}>
               <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
                 <div className="input-group">
-                  <label className="input-label">Webhook URL</label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label className="input-label">Webhook URL</label>
+                    <CopyButton textToCopy={`${appUrl}/api/webhooks/${activeIntegration.id}?account_id=${accountId}`} />
+                  </div>
                   <input 
                     type="text" 
                     className="input" 

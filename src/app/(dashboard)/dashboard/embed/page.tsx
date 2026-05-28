@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
+import { CopyButton } from '@/components/copy-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,9 +36,12 @@ export default async function EmbedPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">1. Widget Script</h2>
-          <p className="card-description">Place this script right before the closing <code>&lt;/body&gt;</code> tag on all pages where you want the widget to appear.</p>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h2 className="card-title">1. Widget Script</h2>
+            <p className="card-description">Place this script right before the closing <code>&lt;/body&gt;</code> tag on all pages where you want the widget to appear.</p>
+          </div>
+          <CopyButton textToCopy={widgetScript} />
         </div>
         <div className="card-content">
           <div style={{ position: 'relative' }}>
@@ -57,9 +61,12 @@ export default async function EmbedPage() {
       </div>
 
       <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">2. Conversion Pixel</h2>
-          <p className="card-description">Place this script on your conversion pages (e.g., "Thank You" or order confirmation page) to track new events.</p>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <h2 className="card-title">2. Conversion Pixel</h2>
+            <p className="card-description">Place this script on your conversion pages (e.g., "Thank You" or order confirmation page) to track new events.</p>
+          </div>
+          <CopyButton textToCopy={pixelScript} />
         </div>
         <div className="card-content">
           <div style={{ position: 'relative' }}>

@@ -161,9 +161,9 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
             </svg>
           </div>
           <div>
-            <p style={{ margin: 0, fontSize: '14px', fontWeight: 600 }}>Someone from New York</p>
-            <p style={{ margin: 0, fontSize: '13px', opacity: 0.8 }}>Just signed up for Sotto Pro</p>
-            <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.6 }}>2 minutes ago</p>
+            <p style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: 'inherit' }}>Someone from New York</p>
+            <p style={{ margin: 0, fontSize: '13px', opacity: 0.8, color: 'inherit' }}>Just signed up for Sotto Pro</p>
+            <p style={{ margin: '4px 0 0 0', fontSize: '11px', opacity: 0.6, color: 'inherit' }}>2 minutes ago</p>
           </div>
         </div>
       </div>
