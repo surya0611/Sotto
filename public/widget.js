@@ -62,10 +62,11 @@
     const host = document.createElement('div');
     host.id = 'sotto-widget-host';
     host.style.position = 'fixed';
-    host.style.bottom = '20px';
-    host.style.left = '20px';
     host.style.zIndex = '2147483647'; // Maximum z-index
     host.style.pointerEvents = 'none'; // Click-through when empty
+    // Default position — will be updated by showWidget with theme data
+    host.style.bottom = '20px';
+    host.style.left = '20px';
     document.body.appendChild(host);
 
     shadowRoot = host.attachShadow({ mode: 'closed' });
@@ -75,8 +76,8 @@
       .sotto-widget {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
+        gap: var(--s-gap, 12px);
+        padding: var(--s-pad-y, 12px) var(--s-pad-x, 16px);
         background: var(--s-bg, #ffffff);
         color: var(--s-text, #1a1a1a);
         font-family: var(--s-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
@@ -88,7 +89,7 @@
         transition: opacity 400ms ease, transform 400ms ease;
         pointer-events: auto;
         cursor: pointer;
-        max-width: 320px;
+        max-width: var(--s-max-w, 320px);
         will-change: opacity, transform;
       }
       .sotto-widget.sotto-visible {
@@ -96,8 +97,8 @@
         transform: translateY(0);
       }
       .sotto-icon {
-        width: 16px;
-        height: 16px;
+        width: var(--s-icon, 16px);
+        height: var(--s-icon, 16px);
         flex-shrink: 0;
         color: var(--s-text, #1a1a1a);
       }
@@ -107,17 +108,17 @@
         gap: 2px;
       }
       .sotto-title {
-        font-size: 13px;
+        font-size: var(--s-title-size, 13px);
         font-weight: 600;
         margin: 0;
       }
       .sotto-message {
-        font-size: 12px;
+        font-size: var(--s-msg-size, 12px);
         opacity: 0.8;
         margin: 0;
       }
       .sotto-time {
-        font-size: 10px;
+        font-size: var(--s-time-size, 10px);
         opacity: 0.5;
         margin-top: 2px;
       }
@@ -178,6 +179,46 @@
       } else {
         container.style.setProperty('--s-font', 'inherit');
       }
+
+      // Apply position
+      var host = document.getElementById('sotto-widget-host');
+      if (host) {
+        host.style.top = '';
+        host.style.bottom = '';
+        host.style.left = '';
+        host.style.right = '';
+        switch (theme.position) {
+          case 'bottom-right':
+            host.style.bottom = '20px';
+            host.style.right = '20px';
+            break;
+          case 'top-left':
+            host.style.top = '20px';
+            host.style.left = '20px';
+            break;
+          case 'top-right':
+            host.style.top = '20px';
+            host.style.right = '20px';
+            break;
+          default: // bottom-left
+            host.style.bottom = '20px';
+            host.style.left = '20px';
+            break;
+        }
+      }
+
+      // Apply size
+      var scale = 1;
+      if (theme.size === 'small') scale = 0.85;
+      else if (theme.size === 'large') scale = 1.15;
+      container.style.setProperty('--s-gap', Math.round(12 * scale) + 'px');
+      container.style.setProperty('--s-pad-y', Math.round(12 * scale) + 'px');
+      container.style.setProperty('--s-pad-x', Math.round(16 * scale) + 'px');
+      container.style.setProperty('--s-max-w', Math.round(320 * scale) + 'px');
+      container.style.setProperty('--s-icon', Math.round(16 * scale) + 'px');
+      container.style.setProperty('--s-title-size', Math.round(13 * scale) + 'px');
+      container.style.setProperty('--s-msg-size', Math.round(12 * scale) + 'px');
+      container.style.setProperty('--s-time-size', Math.round(10 * scale) + 'px');
     }
 
     // Render content safely without innerHTML to prevent DOM-based XSS

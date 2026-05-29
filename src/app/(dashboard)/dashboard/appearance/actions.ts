@@ -27,6 +27,8 @@ export async function updateAppearanceConfig(formData: FormData) {
   const text_color = formData.get('text_color') as string;
   const font_family = formData.get('font_family') as string;
   const border_radius = formData.get('border_radius') as string;
+  const position = formData.get('position') as string || 'bottom-left';
+  const size = formData.get('size') as string || 'medium';
 
   // First fetch the existing config
   const { data: account } = await supabase
@@ -53,6 +55,8 @@ export async function updateAppearanceConfig(formData: FormData) {
           text_color,
           font_family,
           border_radius,
+          position,
+          size,
         }
       },
     })
