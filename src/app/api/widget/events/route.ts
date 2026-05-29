@@ -87,12 +87,27 @@ export async function GET(request: NextRequest) {
     let eventPayload = null;
 
     if (config.display_mode === 'aggregate') {
-      // Get count of purchases in the specified window (e.g. week)
+      // Get count of purchases in the specified window
       const windowStart = new Date();
-      if (config.aggregate_window === 'day') {
-        windowStart.setDate(windowStart.getDate() - 1);
-      } else {
-        windowStart.setDate(windowStart.getDate() - 7);
+      switch (config.aggregate_window) {
+        case '1h':
+          windowStart.setHours(windowStart.getHours() - 1);
+          break;
+        case '6h':
+          windowStart.setHours(windowStart.getHours() - 6);
+          break;
+        case '3d':
+          windowStart.setDate(windowStart.getDate() - 3);
+          break;
+        case 'week':
+          windowStart.setDate(windowStart.getDate() - 7);
+          break;
+        case '30d':
+          windowStart.setDate(windowStart.getDate() - 30);
+          break;
+        default: // 'day'
+          windowStart.setDate(windowStart.getDate() - 1);
+          break;
       }
 
       const { count } = await supabase

@@ -47,11 +47,16 @@ export function WidgetForm({ initialConfig }: { initialConfig: WidgetConfig }) {
         </div>
 
         <div className="input-group">
-          <label htmlFor="aggregate_window" className="input-label">Aggregate Window (if using Aggregate mode)</label>
+          <label htmlFor="aggregate_window" className="input-label">Aggregate Window</label>
           <select id="aggregate_window" name="aggregate_window" className="input" defaultValue={initialConfig.aggregate_window || 'day'}>
+            <option value="1h">Last 1 Hour</option>
+            <option value="6h">Last 6 Hours</option>
             <option value="day">Last 24 Hours</option>
+            <option value="3d">Last 3 Days</option>
             <option value="week">Last 7 Days</option>
+            <option value="30d">Last 30 Days</option>
           </select>
+          <p className="input-hint">The time window used to count recent activity when in Aggregate mode.</p>
         </div>
 
         <div className="input-group">
