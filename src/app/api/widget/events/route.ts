@@ -27,6 +27,19 @@ export async function GET(request: NextRequest) {
     const accountId = searchParams.get('account_id');
     const sessionId = searchParams.get('session_id');
 
+    // Extract exclusions from query params (JSON arrays)
+    let excludedEventIds: string[] = [];
+    try {
+      const eParam = searchParams.get('excluded_event_ids');
+      if (eParam) excludedEventIds = JSON.parse(decodeURIComponent(eParam));
+    } catch (e) {}
+
+    let excludedProductIds: string[] = [];
+    try {
+      const pParam = searchParams.get('excluded_product_ids');
+      if (pParam) excludedProductIds = JSON.parse(decodeURIComponent(pParam));
+    } catch (e) {}
+
     if (!accountId) {
       return NextResponse.json({ error: 'Missing account_id' }, { status: 400, headers: corsHeaders() });
     }
@@ -110,51 +123,140 @@ export async function GET(request: NextRequest) {
           break;
       }
 
-      const { count } = await supabase
+      // We need to fetch aggregate counts grouped by product
+      const { data: aggEvents } = await supabase
         .from('events')
-        .select('*', { count: 'exact', head: true })
+        .select('product_name, customer_city')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', windowStart.toISOString());
 
-      if (count && count > 2) {
+      let windowLabel = 'today';
+      if (config.aggregate_window === '1h') windowLabel = 'hour';
+      else if (config.aggregate_window === '3d') windowLabel = 'few days';
+      else if (config.aggregate_window === 'week') windowLabel = 'week';
+      else if (config.aggregate_window === '30d') windowLabel = 'month';
+
+      if (aggEvents && aggEvents.length > 0) {
+        // Group by product name
+        const productCounts: Record<string, { count: number, cities: Record<string, number> }> = {};
+        for (const ev of aggEvents) {
+          if (!ev.product_name) continue;
+          const pName = ev.product_name;
+          if (!productCounts[pName]) {
+            productCounts[pName] = { count: 0, cities: {} };
+          }
+          productCounts[pName].count++;
+          
+          if (ev.customer_city) {
+            const city = ev.customer_city;
+            productCounts[pName].cities[city] = (productCounts[pName].cities[city] || 0) + 1;
+          }
+        }
+
+        // Filter valid products (count >= 2 and not excluded)
+        const candidates = Object.entries(productCounts)
+          .filter(([pName, data]) => data.count >= 2 && !excludedProductIds.includes(pName))
+          .sort((a, b) => b[1].count - a[1].count); // Rank by popularity
+
+        if (candidates.length > 0) {
+          const topProduct = candidates[0];
+          const productName = topProduct[0];
+          
+          // Find most popular city
+          let bestCity = null;
+          let maxCityCount = 0;
+          for (const [city, count] of Object.entries(topProduct[1].cities)) {
+            if (count > maxCityCount) {
+              maxCityCount = count;
+              bestCity = city;
+            }
+          }
+
+          // XSS sanitization
+          const sanitize = (str: string | null): string => {
+            if (!str) return '';
+            return str.replace(/[<>"'&]/g, '').trim();
+          };
+
+          const safeProductName = sanitize(productName);
+          const safeCity = sanitize(bestCity);
+
+          let msg = '';
+          if (safeCity && maxCityCount > 0) {
+            msg = `A popular choice in ${safeCity} this ${windowLabel}: ${safeProductName}`;
+          } else {
+            msg = `A popular choice this ${windowLabel}: ${safeProductName}`;
+          }
+
+          eventPayload = {
+            type: 'aggregate',
+            product_id: productName, // Sent to client so it can be added to excluded list
+            title: 'High Demand',
+            message: msg,
+            timestamp: new Date().toISOString()
+          };
+        } else if (!excludedProductIds.includes('__STORE_FALLBACK__')) {
+          // No qualifying products remain, but we have some events, so show fallback
+          eventPayload = {
+            type: 'aggregate',
+            product_id: '__STORE_FALLBACK__',
+            title: 'Trending Store',
+            message: `Popular this ${windowLabel} · ${account.domain || 'This store'}`,
+            timestamp: new Date().toISOString()
+          };
+        }
+      } else if (!excludedProductIds.includes('__STORE_FALLBACK__')) {
+        // Zero events in window, but maybe fallback hasn't been shown yet
         eventPayload = {
           type: 'aggregate',
-          title: 'High Demand',
-          message: `${count} people recently purchased this`,
+          product_id: '__STORE_FALLBACK__',
+          title: 'Trending Store',
+          message: `Popular this ${windowLabel} · ${account.domain || 'This store'}`,
           timestamp: new Date().toISOString()
         };
       }
+
     } else {
-      // Individual mode - get the most recent purchase
-      const { data: events } = await supabase
+      // Individual mode
+      const lookbackDate = new Date();
+      lookbackDate.setDate(lookbackDate.getDate() - 7); // 7-day max age
+
+      let query = supabase
         .from('events')
-        .select('customer_name, customer_city, product_name, created_at')
+        .select('id, customer_name, customer_city, product_name, created_at')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
-        .order('created_at', { ascending: false })
-        .limit(1);
+        .gte('created_at', lookbackDate.toISOString())
+        .order('created_at', { ascending: false });
+
+      const { data: events } = await query;
 
       if (events && events.length > 0) {
-        const ev = events[0];
-        
-        // XSS Sanitization: Strip HTML-sensitive characters from user-supplied data
-        const sanitize = (str: string | null): string => {
-          if (!str) return '';
-          return str.replace(/[<>"'&]/g, '').trim();
-        };
-        
-        const safeCity = sanitize(ev.customer_city);
-        const locationStr = safeCity.length > 0 ? ` from ${safeCity}` : '';
-        const nameStr = sanitize(ev.customer_name) || 'Someone';
-        const productName = sanitize(ev.product_name) || 'an item';
-        
-        eventPayload = {
-          type: 'individual',
-          title: 'Recent Purchase',
-          message: `${nameStr}${locationStr} just purchased ${productName}`,
-          timestamp: ev.created_at
-        };
+        // Filter out excluded events manually if needed, though better done in query if Supabase supports not.in, 
+        // but PostgREST has URI length limits. Array filtering in memory is safe for 7 days of events.
+        const candidateEvent = events.find(ev => !excludedEventIds.includes(ev.id));
+
+        if (candidateEvent) {
+          // XSS Sanitization
+          const sanitize = (str: string | null): string => {
+            if (!str) return '';
+            return str.replace(/[<>"'&]/g, '').trim();
+          };
+          
+          const safeCity = sanitize(candidateEvent.customer_city);
+          const locationStr = safeCity.length > 0 ? ` from ${safeCity}` : '';
+          const nameStr = sanitize(candidateEvent.customer_name) || 'Someone';
+          const productName = sanitize(candidateEvent.product_name) || 'an item';
+          
+          eventPayload = {
+            type: 'individual',
+            id: candidateEvent.id, // Passed so client can exclude it next time
+            title: 'Recent Purchase',
+            message: `${nameStr}${locationStr} just purchased ${productName}`,
+            timestamp: candidateEvent.created_at
+          };
+        }
       }
     }
 
@@ -171,6 +273,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       event: eventPayload,
       theme: config.theme,
+      cooldown: config.cooldown || 60,
       rules: {
         page_rules: config.page_rules,
         suppress_rules: config.suppress_rules

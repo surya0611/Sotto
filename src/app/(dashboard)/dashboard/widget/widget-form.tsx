@@ -1,16 +1,18 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useTransition, useState } from 'react';
 import { updateWidgetConfig } from './actions';
 
 type WidgetConfig = {
   display_mode?: string;
   aggregate_window?: string;
   frequency_cap?: number;
+  cooldown?: number;
 };
 
 export function WidgetForm({ initialConfig }: { initialConfig: WidgetConfig }) {
   const [isPending, startTransition] = useTransition();
+  const [cooldown, setCooldown] = useState(initialConfig.cooldown || 60);
 
   async function handleSubmit(formData: FormData) {
     startTransition(async () => {
@@ -71,6 +73,26 @@ export function WidgetForm({ initialConfig }: { initialConfig: WidgetConfig }) {
             defaultValue={initialConfig.frequency_cap || 5} 
           />
           <p className="input-hint">Maximum number of times a widget is shown to a single user per session.</p>
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="cooldown" className="input-label">Time between notifications</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+            <input 
+              type="range" 
+              id="cooldown" 
+              name="cooldown" 
+              min="45" 
+              max="600" 
+              value={cooldown}
+              onChange={(e) => setCooldown(parseInt(e.target.value, 10))}
+              style={{ flex: 1 }}
+            />
+            <span style={{ fontSize: '0.875rem', fontWeight: 500, minWidth: '60px' }}>
+              {cooldown}s
+            </span>
+          </div>
+          <p className="input-hint">The amount of time (45s to 10m) to wait after a notification finishes before showing the next one.</p>
         </div>
 
       </div>

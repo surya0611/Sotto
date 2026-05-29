@@ -13,26 +13,42 @@
   const scriptUrl = new URL(scriptTag.src);
   const apiBase = scriptUrl.origin;
 
-  // 2. Session Management
+  // 2. Session Management (using sessionStorage)
   function getOrCreateSession() {
-    const match = document.cookie.match(new RegExp('(^| )sotto_session_id=([^;]+)'));
-    if (match) return match[2];
+    let sessionId = sessionStorage.getItem('sotto_session_id');
+    if (sessionId) return sessionId;
     
     // Generate UUID v4 equivalent
-    const sessionId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    sessionId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       const r = Math.random() * 16 | 0;
       const v = c == 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
     
-    // Set cookie for 30 minutes
-    const date = new Date();
-    date.setTime(date.getTime() + (30 * 60 * 1000));
-    document.cookie = `sotto_session_id=${sessionId}; expires=${date.toUTCString()}; path=/; SameSite=Lax`;
+    sessionStorage.setItem('sotto_session_id', sessionId);
     return sessionId;
   }
 
   const sessionId = getOrCreateSession();
+
+  // Exclusions state
+  function getExclusions(key) {
+    try {
+      const data = sessionStorage.getItem(key);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function addExclusion(key, id) {
+    if (!id) return;
+    const items = getExclusions(key);
+    if (!items.includes(id)) {
+      items.push(id);
+      sessionStorage.setItem(key, JSON.stringify(items));
+    }
+  }
 
   // 3. Track Telemetry
   async function track(eventType) {
@@ -85,16 +101,15 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
         border: 1px solid rgba(0,0,0,0.05);
         opacity: 0;
-        transform: translateY(10px);
-        transition: opacity 400ms ease, transform 400ms ease;
+        transition: opacity 200ms ease-in;
         pointer-events: auto;
         cursor: pointer;
         max-width: var(--s-max-w, 320px);
-        will-change: opacity, transform;
+        will-change: opacity;
       }
       .sotto-widget.sotto-visible {
         opacity: 1;
-        transform: translateY(0);
+        transition: opacity 300ms ease-out;
       }
       .sotto-icon {
         width: var(--s-icon, 16px);
@@ -155,10 +170,16 @@
   }
 
   let hideTimeout;
+  let currentCooldown = 60; // default 60s
 
   function hideWidget() {
     if (!container) return;
     container.classList.remove('sotto-visible');
+    
+    // Start cooldown timer after exit animation completes
+    setTimeout(() => {
+      setTimeout(poll, currentCooldown * 1000);
+    }, 200); // 200ms exit animation
   }
 
   function showWidget(data) {
@@ -166,6 +187,11 @@
     
     const { event, theme } = data;
     
+    // Check theme and set cooldown
+    if (data.cooldown) {
+      currentCooldown = data.cooldown;
+    }
+
     // Apply theme
     if (theme) {
       if (theme.bg_color) container.style.setProperty('--s-bg', theme.bg_color);
@@ -279,30 +305,36 @@
     isPolling = true;
 
     try {
-      const response = await fetch(`${apiBase}/api/widget/events?account_id=${accountId}&session_id=${sessionId}`);
+      const excEvents = encodeURIComponent(JSON.stringify(getExclusions('sotto_shown_event_ids')));
+      const excProducts = encodeURIComponent(JSON.stringify(getExclusions('sotto_shown_product_ids')));
+      
+      const response = await fetch(`${apiBase}/api/widget/events?account_id=${accountId}&session_id=${sessionId}&excluded_event_ids=${excEvents}&excluded_product_ids=${excProducts}`);
       const data = await response.json();
 
       if (!data.skip && data.event) {
         
-        // Page Rules Check
-        if (data.rules && data.rules.page_rules && data.rules.page_rules.length > 0) {
-           const currentUrl = window.location.href;
-           // MVP simplifcation: if page_rules exist, just assume it's valid for now, 
-           // or implement strict regex check. We will skip deep regex for MVP snippet stability.
+        // Track the ID to avoid showing it again this session
+        if (data.event.type === 'individual' && data.event.id) {
+          addExclusion('sotto_shown_event_ids', data.event.id);
+        } else if (data.event.type === 'aggregate' && data.event.product_id) {
+          addExclusion('sotto_shown_product_ids', data.event.product_id);
         }
 
         showWidget(data);
+      } else {
+        // If API says skip (freq cap hit, or no more events), we stay silent forever for this session.
+        // No further polling is scheduled.
       }
     } catch (e) {
       // Silently fail
+      // On network error, maybe retry after a default cooldown
+      setTimeout(poll, 60000);
     }
 
     isPolling = false;
   }
 
-  // Start polling every 30 seconds
-  // And do an immediate initial poll after 2 seconds
+  // Start initial poll after 2 seconds
   setTimeout(poll, 2000);
-  setInterval(poll, 30000);
 
 })();

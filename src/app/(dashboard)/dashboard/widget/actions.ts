@@ -26,6 +26,7 @@ export async function updateWidgetConfig(formData: FormData) {
   const display_mode = formData.get('display_mode') as string;
   const aggregate_window = formData.get('aggregate_window') as string;
   const frequency_cap = parseInt(formData.get('frequency_cap') as string, 10);
+  const cooldown = parseInt(formData.get('cooldown') as string, 10);
 
   // First fetch the existing config so we don't overwrite theme
   const { data: account } = await supabase
@@ -48,6 +49,7 @@ export async function updateWidgetConfig(formData: FormData) {
         display_mode,
         aggregate_window,
         frequency_cap,
+        cooldown,
       },
     })
     .eq('id', membership.account_id);
