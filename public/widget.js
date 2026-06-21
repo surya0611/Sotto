@@ -263,6 +263,21 @@
     return `${Math.floor(hours / 24)}d ago`;
   }
 
+  function hexToRgba(hex, alpha) {
+    if (!hex || !hex.startsWith('#')) return hex;
+    let r = 0, g = 0, b = 0;
+    if (hex.length === 4) {
+      r = parseInt(hex[1] + hex[1], 16);
+      g = parseInt(hex[2] + hex[2], 16);
+      b = parseInt(hex[3] + hex[3], 16);
+    } else if (hex.length === 7) {
+      r = parseInt(hex[1] + hex[2], 16);
+      g = parseInt(hex[3] + hex[4], 16);
+      b = parseInt(hex[5] + hex[6], 16);
+    }
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
   let hideTimeout;
   let currentDisplayMs = 4000;
   let currentTimeBetweenMs = 8000;
@@ -310,11 +325,13 @@
       
       // Presets
       if (theme.theme_preset === 'glassmorphism') {
-        container.style.setProperty('--s-backdrop', 'blur(12px)');
+        const bgRgba = hexToRgba(theme.bg_color || '#ffffff', 0.6);
+        container.style.setProperty('--s-bg', bgRgba);
+        container.style.setProperty('--s-backdrop', 'blur(16px) saturate(180%)');
         container.style.setProperty('--s-border', '1px solid rgba(255, 255, 255, 0.2)');
         container.style.setProperty('--s-shadow', '0 8px 32px rgba(0, 0, 0, 0.1)');
       } else if (theme.theme_preset === 'neumorphism') {
-        container.style.setProperty('--s-shadow', '8px 8px 16px #e6e6e6, -8px -8px 16px #ffffff');
+        container.style.setProperty('--s-shadow', '8px 8px 16px rgba(0,0,0,0.06), -8px -8px 16px rgba(255,255,255,0.7)');
         container.style.setProperty('--s-border', 'none');
       } else {
         container.style.setProperty('--s-backdrop', 'none');
