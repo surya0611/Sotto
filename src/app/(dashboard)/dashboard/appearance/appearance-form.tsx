@@ -30,7 +30,8 @@ const HOVER_ANIMATIONS = [
 
 const PRESETS = [
   { id: 'default', label: 'Default', bg: '#ffffff', text: '#111827', radius: 8 },
-  { id: 'glassmorphism', label: 'Glassmorphism', bg: 'rgba(255, 255, 255, 0.7)', text: '#111827', radius: 16 },
+  { id: 'glassmorphism', label: 'Glassmorphism', bg: '#ffffff', text: '#111827', radius: 16 },
+  { id: 'neumorphism', label: 'Neumorphism', bg: '#f0f3f8', text: '#4a5568', radius: 16 },
   { id: 'dark', label: 'Dark Mode', bg: '#1f2937', text: '#f9fafb', radius: 8 },
   { id: 'playful', label: 'Playful', bg: '#fef3c7', text: '#92400e', radius: 24 },
   { id: 'minimalist', label: 'Minimalist', bg: '#fafafa', text: '#52525b', radius: 0 },
@@ -480,10 +481,14 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
                   padding: `${basePadY}px ${basePadX}px`,
                   boxShadow: theme.theme_preset === 'glassmorphism' 
                     ? '0 8px 32px rgba(0, 0, 0, 0.1)' 
+                    : theme.theme_preset === 'neumorphism'
+                      ? '8px 8px 16px rgba(0,0,0,0.06), -8px -8px 16px rgba(255,255,255,0.7)'
                     : '0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)',
                   backdropFilter: theme.theme_preset === 'glassmorphism' ? 'blur(10px)' : 'none',
                   WebkitBackdropFilter: theme.theme_preset === 'glassmorphism' ? 'blur(10px)' : 'none',
-                  border: theme.theme_preset === 'glassmorphism' ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0,0,0,0.06)',
+                  border: theme.theme_preset === 'glassmorphism' 
+                    ? '1px solid rgba(255, 255, 255, 0.2)' 
+                    : theme.theme_preset === 'neumorphism' ? 'none' : '1px solid rgba(0,0,0,0.06)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: `${baseGap}px`,
