@@ -28,6 +28,7 @@
       sessionStorage.removeItem('sotto_session_displays');
       sessionStorage.removeItem('sotto_suppress_until');
       sessionStorage.removeItem('sotto_close_count');
+      sessionStorage.removeItem('sotto_session_id'); // Ensure new session for backend caps
     }
 
     let sessionId = sessionStorage.getItem('sotto_session_id');
