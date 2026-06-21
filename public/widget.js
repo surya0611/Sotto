@@ -288,6 +288,24 @@
     container.addEventListener('click', (e) => {
       if (e.target.closest('.sotto-close')) return; // handled separately
       track('click');
+      
+      if (event.url) {
+        try {
+          const targetUrl = new URL(event.url, window.location.origin);
+          if (activeConfig && activeConfig.utm && activeConfig.utm.enabled) {
+            targetUrl.searchParams.set('utm_source', activeConfig.utm.source || 'sotto_widget');
+            targetUrl.searchParams.set('utm_medium', activeConfig.utm.medium || 'social_proof');
+            if (activeConfig.utm.campaign) {
+              targetUrl.searchParams.set('utm_campaign', activeConfig.utm.campaign);
+            }
+          }
+          window.location.href = targetUrl.toString();
+          return;
+        } catch(err) {
+          console.error('[Sotto] Invalid event URL:', event.url);
+        }
+      }
+
       hideWidget();
     });
 

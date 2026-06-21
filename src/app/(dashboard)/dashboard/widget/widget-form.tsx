@@ -236,6 +236,65 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
         </div>
       </div>
 
+      {/* UTM Tracking Settings */}
+      <div className="card">
+        <div className="card-header">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <h2 className="card-title">UTM Tracking</h2>
+              <p className="card-description">Automatically append tracking parameters to links inside your notifications.</p>
+            </div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem', cursor: 'pointer' }}>
+              <input 
+                type="checkbox" 
+                name="utm_enabled" 
+                defaultChecked={initialConfig.utm?.enabled} 
+                style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }}
+              /> 
+              Enabled
+            </label>
+          </div>
+        </div>
+
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <div className="input-group">
+            <label htmlFor="utm_source" className="input-label">UTM Source</label>
+            <input 
+              type="text" 
+              id="utm_source" 
+              name="utm_source" 
+              className="input" 
+              placeholder="sotto_widget" 
+              defaultValue={initialConfig.utm?.source || 'sotto_widget'} 
+            />
+          </div>
+          
+          <div className="input-group">
+            <label htmlFor="utm_medium" className="input-label">UTM Medium</label>
+            <input 
+              type="text" 
+              id="utm_medium" 
+              name="utm_medium" 
+              className="input" 
+              placeholder="social_proof" 
+              defaultValue={initialConfig.utm?.medium || 'social_proof'} 
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="utm_campaign" className="input-label">UTM Campaign (Optional)</label>
+            <input 
+              type="text" 
+              id="utm_campaign" 
+              name="utm_campaign" 
+              className="input" 
+              placeholder="e.g. black_friday_2026" 
+              defaultValue={initialConfig.utm?.campaign || ''} 
+            />
+          </div>
+        </div>
+      </div>
+
       <div style={{ position: 'sticky', bottom: 'var(--space-4)', alignSelf: 'flex-end', zIndex: 10 }}>
         <button type="submit" className="btn btn-primary" disabled={isPending}>
           {isPending ? 'Saving...' : 'Save Configuration'}

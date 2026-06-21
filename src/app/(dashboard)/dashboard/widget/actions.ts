@@ -37,6 +37,12 @@ export async function updateWidgetConfig(formData: FormData) {
   const hide_mobile = formData.get('hide_mobile') === 'on';
   const hide_desktop = formData.get('hide_desktop') === 'on';
 
+  // UTM Tracking
+  const utm_enabled = formData.get('utm_enabled') === 'on';
+  const utm_source = formData.get('utm_source') as string || 'sotto_widget';
+  const utm_medium = formData.get('utm_medium') as string || 'social_proof';
+  const utm_campaign = formData.get('utm_campaign') as string || '';
+
   // Note: page_rules are now handled in the Advanced Rules tab
   
   // Extract conversion rules
@@ -85,6 +91,12 @@ export async function updateWidgetConfig(formData: FormData) {
         visibility: {
           hide_mobile,
           hide_desktop
+        },
+        utm: {
+          enabled: utm_enabled,
+          source: utm_source,
+          medium: utm_medium,
+          campaign: utm_campaign
         },
         conversion_rules
       },
