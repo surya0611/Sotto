@@ -86,8 +86,9 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
         />
       )}
 
-      {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+      <div className="app-container">
+        {/* Sidebar */}
+        <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <Link href="/dashboard" className="sidebar-logo" style={{ textDecoration: 'none' }}>
             <div className="brand-logo-container" style={{ fontSize: '1.25rem' }}>
@@ -183,6 +184,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
         <main className="layout-content">
           {children}
         </main>
+      </div>
       </div>
     </div>
   );
