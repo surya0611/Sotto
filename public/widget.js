@@ -152,6 +152,8 @@
         backdrop-filter: var(--s-backdrop, none);
         -webkit-backdrop-filter: var(--s-backdrop, none);
         opacity: 0;
+        position: relative;
+        overflow: hidden;
         transform: var(--s-transform-hidden, translateY(10px));
         transition: opacity 200ms ease-in, transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
         pointer-events: auto;
@@ -228,7 +230,56 @@
           max-width: calc(100vw - 32px);
         }
       }
+
+      /* LIQUID GLASS STYLES */
+      .sotto-liquid-effect {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        filter: url(#glass-distortion);
+        border-radius: inherit;
+        pointer-events: none;
+        display: none;
+      }
+      .sotto-liquid-tint {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        background: var(--s-liquid-bg, rgba(255, 255, 255, 0.5));
+        border-radius: inherit;
+        pointer-events: none;
+        display: none;
+      }
+      .sotto-liquid-shine {
+        position: absolute;
+        z-index: 2;
+        inset: 0;
+        box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+        border-radius: inherit;
+        pointer-events: none;
+        display: none;
+      }
+
+      .sotto-widget[data-theme="glassmorphism"] .sotto-liquid-effect,
+      .sotto-widget[data-theme="glassmorphism"] .sotto-liquid-tint,
+      .sotto-widget[data-theme="glassmorphism"] .sotto-liquid-shine {
+        display: block;
+      }
     `;
+    
+    // Inject SVG Filter for Liquid Glass
+    const svgFilter = document.createElement('div');
+    svgFilter.innerHTML = `
+      <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
+        <filter id="glass-distortion">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="1" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+    `;
+    shadowRoot.appendChild(svgFilter);
     shadowRoot.appendChild(style);
 
     container = document.createElement('div');
@@ -240,13 +291,32 @@
       hideWidget();
     });
 
+    const effect = document.createElement('div'); effect.className = 'sotto-liquid-effect';
+    const tint = document.createElement('div'); tint.className = 'sotto-liquid-tint';
+    const shine = document.createElement('div'); shine.className = 'sotto-liquid-shine';
+
+    const innerContent = document.createElement('div');
+    innerContent.id = 'sotto-inner';
+    innerContent.style.display = 'flex';
+    innerContent.style.alignItems = 'center';
+    innerContent.style.width = '100%';
+    innerContent.style.gap = 'var(--s-gap)';
+    innerContent.style.position = 'relative';
+    innerContent.style.zIndex = '3';
+
     const closeBtn = document.createElement('div');
     closeBtn.className = 'sotto-close';
+    closeBtn.style.zIndex = '4';
     closeBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
     closeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       handleCloseClick();
     });
+
+    container.appendChild(effect);
+    container.appendChild(tint);
+    container.appendChild(shine);
+    container.appendChild(innerContent);
     container.appendChild(closeBtn);
 
     shadowRoot.appendChild(container);
@@ -325,15 +395,19 @@
       
       // Presets
       if (theme.theme_preset === 'glassmorphism') {
-        const bgRgba = hexToRgba(theme.bg_color || '#ffffff', 0.6);
-        container.style.setProperty('--s-bg', bgRgba);
-        container.style.setProperty('--s-backdrop', 'blur(16px) saturate(180%)');
-        container.style.setProperty('--s-border', '1px solid rgba(255, 255, 255, 0.2)');
-        container.style.setProperty('--s-shadow', '0 8px 32px rgba(0, 0, 0, 0.1)');
+        container.setAttribute('data-theme', 'glassmorphism');
+        const bgRgba = hexToRgba(theme.bg_color || '#ffffff', 0.5);
+        container.style.setProperty('--s-liquid-bg', bgRgba);
+        container.style.setProperty('--s-bg', 'transparent');
+        container.style.setProperty('--s-backdrop', 'none');
+        container.style.setProperty('--s-border', 'none');
+        container.style.setProperty('--s-shadow', '0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1)');
       } else if (theme.theme_preset === 'neumorphism') {
+        container.removeAttribute('data-theme');
         container.style.setProperty('--s-shadow', '8px 8px 16px rgba(0,0,0,0.06), -8px -8px 16px rgba(255,255,255,0.7)');
         container.style.setProperty('--s-border', 'none');
       } else {
+        container.removeAttribute('data-theme');
         container.style.setProperty('--s-backdrop', 'none');
         container.style.setProperty('--s-border', '1px solid rgba(0,0,0,0.05)');
         container.style.setProperty('--s-shadow', '0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)');
@@ -412,7 +486,9 @@
       container.style.setProperty('--s-time-size', Math.round(10 * scale) + 'px');
     }
 
-    container.innerHTML = ''; 
+    const inner = shadowRoot.getElementById('sotto-inner');
+    if (!inner) return;
+    inner.innerHTML = ''; 
 
     let visualElement;
 
@@ -456,8 +532,8 @@
     contentDiv.appendChild(messageP);
     contentDiv.appendChild(timeSpan);
 
-    container.appendChild(visualElement);
-    container.appendChild(contentDiv);
+    inner.appendChild(visualElement);
+    inner.appendChild(contentDiv);
 
     setTimeout(() => {
       container.classList.add('sotto-visible');

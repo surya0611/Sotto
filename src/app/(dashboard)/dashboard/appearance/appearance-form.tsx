@@ -474,20 +474,20 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
               return (
                 <div style={{
                   ...getPositionStyles(),
-                  backgroundColor: theme.bg_color,
+                  backgroundColor: theme.theme_preset === 'glassmorphism' ? 'transparent' : theme.bg_color,
                   color: theme.text_color,
                   fontFamily: theme.font_family,
                   borderRadius: `${theme.border_radius}px`,
                   padding: `${basePadY}px ${basePadX}px`,
                   boxShadow: theme.theme_preset === 'glassmorphism' 
-                    ? '0 8px 32px rgba(0, 0, 0, 0.1)' 
+                    ? '0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1)' 
                     : theme.theme_preset === 'neumorphism'
                       ? '8px 8px 16px rgba(0,0,0,0.06), -8px -8px 16px rgba(255,255,255,0.7)'
                     : '0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)',
-                  backdropFilter: theme.theme_preset === 'glassmorphism' ? 'blur(10px)' : 'none',
-                  WebkitBackdropFilter: theme.theme_preset === 'glassmorphism' ? 'blur(10px)' : 'none',
+                  backdropFilter: 'none',
+                  WebkitBackdropFilter: 'none',
                   border: theme.theme_preset === 'glassmorphism' 
-                    ? '1px solid rgba(255, 255, 255, 0.2)' 
+                    ? 'none' 
                     : theme.theme_preset === 'neumorphism' ? 'none' : '1px solid rgba(0,0,0,0.06)',
                   display: 'flex',
                   alignItems: 'center',
@@ -500,14 +500,23 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
                     : undefined,
                   pointerEvents: 'none',
                 }}>
-                  <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
-                  <div>
-                    <p style={{ margin: 0, fontSize: `${titleSize}px`, fontWeight: 600, color: 'inherit' }}>Someone from Mumbai</p>
-                    <p style={{ margin: 0, fontSize: `${msgSize}px`, opacity: 0.8, color: 'inherit' }}>just purchased Classic Tee</p>
-                    <p style={{ margin: '2px 0 0 0', fontSize: `${timeSize}px`, opacity: 0.5, color: 'inherit' }}>2 minutes ago</p>
+                  {theme.theme_preset === 'glassmorphism' && (
+                    <>
+                      <div style={{ position: 'absolute', inset: 0, zIndex: 0, backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)', borderRadius: 'inherit' }} />
+                      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: `rgba(255, 255, 255, 0.5)`, borderRadius: 'inherit' }} />
+                      <div style={{ position: 'absolute', inset: 0, zIndex: 2, boxShadow: 'inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5)', borderRadius: 'inherit' }} />
+                    </>
+                  )}
+                  <div style={{ position: 'relative', zIndex: 3, display: 'flex', alignItems: 'center', gap: `${baseGap}px` }}>
+                    <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <div>
+                      <p style={{ margin: 0, fontSize: `${titleSize}px`, fontWeight: 600, color: 'inherit' }}>Someone from Mumbai</p>
+                      <p style={{ margin: 0, fontSize: `${msgSize}px`, opacity: 0.8, color: 'inherit' }}>just purchased Classic Tee</p>
+                      <p style={{ margin: '2px 0 0 0', fontSize: `${timeSize}px`, opacity: 0.5, color: 'inherit' }}>2 minutes ago</p>
+                    </div>
                   </div>
                 </div>
               );
