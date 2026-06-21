@@ -31,12 +31,14 @@ export interface WidgetConfig {
 }
 
 export interface WidgetTheme {
+  theme_preset?: 'default' | 'glassmorphism' | 'neumorphism' | 'dark' | 'playful' | 'minimalist';
+  hover_animation?: 'none' | 'lift' | 'glow' | 'scale';
   font_family: string;
   text_color: string;
   bg_color: string;
-  border_radius: string;
+  border_radius: number;
   position: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
-  slide_animation: 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right';
+  slide_animation: 'slide-up' | 'slide-in-left' | 'slide-in-right';
 }
 
 export interface PageRule {
@@ -83,4 +85,15 @@ export interface DashboardStats {
   impressions: number;
   clickThroughs: number;
   clickThroughRate: number;
+}
+
+export interface NotificationTemplate {
+  id: string;
+  account_id: string;
+  name: string;
+  event_type: 'purchase' | 'review' | 'signup' | 'custom';
+  template_string: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
 }

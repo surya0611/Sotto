@@ -4,10 +4,12 @@ import { useTransition, useState, useEffect } from 'react';
 import { updateAppearanceConfig } from './actions';
 
 type ThemeConfig = {
+  theme_preset?: string;
+  hover_animation?: string;
   bg_color?: string;
   text_color?: string;
   font_family?: string;
-  border_radius?: string;
+  border_radius?: number;
   position?: string;
   size?: string;
   slide_animation?: string;
@@ -15,9 +17,23 @@ type ThemeConfig = {
 
 const ANIMATIONS = [
   { id: 'slide-up', label: 'Slide Up' },
-  { id: 'slide-down', label: 'Slide Down' },
-  { id: 'slide-left', label: 'Slide Left' },
-  { id: 'slide-right', label: 'Slide Right' },
+  { id: 'slide-in-left', label: 'Slide In Left' },
+  { id: 'slide-in-right', label: 'Slide In Right' },
+];
+
+const HOVER_ANIMATIONS = [
+  { id: 'none', label: 'No Hover Animation' },
+  { id: 'lift', label: 'Lift Up' },
+  { id: 'glow', label: 'Glow Effect' },
+  { id: 'scale', label: 'Scale Up' },
+];
+
+const PRESETS = [
+  { id: 'default', label: 'Default', bg: '#ffffff', text: '#111827', radius: 8 },
+  { id: 'glassmorphism', label: 'Glassmorphism', bg: 'rgba(255, 255, 255, 0.7)', text: '#111827', radius: 16 },
+  { id: 'dark', label: 'Dark Mode', bg: '#1f2937', text: '#f9fafb', radius: 8 },
+  { id: 'playful', label: 'Playful', bg: '#fef3c7', text: '#92400e', radius: 24 },
+  { id: 'minimalist', label: 'Minimalist', bg: '#fafafa', text: '#52525b', radius: 0 },
 ];
 
 const POSITIONS = [
@@ -38,10 +54,12 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
   const [previewVisible, setPreviewVisible] = useState(false);
 
   const [theme, setTheme] = useState<ThemeConfig>({
+    theme_preset: initialTheme.theme_preset || 'default',
+    hover_animation: initialTheme.hover_animation || 'none',
     bg_color: initialTheme.bg_color || '#ffffff',
     text_color: initialTheme.text_color || '#1a1a1a',
     font_family: initialTheme.font_family || 'Inter, sans-serif',
-    border_radius: initialTheme.border_radius || '8px',
+    border_radius: initialTheme.border_radius || 8,
     position: initialTheme.position || 'bottom-left',
     size: initialTheme.size || 'medium',
     slide_animation: initialTheme.slide_animation || 'slide-up',
@@ -79,9 +97,8 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
       if (!hidden) return 'translate(0, 0)';
       switch (theme.slide_animation) {
         case 'slide-up': return 'translateY(10px)';
-        case 'slide-down': return 'translateY(-10px)';
-        case 'slide-left': return 'translateX(10px)';
-        case 'slide-right': return 'translateX(-10px)';
+        case 'slide-in-left': return 'translateX(-10px)';
+        case 'slide-in-right': return 'translateX(10px)';
         default: return 'translateY(10px)';
       }
     };
@@ -111,77 +128,150 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
 
         <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
           
+          {/* Theme Presets */}
           <div className="input-group">
-            <label htmlFor="bg_color" className="input-label">Background Color</label>
-            <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-              <input 
-                type="color" 
-                id="bg_color" 
-                name="bg_color" 
-                value={theme.bg_color} 
-                onChange={handleChange}
-                style={{ width: '40px', height: '40px', padding: '0', border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}
-              />
-              <input 
-                type="text" 
-                className="input" 
-                value={theme.bg_color} 
-                onChange={handleChange}
-                name="bg_color"
-                style={{ flex: 1 }}
-              />
+            <label className="input-label">Theme Preset</label>
+            <input type="hidden" name="theme_preset" value={theme.theme_preset} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '8px' }}>
+              {PRESETS.map((preset) => (
+                <button
+                  key={preset.id}
+                  type="button"
+                  onClick={() => {
+                    setTheme(prev => ({
+                      ...prev,
+                      theme_preset: preset.id,
+                      bg_color: preset.bg,
+                      text_color: preset.text,
+                      border_radius: preset.radius
+                    }));
+                  }}
+                  style={{
+                    padding: '12px',
+                    borderRadius: 'var(--radius-md)',
+                    border: theme.theme_preset === preset.id ? '2px solid var(--accent)' : '1px solid var(--border)',
+                    background: preset.bg,
+                    color: preset.text,
+                    fontWeight: 600,
+                    fontSize: '0.8125rem',
+                    cursor: 'pointer',
+                    transition: 'all 150ms ease',
+                    textAlign: 'center',
+                    backdropFilter: preset.id === 'glassmorphism' ? 'blur(10px)' : 'none',
+                    boxShadow: theme.theme_preset === preset.id ? '0 4px 12px rgba(0,0,0,0.1)' : 'none'
+                  }}
+                >
+                  {preset.label}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="input-group">
-            <label htmlFor="text_color" className="input-label">Text Color</label>
-            <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-              <input 
-                type="color" 
-                id="text_color" 
-                name="text_color" 
-                value={theme.text_color} 
-                onChange={handleChange}
-                style={{ width: '40px', height: '40px', padding: '0', border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}
-              />
-              <input 
-                type="text" 
-                className="input" 
-                value={theme.text_color} 
-                onChange={handleChange}
-                name="text_color"
-                style={{ flex: 1 }}
-              />
+          <details style={{ background: 'var(--bg-elevated)', padding: 'var(--space-4)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+            <summary style={{ cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem' }}>Fine Tune Colors & Fonts</summary>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', marginTop: 'var(--space-4)' }}>
+              <div className="input-group">
+                <label htmlFor="bg_color" className="input-label">Background Color</label>
+                <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                  <input 
+                    type="color" 
+                    id="bg_color" 
+                    name="bg_color" 
+                    value={theme.bg_color?.startsWith('rgba') ? '#ffffff' : theme.bg_color} 
+                    onChange={handleChange}
+                    style={{ width: '40px', height: '40px', padding: '0', border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}
+                  />
+                  <input 
+                    type="text" 
+                    className="input" 
+                    value={theme.bg_color} 
+                    onChange={handleChange}
+                    name="bg_color"
+                    style={{ flex: 1 }}
+                  />
+                </div>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="text_color" className="input-label">Text Color</label>
+                <div style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                  <input 
+                    type="color" 
+                    id="text_color" 
+                    name="text_color" 
+                    value={theme.text_color} 
+                    onChange={handleChange}
+                    style={{ width: '40px', height: '40px', padding: '0', border: 'none', borderRadius: 'var(--radius-sm)', cursor: 'pointer' }}
+                  />
+                  <input 
+                    type="text" 
+                    className="input" 
+                    value={theme.text_color} 
+                    onChange={handleChange}
+                    name="text_color"
+                    style={{ flex: 1 }}
+                  />
+                </div>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="font_family" className="input-label">Font Family</label>
+                <select 
+                  id="font_family" 
+                  name="font_family" 
+                  className="input" 
+                  value={theme.font_family}
+                  onChange={handleChange}
+                >
+                  <option value="Inter, sans-serif">Inter</option>
+                  <option value="Roboto, sans-serif">Roboto</option>
+                  <option value="'Open Sans', sans-serif">Open Sans</option>
+                  <option value="System-ui, sans-serif">System UI</option>
+                </select>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="border_radius" className="input-label">Border Radius (px)</label>
+                <input 
+                  type="number" 
+                  id="border_radius" 
+                  name="border_radius" 
+                  className="input" 
+                  value={theme.border_radius}
+                  onChange={handleChange}
+                  placeholder="e.g., 8"
+                />
+              </div>
             </div>
-          </div>
+          </details>
 
+          {/* Hover Animation Picker */}
           <div className="input-group">
-            <label htmlFor="font_family" className="input-label">Font Family</label>
-            <select 
-              id="font_family" 
-              name="font_family" 
-              className="input" 
-              value={theme.font_family}
-              onChange={handleChange}
-            >
-              <option value="Inter, sans-serif">Inter</option>
-              <option value="Roboto, sans-serif">Roboto</option>
-              <option value="'Open Sans', sans-serif">Open Sans</option>
-              <option value="System-ui, sans-serif">System UI</option>
-            </select>
-          </div>
-
-          <div className="input-group">
-            <label htmlFor="border_radius" className="input-label">Border Radius</label>
-            <input 
-              type="text" 
-              id="border_radius" 
-              name="border_radius" 
-              className="input" 
-              value={theme.border_radius}
-              onChange={handleChange}
-              placeholder="e.g., 8px, 0px, 1rem"
-            />
+            <label className="input-label">Hover Animation</label>
+            <input type="hidden" name="hover_animation" value={theme.hover_animation} />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              {HOVER_ANIMATIONS.map((anim) => (
+                <button
+                  key={anim.id}
+                  type="button"
+                  onClick={() => setTheme(prev => ({ ...prev, hover_animation: anim.id }))}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: 'var(--radius-md)',
+                    border: theme.hover_animation === anim.id ? '2px solid var(--accent)' : '1px solid var(--border)',
+                    background: theme.hover_animation === anim.id ? 'var(--bg-accent-light, rgba(99, 102, 241, 0.08))' : 'var(--bg-base)',
+                    color: theme.hover_animation === anim.id ? 'var(--accent)' : 'var(--text-secondary)',
+                    fontWeight: theme.hover_animation === anim.id ? 600 : 400,
+                    fontSize: '0.8125rem',
+                    cursor: 'pointer',
+                    transition: 'all 150ms ease',
+                    textAlign: 'center',
+                  }}
+                >
+                  {anim.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Size Picker */}
@@ -386,15 +476,23 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
                   backgroundColor: theme.bg_color,
                   color: theme.text_color,
                   fontFamily: theme.font_family,
-                  borderRadius: theme.border_radius,
+                  borderRadius: `${theme.border_radius}px`,
                   padding: `${basePadY}px ${basePadX}px`,
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)',
+                  boxShadow: theme.theme_preset === 'glassmorphism' 
+                    ? '0 8px 32px rgba(0, 0, 0, 0.1)' 
+                    : '0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)',
+                  backdropFilter: theme.theme_preset === 'glassmorphism' ? 'blur(10px)' : 'none',
+                  WebkitBackdropFilter: theme.theme_preset === 'glassmorphism' ? 'blur(10px)' : 'none',
+                  border: theme.theme_preset === 'glassmorphism' ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0,0,0,0.06)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: `${baseGap}px`,
                   maxWidth: `${maxW}px`,
-                  border: '1px solid rgba(0,0,0,0.06)',
                   opacity: previewVisible ? 1 : 0,
+                  transform: previewVisible 
+                    ? (theme.hover_animation === 'lift' ? 'translateY(-4px)' : 
+                       theme.hover_animation === 'scale' ? 'scale(1.02)' : 'none') 
+                    : undefined,
                   pointerEvents: 'none',
                 }}>
                   <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>

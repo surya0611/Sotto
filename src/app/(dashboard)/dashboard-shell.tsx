@@ -26,6 +26,8 @@ const NAV_ITEMS = [
   { label: 'Integrations', href: '/dashboard/integrations', icon: <Zap width="16" height="16" /> },
   { label: 'Widget', href: '/dashboard/widget', icon: <WidgetIcon width="16" height="16" /> },
   { label: 'Appearance', href: '/dashboard/appearance', icon: <PaletteIcon width="16" height="16" /> },
+  { label: 'Templates', href: '/dashboard/templates', icon: <ListIcon width="16" height="16" /> },
+  { label: 'Rules', href: '/dashboard/rules', icon: <SettingsIcon width="16" height="16" /> },
   { label: 'Embed Code', href: '/dashboard/embed', icon: <CodeIcon width="16" height="16" /> },
   { label: 'Analytics', href: '/dashboard/analytics', icon: <Eye width="16" height="16" /> },
   { label: 'Settings', href: '/dashboard/settings', icon: <SettingsIcon width="16" height="16" /> },
@@ -108,7 +110,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
           ))}
 
           <div className="sidebar-section-label">Configure</div>
-          {NAV_ITEMS.slice(3, 6).map((item) => (
+          {NAV_ITEMS.slice(3, 8).map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -121,7 +123,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
           ))}
 
           <div className="sidebar-section-label">Insights</div>
-          {NAV_ITEMS.slice(6).map((item) => (
+          {NAV_ITEMS.slice(8).map((item) => (
             <Link
               key={item.href}
               href={item.href}

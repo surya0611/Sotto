@@ -8,10 +8,12 @@ CREATE TABLE public.accounts (
   domain TEXT,
   widget_config JSONB DEFAULT '{
     "theme": {
-      "font_family": "inherit",
-      "text_color": "#1a1a1a",
+      "theme_preset": "glassmorphism",
+      "hover_animation": "lift",
+      "font_family": "Inter, sans-serif",
+      "text_color": "#111827",
       "bg_color": "#ffffff",
-      "border_radius": "8px",
+      "border_radius": 8,
       "position": "bottom-left",
       "slide_animation": "slide-up"
     },

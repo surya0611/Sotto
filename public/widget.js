@@ -130,20 +130,26 @@
         color: var(--s-text, #1a1a1a);
         font-family: var(--s-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
         border-radius: var(--s-radius, 8px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
-        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: var(--s-shadow, 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05));
+        border: var(--s-border, 1px solid rgba(0,0,0,0.05));
+        backdrop-filter: var(--s-backdrop, none);
+        -webkit-backdrop-filter: var(--s-backdrop, none);
         opacity: 0;
         transform: var(--s-transform-hidden, translateY(10px));
-        transition: opacity 200ms ease-in, transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+        transition: opacity 200ms ease-in, transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
         pointer-events: auto;
         cursor: pointer;
         max-width: var(--s-max-w, 320px);
-        will-change: opacity, transform;
+        will-change: opacity, transform, box-shadow;
       }
       .sotto-widget.sotto-visible {
         opacity: 1;
         transform: translate(0, 0);
-        transition: opacity 300ms ease-out, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+        transition: opacity 300ms ease-out, transform 400ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
+      }
+      .sotto-widget.sotto-visible:hover {
+        transform: var(--s-hover-transform, none);
+        box-shadow: var(--s-hover-shadow, var(--s-shadow, 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05)));
       }
       .sotto-icon {
         width: var(--s-icon, 16px);
@@ -283,7 +289,36 @@
     if (theme) {
       if (theme.bg_color) container.style.setProperty('--s-bg', theme.bg_color);
       if (theme.text_color) container.style.setProperty('--s-text', theme.text_color);
-      if (theme.border_radius) container.style.setProperty('--s-radius', theme.border_radius);
+      if (theme.border_radius !== undefined) container.style.setProperty('--s-radius', theme.border_radius + 'px');
+      
+      // Presets
+      if (theme.theme_preset === 'glassmorphism') {
+        container.style.setProperty('--s-backdrop', 'blur(12px)');
+        container.style.setProperty('--s-border', '1px solid rgba(255, 255, 255, 0.2)');
+        container.style.setProperty('--s-shadow', '0 8px 32px rgba(0, 0, 0, 0.1)');
+      } else if (theme.theme_preset === 'neumorphism') {
+        container.style.setProperty('--s-shadow', '8px 8px 16px #e6e6e6, -8px -8px 16px #ffffff');
+        container.style.setProperty('--s-border', 'none');
+      } else {
+        container.style.setProperty('--s-backdrop', 'none');
+        container.style.setProperty('--s-border', '1px solid rgba(0,0,0,0.05)');
+        container.style.setProperty('--s-shadow', '0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)');
+      }
+
+      // Hover Animations
+      if (theme.hover_animation === 'lift') {
+        container.style.setProperty('--s-hover-transform', 'translateY(-4px)');
+        container.style.setProperty('--s-hover-shadow', '0 12px 24px rgba(0,0,0,0.15)');
+      } else if (theme.hover_animation === 'glow') {
+        container.style.setProperty('--s-hover-transform', 'none');
+        container.style.setProperty('--s-hover-shadow', '0 0 20px rgba(99, 102, 241, 0.4)');
+      } else if (theme.hover_animation === 'scale') {
+        container.style.setProperty('--s-hover-transform', 'scale(1.03)');
+        container.style.setProperty('--s-hover-shadow', '0 8px 24px rgba(0,0,0,0.12)');
+      } else {
+        container.style.setProperty('--s-hover-transform', 'none');
+        container.style.setProperty('--s-hover-shadow', 'var(--s-shadow)');
+      }
       
       if (theme.font_family === 'System') {
         container.style.setProperty('--s-font', '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif');

@@ -8,25 +8,6 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
   const [isPending, startTransition] = useTransition();
   const [timeBetween, setTimeBetween] = useState(initialConfig.timing?.time_between_ms || 8000);
   const [conversionRules, setConversionRules] = useState(initialConfig.conversion_rules || []);
-  const [pageRules, setPageRules] = useState(initialConfig.page_rules || []);
-
-  const addPageRule = () => {
-    setPageRules([...pageRules, { type: 'include', pattern: '' }]);
-  };
-
-  const removePageRule = (index: number) => {
-    setPageRules(pageRules.filter((_, i) => i !== index));
-  };
-
-  const updatePageRule = (index: number, field: 'type' | 'pattern', value: string) => {
-    const newRules = [...pageRules];
-    if (field === 'type') {
-      newRules[index].type = value as 'include' | 'exclude';
-    } else {
-      newRules[index].pattern = value;
-    }
-    setPageRules(newRules);
-  };
 
   const addConversionRule = () => {
     setConversionRules([...conversionRules, { type: 'url_contains', value: '' }]);
@@ -208,51 +189,6 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
         </div>
       </div>
 
-      {/* Page Display Rules */}
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Page Display Rules</h2>
-          <p className="card-description">Control which pages the widget is allowed to show on using simple wildcard patterns (e.g. <code>*/checkout/*</code>).</p>
-        </div>
-
-        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          {pageRules.map((rule, index) => (
-            <div key={index} style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
-              <select 
-                name="page_rule_type" 
-                className="input" 
-                value={rule.type}
-                onChange={(e) => updatePageRule(index, 'type', e.target.value)}
-                style={{ width: '150px' }}
-              >
-                <option value="include">Include</option>
-                <option value="exclude">Exclude</option>
-              </select>
-              <input 
-                type="text" 
-                name="page_rule_pattern" 
-                className="input" 
-                placeholder="*/login*" 
-                value={rule.pattern}
-                onChange={(e) => updatePageRule(index, 'pattern', e.target.value)}
-                style={{ flex: 1 }}
-              />
-              <button 
-                type="button" 
-                className="btn btn-ghost" 
-                onClick={() => removePageRule(index)}
-                style={{ padding: 'var(--space-2)', color: 'var(--error)' }}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
-          
-          <button type="button" className="btn btn-secondary btn-sm" onClick={addPageRule} style={{ alignSelf: 'flex-start' }}>
-            + Add Page Rule
-          </button>
-        </div>
-      </div>
 
       {/* Conversion Rules */}
       <div className="card">

@@ -37,20 +37,8 @@ export async function updateWidgetConfig(formData: FormData) {
   const hide_mobile = formData.get('hide_mobile') === 'on';
   const hide_desktop = formData.get('hide_desktop') === 'on';
 
-  // Extract page rules
-  const page_rules = [];
-  const pageRuleTypes = formData.getAll('page_rule_type');
-  const pageRulePatterns = formData.getAll('page_rule_pattern');
+  // Note: page_rules are now handled in the Advanced Rules tab
   
-  for (let i = 0; i < pageRuleTypes.length; i++) {
-    if (pageRulePatterns[i]) {
-      page_rules.push({
-        type: pageRuleTypes[i] as 'include' | 'exclude',
-        pattern: pageRulePatterns[i] as string
-      });
-    }
-  }
-
   // Extract conversion rules
   const conversion_rules = [];
   const conversionTypes = formData.getAll('conversion_rule_type');
@@ -98,7 +86,6 @@ export async function updateWidgetConfig(formData: FormData) {
           hide_mobile,
           hide_desktop
         },
-        page_rules,
         conversion_rules
       },
     })

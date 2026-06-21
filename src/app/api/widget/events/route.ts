@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing account_id' }, { status: 400, headers: corsHeaders() });
     }
 
-    // 1. Fetch the account's widget config and domain
+    // 1. Fetch the account's widget config, domain, and templates
     const { data: account } = await supabase
       .from('accounts')
       .select('widget_config, domain')
@@ -54,6 +54,12 @@ export async function GET(request: NextRequest) {
     if (!account) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404, headers: corsHeaders() });
     }
+
+    const { data: templates } = await supabase
+      .from('notification_templates')
+      .select('*')
+      .eq('account_id', accountId)
+      .eq('is_active', true);
 
     // CORS Origin Validation
     const origin = request.headers.get('origin') || request.headers.get('referer');
@@ -226,7 +232,7 @@ export async function GET(request: NextRequest) {
 
       let query = supabase
         .from('events')
-        .select('id, customer_name, customer_city, product_name, product_image_url, created_at')
+        .select('id, customer_name, customer_city, customer_region, product_name, product_image_url, created_at')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', lookbackDate.toISOString())
@@ -247,15 +253,29 @@ export async function GET(request: NextRequest) {
           };
           
           const safeCity = sanitize(candidateEvent.customer_city);
-          const locationStr = safeCity.length > 0 ? ` from ${safeCity}` : '';
           const nameStr = sanitize(candidateEvent.customer_name) || 'Someone';
           const productName = sanitize(candidateEvent.product_name) || 'an item';
+          
+          let finalMessage = '';
+          const purchaseTemplate = templates?.find(t => t.event_type === 'purchase');
+          
+          if (purchaseTemplate && purchaseTemplate.template_string) {
+            finalMessage = purchaseTemplate.template_string
+              .replace(/{{first_name}}/g, nameStr)
+              .replace(/{{city}}/g, safeCity || 'their city')
+              .replace(/{{province}}/g, sanitize(candidateEvent.customer_region) || 'their region')
+              .replace(/{{product_name}}/g, productName)
+              .replace(/{{time_ago}}/g, 'recently'); // Widget handles real time_ago separately via formatTimeAgo
+          } else {
+            const locationStr = safeCity.length > 0 ? ` from ${safeCity}` : '';
+            finalMessage = `${nameStr}${locationStr} just purchased ${productName}`;
+          }
           
           eventPayload = {
             type: 'individual',
             id: candidateEvent.id, // Passed so client can exclude it next time
-            title: 'Recent Purchase',
-            message: `${nameStr}${locationStr} just purchased ${productName}`,
+            title: purchaseTemplate ? purchaseTemplate.name : 'Recent Purchase',
+            message: finalMessage,
             image_url: candidateEvent.product_image_url,
             timestamp: candidateEvent.created_at
           };

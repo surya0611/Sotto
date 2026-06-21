@@ -23,10 +23,12 @@ export async function updateAppearanceConfig(formData: FormData) {
     throw new Error('No account found');
   }
 
+  const theme_preset = formData.get('theme_preset') as string;
+  const hover_animation = formData.get('hover_animation') as string;
   const bg_color = formData.get('bg_color') as string;
   const text_color = formData.get('text_color') as string;
   const font_family = formData.get('font_family') as string;
-  const border_radius = formData.get('border_radius') as string;
+  const border_radius = parseInt(formData.get('border_radius') as string, 10);
   const position = formData.get('position') as string || 'bottom-left';
   const size = formData.get('size') as string || 'medium';
   const slide_animation = formData.get('slide_animation') as string || 'slide-up';
@@ -52,6 +54,8 @@ export async function updateAppearanceConfig(formData: FormData) {
         ...existingConfig,
         theme: {
           ...existingTheme,
+          theme_preset,
+          hover_animation,
           bg_color,
           text_color,
           font_family,
