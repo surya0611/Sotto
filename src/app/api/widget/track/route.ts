@@ -28,14 +28,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers: corsHeaders() });
     }
 
-    if (!['impression', 'click', 'conversion'].includes(event_type)) {
+    if (!['impression', 'click', 'conversion', 'init'].includes(event_type)) {
       return NextResponse.json({ error: 'Invalid event type' }, { status: 400, headers: corsHeaders() });
     }
 
-    // CORS Origin Validation
+    // CORS Origin Validation and Fetching Config
     const { data: account } = await supabase
       .from('accounts')
-      .select('domain')
+      .select('domain, widget_config')
       .eq('id', account_id)
       .single();
 
@@ -62,6 +62,39 @@ export async function POST(request: NextRequest) {
       } catch {
         return NextResponse.json({ error: 'Invalid origin' }, { status: 403, headers: corsHeaders() });
       }
+    }
+
+    let isConversion = false;
+
+    if (event_type === 'init' && url && account?.widget_config?.conversion_rules) {
+      const conversionRules = account.widget_config.conversion_rules;
+      
+      for (const rule of conversionRules) {
+        if (!rule.value) continue;
+        
+        if (rule.type === 'url_contains' && url.includes(rule.value)) {
+          isConversion = true;
+          break;
+        } else if (rule.type === 'url_equals' && url === rule.value) {
+          isConversion = true;
+          break;
+        }
+      }
+
+      if (isConversion) {
+        // Track the conversion
+        const { error: convError } = await supabase.from('events').insert({
+          account_id,
+          session_id,
+          event_type: 'conversion',
+          source: 'sotto_pixel', // Legacy identifier for widget-based conversion
+          raw_payload: { url }
+        });
+        if (convError) console.error('Error tracking dynamic conversion:', convError);
+      }
+      
+      // Init events don't get stored as 'init' in the DB. They are just for rule evaluation.
+      return NextResponse.json({ success: true, is_conversion: isConversion }, { headers: corsHeaders() });
     }
 
     const { error } = await supabase.from('events').insert({

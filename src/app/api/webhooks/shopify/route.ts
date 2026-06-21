@@ -55,6 +55,7 @@ export async function POST(request: NextRequest) {
     const customerName = payload.shipping_address?.first_name || payload.customer?.first_name || 'Customer';
     let customerCity = payload.shipping_address?.city;
     const productName = payload.line_items?.[0]?.title || 'A product';
+    const productImageUrl = payload.line_items?.[0]?.image_url || payload.line_items?.[0]?.image?.src || payload.image_url || null;
 
     // Resolve IP geolocation if city is missing
     if (!customerCity) {
@@ -87,6 +88,7 @@ export async function POST(request: NextRequest) {
       customer_name: customerName,
       customer_city: customerCity || null,
       product_name: productName,
+      product_image_url: productImageUrl,
       session_id: webhookId || null,
     });
 

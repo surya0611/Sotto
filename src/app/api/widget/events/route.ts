@@ -126,7 +126,7 @@ export async function GET(request: NextRequest) {
       // We need to fetch aggregate counts grouped by product
       const { data: aggEvents } = await supabase
         .from('events')
-        .select('product_name, customer_city')
+        .select('product_name, customer_city, product_image_url')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', windowStart.toISOString());
@@ -139,12 +139,12 @@ export async function GET(request: NextRequest) {
 
       if (aggEvents && aggEvents.length > 0) {
         // Group by product name
-        const productCounts: Record<string, { count: number, cities: Record<string, number> }> = {};
+        const productCounts: Record<string, { count: number, cities: Record<string, number>, imageUrl: string | null }> = {};
         for (const ev of aggEvents) {
           if (!ev.product_name) continue;
           const pName = ev.product_name;
           if (!productCounts[pName]) {
-            productCounts[pName] = { count: 0, cities: {} };
+            productCounts[pName] = { count: 0, cities: {}, imageUrl: ev.product_image_url || null };
           }
           productCounts[pName].count++;
           
@@ -194,6 +194,7 @@ export async function GET(request: NextRequest) {
             product_id: productName, // Sent to client so it can be added to excluded list
             title: 'High Demand',
             message: msg,
+            image_url: topProduct[1].imageUrl,
             timestamp: new Date().toISOString()
           };
         } else if (!excludedProductIds.includes('__STORE_FALLBACK__')) {
@@ -224,7 +225,7 @@ export async function GET(request: NextRequest) {
 
       let query = supabase
         .from('events')
-        .select('id, customer_name, customer_city, product_name, created_at')
+        .select('id, customer_name, customer_city, product_name, product_image_url, created_at')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', lookbackDate.toISOString())
@@ -254,6 +255,7 @@ export async function GET(request: NextRequest) {
             id: candidateEvent.id, // Passed so client can exclude it next time
             title: 'Recent Purchase',
             message: `${nameStr}${locationStr} just purchased ${productName}`,
+            image_url: candidateEvent.product_image_url,
             timestamp: candidateEvent.created_at
           };
         }
@@ -273,7 +275,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       event: eventPayload,
       theme: config.theme,
-      cooldown: config.cooldown || 60,
+      timing: config.timing,
+      visibility: config.visibility,
+      conversion_rules: config.conversion_rules,
       rules: {
         page_rules: config.page_rules,
         suppress_rules: config.suppress_rules

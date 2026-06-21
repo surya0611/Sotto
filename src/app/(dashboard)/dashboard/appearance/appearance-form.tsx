@@ -10,7 +10,15 @@ type ThemeConfig = {
   border_radius?: string;
   position?: string;
   size?: string;
+  slide_animation?: string;
 };
+
+const ANIMATIONS = [
+  { id: 'slide-up', label: 'Slide Up' },
+  { id: 'slide-down', label: 'Slide Down' },
+  { id: 'slide-left', label: 'Slide Left' },
+  { id: 'slide-right', label: 'Slide Right' },
+];
 
 const POSITIONS = [
   { id: 'bottom-left', label: 'Bottom Left' },
@@ -36,6 +44,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
     border_radius: initialTheme.border_radius || '8px',
     position: initialTheme.position || 'bottom-left',
     size: initialTheme.size || 'medium',
+    slide_animation: initialTheme.slide_animation || 'slide-up',
   });
 
   // Trigger the preview animation on mount and whenever theme changes
@@ -43,7 +52,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
     setPreviewVisible(false);
     const t = setTimeout(() => setPreviewVisible(true), 150);
     return () => clearTimeout(t);
-  }, [theme.position, theme.size, theme.bg_color, theme.text_color, theme.border_radius, theme.font_family]);
+  }, [theme.position, theme.size, theme.slide_animation, theme.bg_color, theme.text_color, theme.border_radius, theme.font_family]);
 
   async function handleSubmit(formData: FormData) {
     startTransition(async () => {
@@ -65,15 +74,29 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
       position: 'absolute',
       transition: 'all 400ms cubic-bezier(0.16, 1, 0.3, 1)',
     };
+
+    const getTransform = (hidden: boolean) => {
+      if (!hidden) return 'translate(0, 0)';
+      switch (theme.slide_animation) {
+        case 'slide-up': return 'translateY(10px)';
+        case 'slide-down': return 'translateY(-10px)';
+        case 'slide-left': return 'translateX(10px)';
+        case 'slide-right': return 'translateX(-10px)';
+        default: return 'translateY(10px)';
+      }
+    };
+
+    const transformValue = getTransform(!previewVisible);
+
     switch (theme.position) {
       case 'bottom-right':
-        return { ...base, bottom: '12px', right: '12px', transform: previewVisible ? 'translateY(0)' : 'translateY(10px)' };
+        return { ...base, bottom: '12px', right: '12px', transform: transformValue };
       case 'top-left':
-        return { ...base, top: '12px', left: '12px', transform: previewVisible ? 'translateY(0)' : 'translateY(-10px)' };
+        return { ...base, top: '12px', left: '12px', transform: transformValue };
       case 'top-right':
-        return { ...base, top: '12px', right: '12px', transform: previewVisible ? 'translateY(0)' : 'translateY(-10px)' };
+        return { ...base, top: '12px', right: '12px', transform: transformValue };
       default: // bottom-left
-        return { ...base, bottom: '12px', left: '12px', transform: previewVisible ? 'translateY(0)' : 'translateY(10px)' };
+        return { ...base, bottom: '12px', left: '12px', transform: transformValue };
     }
   };
 
@@ -234,6 +257,45 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
                   }}
                 >
                   {pos.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Animation Picker */}
+          <div className="input-group">
+            <label className="input-label">Entry Animation</label>
+            <input type="hidden" name="slide_animation" value={theme.slide_animation} />
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '1fr 1fr', 
+              gap: '8px',
+            }}>
+              {ANIMATIONS.map((anim) => (
+                <button
+                  key={anim.id}
+                  type="button"
+                  onClick={() => setTheme(prev => ({ ...prev, slide_animation: anim.id }))}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: 'var(--radius-md)',
+                    border: theme.slide_animation === anim.id 
+                      ? '2px solid var(--accent)' 
+                      : '1px solid var(--border)',
+                    background: theme.slide_animation === anim.id 
+                      ? 'var(--bg-accent-light, rgba(99, 102, 241, 0.08))' 
+                      : 'var(--bg-base)',
+                    color: theme.slide_animation === anim.id 
+                      ? 'var(--accent)' 
+                      : 'var(--text-secondary)',
+                    fontWeight: theme.slide_animation === anim.id ? 600 : 400,
+                    fontSize: '0.8125rem',
+                    cursor: 'pointer',
+                    transition: 'all 150ms ease',
+                    textAlign: 'center',
+                  }}
+                >
+                  {anim.label}
                 </button>
               ))}
             </div>

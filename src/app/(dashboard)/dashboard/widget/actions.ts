@@ -26,7 +26,28 @@ export async function updateWidgetConfig(formData: FormData) {
   const display_mode = formData.get('display_mode') as string;
   const aggregate_window = formData.get('aggregate_window') as string;
   const frequency_cap = parseInt(formData.get('frequency_cap') as string, 10);
-  const cooldown = parseInt(formData.get('cooldown') as string, 10);
+  
+  const delay_ms = parseInt(formData.get('delay_ms') as string, 10);
+  const display_ms = parseInt(formData.get('display_ms') as string, 10);
+  const time_between_ms = parseInt(formData.get('time_between_ms') as string, 10);
+  const loop = formData.get('loop') === 'on';
+
+  const hide_mobile = formData.get('hide_mobile') === 'on';
+  const hide_desktop = formData.get('hide_desktop') === 'on';
+
+  // Extract conversion rules
+  const conversion_rules = [];
+  const conversionTypes = formData.getAll('conversion_rule_type');
+  const conversionValues = formData.getAll('conversion_rule_value');
+  
+  for (let i = 0; i < conversionTypes.length; i++) {
+    if (conversionValues[i]) {
+      conversion_rules.push({
+        type: conversionTypes[i] as 'url_contains' | 'url_equals',
+        value: conversionValues[i] as string
+      });
+    }
+  }
 
   // First fetch the existing config so we don't overwrite theme
   const { data: account } = await supabase
@@ -49,7 +70,17 @@ export async function updateWidgetConfig(formData: FormData) {
         display_mode,
         aggregate_window,
         frequency_cap,
-        cooldown,
+        timing: {
+          delay_ms,
+          display_ms,
+          time_between_ms,
+          loop
+        },
+        visibility: {
+          hide_mobile,
+          hide_desktop
+        },
+        conversion_rules
       },
     })
     .eq('id', membership.account_id);

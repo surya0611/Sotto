@@ -11,13 +11,26 @@ CREATE TABLE public.accounts (
       "font_family": "inherit",
       "text_color": "#1a1a1a",
       "bg_color": "#ffffff",
-      "border_radius": "8px"
+      "border_radius": "8px",
+      "position": "bottom-left",
+      "slide_animation": "slide-up"
+    },
+    "timing": {
+      "delay_ms": 3000,
+      "display_ms": 4000,
+      "loop": false,
+      "time_between_ms": 8000
+    },
+    "visibility": {
+      "hide_mobile": false,
+      "hide_desktop": false
     },
     "display_mode": "individual",
     "aggregate_window": "week",
     "frequency_cap": 5,
     "page_rules": [],
-    "suppress_rules": []
+    "suppress_rules": [],
+    "conversion_rules": []
   }'::jsonb,
   plan TEXT DEFAULT 'free' CHECK (plan IN ('free', 'boutique', 'enterprise')),
   created_at TIMESTAMPTZ DEFAULT now()
@@ -27,13 +40,14 @@ CREATE TABLE public.accounts (
 CREATE TABLE public.events (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   account_id UUID REFERENCES public.accounts(id) ON DELETE CASCADE NOT NULL,
-  source TEXT NOT NULL CHECK (source IN ('shopify', 'razorpay', 'typeform', 'google_forms', 'sotto_pixel')),
+  source TEXT NOT NULL CHECK (source IN ('shopify', 'razorpay', 'typeform', 'google_forms', 'sotto_pixel', 'custom')),
   event_type TEXT NOT NULL CHECK (event_type IN ('purchase', 'signup', 'form_submission', 'impression', 'click', 'conversion')),
   session_id TEXT,
   customer_name TEXT,
   customer_city TEXT,
   customer_region TEXT,
   product_name TEXT,
+  product_image_url TEXT,
   raw_payload JSONB,
   created_at TIMESTAMPTZ DEFAULT now()
 );

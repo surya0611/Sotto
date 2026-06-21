@@ -2,17 +2,30 @@
 
 import { useTransition, useState } from 'react';
 import { updateWidgetConfig } from './actions';
+import { WidgetConfig } from '@/types';
 
-type WidgetConfig = {
-  display_mode?: string;
-  aggregate_window?: string;
-  frequency_cap?: number;
-  cooldown?: number;
-};
-
-export function WidgetForm({ initialConfig }: { initialConfig: WidgetConfig }) {
+export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetConfig> }) {
   const [isPending, startTransition] = useTransition();
-  const [cooldown, setCooldown] = useState(initialConfig.cooldown || 60);
+  const [timeBetween, setTimeBetween] = useState(initialConfig.timing?.time_between_ms || 8000);
+  const [conversionRules, setConversionRules] = useState(initialConfig.conversion_rules || []);
+
+  const addConversionRule = () => {
+    setConversionRules([...conversionRules, { type: 'url_contains', value: '' }]);
+  };
+
+  const removeConversionRule = (index: number) => {
+    setConversionRules(conversionRules.filter((_, i) => i !== index));
+  };
+
+  const updateConversionRule = (index: number, field: 'type' | 'value', value: string) => {
+    const newRules = [...conversionRules];
+    if (field === 'type') {
+      newRules[index].type = value as 'url_contains' | 'url_equals';
+    } else {
+      newRules[index].value = value;
+    }
+    setConversionRules(newRules);
+  };
 
   async function handleSubmit(formData: FormData) {
     startTransition(async () => {
@@ -26,78 +39,174 @@ export function WidgetForm({ initialConfig }: { initialConfig: WidgetConfig }) {
   }
 
   return (
-    <form action={handleSubmit} className="card">
-      <div className="card-header">
-        <h2 className="card-title">Widget Behavior</h2>
-        <p className="card-description">Configure how and when the social proof widget is displayed to your visitors.</p>
-      </div>
+    <form action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+      {/* General Settings */}
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">Widget Behavior</h2>
+          <p className="card-description">Configure how the social proof widget is displayed to your visitors.</p>
+        </div>
 
-      <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-        
-        <div className="input-group">
-          <label className="input-label">Display Mode</label>
-          <div style={{ display: 'flex', gap: 'var(--space-4)' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
-              <input type="radio" name="display_mode" value="individual" defaultChecked={initialConfig.display_mode !== 'aggregate'} />
-              Individual Events
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
-              <input type="radio" name="display_mode" value="aggregate" defaultChecked={initialConfig.display_mode === 'aggregate'} />
-              Aggregate (e.g., "50 people recently purchased")
-            </label>
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+          <div className="input-group">
+            <label className="input-label">Display Mode</label>
+            <div style={{ display: 'flex', gap: 'var(--space-4)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+                <input type="radio" name="display_mode" value="individual" defaultChecked={initialConfig.display_mode !== 'aggregate'} />
+                Individual Events
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+                <input type="radio" name="display_mode" value="aggregate" defaultChecked={initialConfig.display_mode === 'aggregate'} />
+                Aggregate (e.g., "50 people recently purchased")
+              </label>
+            </div>
           </div>
-        </div>
 
-        <div className="input-group">
-          <label htmlFor="aggregate_window" className="input-label">Aggregate Window</label>
-          <select id="aggregate_window" name="aggregate_window" className="input" defaultValue={initialConfig.aggregate_window || 'day'}>
-            <option value="1h">Last 1 Hour</option>
-            <option value="6h">Last 6 Hours</option>
-            <option value="day">Last 24 Hours</option>
-            <option value="3d">Last 3 Days</option>
-            <option value="week">Last 7 Days</option>
-            <option value="30d">Last 30 Days</option>
-          </select>
-          <p className="input-hint">The time window used to count recent activity when in Aggregate mode.</p>
-        </div>
+          <div className="input-group">
+            <label htmlFor="aggregate_window" className="input-label">Aggregate Window</label>
+            <select id="aggregate_window" name="aggregate_window" className="input" defaultValue={initialConfig.aggregate_window || 'day'}>
+              <option value="1h">Last 1 Hour</option>
+              <option value="6h">Last 6 Hours</option>
+              <option value="day">Last 24 Hours</option>
+              <option value="3d">Last 3 Days</option>
+              <option value="week">Last 7 Days</option>
+              <option value="30d">Last 30 Days</option>
+            </select>
+          </div>
 
-        <div className="input-group">
-          <label htmlFor="frequency_cap" className="input-label">Frequency Cap (displays per session)</label>
-          <input 
-            type="number" 
-            id="frequency_cap" 
-            name="frequency_cap" 
-            className="input" 
-            min="1" 
-            max="100" 
-            defaultValue={initialConfig.frequency_cap || 5} 
-          />
-          <p className="input-hint">Maximum number of times a widget is shown to a single user per session.</p>
-        </div>
-
-        <div className="input-group">
-          <label htmlFor="cooldown" className="input-label">Time between notifications</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+          <div className="input-group">
+            <label htmlFor="frequency_cap" className="input-label">Frequency Cap (displays per session)</label>
             <input 
-              type="range" 
-              id="cooldown" 
-              name="cooldown" 
-              min="45" 
-              max="600" 
-              value={cooldown}
-              onChange={(e) => setCooldown(parseInt(e.target.value, 10))}
-              style={{ flex: 1 }}
+              type="number" 
+              id="frequency_cap" 
+              name="frequency_cap" 
+              className="input" 
+              min="1" 
+              max="100" 
+              defaultValue={initialConfig.frequency_cap || 5} 
             />
-            <span style={{ fontSize: '0.875rem', fontWeight: 500, minWidth: '60px' }}>
-              {cooldown}s
-            </span>
           </div>
-          <p className="input-hint">The amount of time (45s to 10m) to wait after a notification finishes before showing the next one.</p>
         </div>
-
       </div>
 
-      <div className="card-footer">
+      {/* Timing Controls */}
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">Timing</h2>
+          <p className="card-description">Control the display timing of the widget.</p>
+        </div>
+
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+            <div className="input-group">
+              <label htmlFor="delay_ms" className="input-label">Initial Delay (ms)</label>
+              <input type="number" id="delay_ms" name="delay_ms" className="input" defaultValue={initialConfig.timing?.delay_ms || 3000} />
+              <p className="input-hint">Delay before the first widget appears.</p>
+            </div>
+
+            <div className="input-group">
+              <label htmlFor="display_ms" className="input-label">Display Duration (ms)</label>
+              <input type="number" id="display_ms" name="display_ms" className="input" defaultValue={initialConfig.timing?.display_ms || 4000} />
+              <p className="input-hint">How long the widget stays on screen.</p>
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="time_between_ms" className="input-label">Time Between Notifications (ms)</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+              <input 
+                type="range" 
+                id="time_between_ms" 
+                name="time_between_ms" 
+                min="1000" 
+                max="60000" 
+                step="1000"
+                value={timeBetween}
+                onChange={(e) => setTimeBetween(parseInt(e.target.value, 10))}
+                style={{ flex: 1 }}
+              />
+              <span style={{ fontSize: '0.875rem', fontWeight: 500, minWidth: '60px' }}>
+                {timeBetween / 1000}s
+              </span>
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+              <input type="checkbox" name="loop" defaultChecked={initialConfig.timing?.loop} />
+              Loop notifications
+            </label>
+            <p className="input-hint">When the end of events is reached, start showing them from the beginning again.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Visibility Settings */}
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">Visibility</h2>
+          <p className="card-description">Control where the widget is shown.</p>
+        </div>
+
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+            <input type="checkbox" name="hide_mobile" defaultChecked={initialConfig.visibility?.hide_mobile} />
+            Hide on Mobile Devices
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+            <input type="checkbox" name="hide_desktop" defaultChecked={initialConfig.visibility?.hide_desktop} />
+            Hide on Desktop Devices
+          </label>
+        </div>
+      </div>
+
+      {/* Conversion Rules */}
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">Conversion Tracking Rules</h2>
+          <p className="card-description">Define which pages count as a conversion (e.g. thank you page).</p>
+        </div>
+
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          {conversionRules.map((rule, index) => (
+            <div key={index} style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+              <select 
+                name="conversion_rule_type" 
+                className="input" 
+                value={rule.type}
+                onChange={(e) => updateConversionRule(index, 'type', e.target.value)}
+                style={{ width: '150px' }}
+              >
+                <option value="url_contains">URL contains</option>
+                <option value="url_equals">URL equals</option>
+              </select>
+              <input 
+                type="text" 
+                name="conversion_rule_value" 
+                className="input" 
+                placeholder="/checkout/success" 
+                value={rule.value}
+                onChange={(e) => updateConversionRule(index, 'value', e.target.value)}
+                style={{ flex: 1 }}
+              />
+              <button 
+                type="button" 
+                className="btn btn-ghost" 
+                onClick={() => removeConversionRule(index)}
+                style={{ padding: 'var(--space-2)', color: 'var(--error)' }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          
+          <button type="button" className="btn btn-secondary btn-sm" onClick={addConversionRule} style={{ alignSelf: 'flex-start' }}>
+            + Add Conversion Rule
+          </button>
+        </div>
+      </div>
+
+      <div style={{ position: 'sticky', bottom: 'var(--space-4)', alignSelf: 'flex-end', zIndex: 10 }}>
         <button type="submit" className="btn btn-primary" disabled={isPending}>
           {isPending ? 'Saving...' : 'Save Configuration'}
         </button>

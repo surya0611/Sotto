@@ -29,6 +29,7 @@ export async function updateAppearanceConfig(formData: FormData) {
   const border_radius = formData.get('border_radius') as string;
   const position = formData.get('position') as string || 'bottom-left';
   const size = formData.get('size') as string || 'medium';
+  const slide_animation = formData.get('slide_animation') as string || 'slide-up';
 
   // First fetch the existing config
   const { data: account } = await supabase
@@ -57,6 +58,7 @@ export async function updateAppearanceConfig(formData: FormData) {
           border_radius,
           position,
           size,
+          slide_animation,
         }
       },
     })
