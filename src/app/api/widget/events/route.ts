@@ -232,7 +232,7 @@ export async function GET(request: NextRequest) {
 
       let query = supabase
         .from('events')
-        .select('id, customer_name, customer_city, customer_region, product_name, created_at')
+        .select('id, customer_name, customer_city, customer_region, product_name, raw_payload, created_at')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', lookbackDate.toISOString())
@@ -271,12 +271,27 @@ export async function GET(request: NextRequest) {
             finalMessage = `${nameStr}${locationStr} just purchased ${productName}`;
           }
           
+          let productUrl = null;
+          if (candidateEvent.raw_payload) {
+            const rp = candidateEvent.raw_payload as any;
+            if (rp.url) {
+              productUrl = rp.url;
+            } else if (rp.landing_site) {
+              productUrl = rp.landing_site;
+            } else if (rp.line_items?.[0]?.product_id && account.domain) {
+              productUrl = `https://${account.domain}/products/${rp.line_items[0].product_id}`;
+            } else if (account.domain) {
+              productUrl = `https://${account.domain}`; // Fallback to store domain
+            }
+          }
+          
           eventPayload = {
             type: 'individual',
             id: candidateEvent.id, // Passed so client can exclude it next time
             title: purchaseTemplate ? purchaseTemplate.name : 'Recent Purchase',
             message: finalMessage,
             image_url: null,
+            url: productUrl,
             timestamp: candidateEvent.created_at
           };
         }

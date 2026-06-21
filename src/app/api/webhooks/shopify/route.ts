@@ -90,6 +90,7 @@ export async function POST(request: NextRequest) {
       product_name: productName,
       product_image_url: productImageUrl,
       session_id: webhookId || null,
+      raw_payload: payload,
     });
 
     if (insertError) {
