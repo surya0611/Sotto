@@ -28,6 +28,12 @@ export interface WidgetConfig {
   advanced_rules?: AdvancedRule[];
   suppress_rules: SuppressRule[];
   conversion_rules: ConversionRule[];
+  utm?: {
+    enabled: boolean;
+    source: string;
+    medium: string;
+    campaign?: string;
+  };
 }
 
 export interface WidgetTheme {

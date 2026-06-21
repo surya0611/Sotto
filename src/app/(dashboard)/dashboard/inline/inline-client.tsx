@@ -195,7 +195,6 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
             <label className="input-label">Embed Code</label>
             <CopyButton textToCopy={`<span data-sotto-inline="${dataId}"></span>`} />
           </div>
-          </div>
           <pre style={{ 
             display: 'block', 
             background: 'var(--bg-deep)', 

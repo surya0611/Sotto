@@ -122,9 +122,6 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
             <p className="input-hint">Do not display events older than this many days.</p>
           </div>
         </div>
-      </div>
-
-        </div>
 
         <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
 
@@ -173,9 +170,6 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
         </div>
       </div>
 
-        </div>
-      </div>
-
       {/* Visibility Settings */}
       <div className="card">
         <div className="card-header" style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
@@ -197,10 +191,6 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
             <input type="checkbox" name="hide_desktop" defaultChecked={initialConfig.visibility?.hide_desktop} />
             Hide on Desktop Devices
           </label>
-        </div>
-      </div>
-
-
         </div>
 
         <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
@@ -243,9 +233,6 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
           <button type="button" className="btn btn-secondary btn-sm" onClick={addConversionRule} style={{ alignSelf: 'flex-start' }}>
             + Add Conversion Rule
           </button>
-        </div>
-      </div>
-
         </div>
 
         <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
