@@ -132,7 +132,7 @@ export async function GET(request: NextRequest) {
       // We need to fetch aggregate counts grouped by product
       const { data: aggEvents } = await supabase
         .from('events')
-        .select('product_name, customer_city, product_image_url')
+        .select('product_name, customer_city')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', windowStart.toISOString());
@@ -150,7 +150,7 @@ export async function GET(request: NextRequest) {
           if (!ev.product_name) continue;
           const pName = ev.product_name;
           if (!productCounts[pName]) {
-            productCounts[pName] = { count: 0, cities: {}, imageUrl: ev.product_image_url || null };
+            productCounts[pName] = { count: 0, cities: {}, imageUrl: null };
           }
           productCounts[pName].count++;
           
@@ -232,7 +232,7 @@ export async function GET(request: NextRequest) {
 
       let query = supabase
         .from('events')
-        .select('id, customer_name, customer_city, customer_region, product_name, product_image_url, created_at')
+        .select('id, customer_name, customer_city, customer_region, product_name, created_at')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', lookbackDate.toISOString())
@@ -276,7 +276,7 @@ export async function GET(request: NextRequest) {
             id: candidateEvent.id, // Passed so client can exclude it next time
             title: purchaseTemplate ? purchaseTemplate.name : 'Recent Purchase',
             message: finalMessage,
-            image_url: candidateEvent.product_image_url,
+            image_url: null,
             timestamp: candidateEvent.created_at
           };
         }
