@@ -26,6 +26,12 @@ export default async function TemplatesPage() {
     return <div>No account found</div>;
   }
 
+  const { data: accountData } = await supabase
+    .from('accounts')
+    .select('widget_config')
+    .eq('id', accountMember.account_id)
+    .single();
+
   const { data: templates } = await supabase
     .from('notification_templates')
     .select('*')
@@ -41,7 +47,10 @@ export default async function TemplatesPage() {
         </p>
       </div>
 
-      <TemplatesClient templates={(templates as NotificationTemplate[]) || []} />
+      <TemplatesClient 
+        templates={(templates as NotificationTemplate[]) || []} 
+        initialConfig={accountData?.widget_config || {}}
+      />
     </div>
   );
 }

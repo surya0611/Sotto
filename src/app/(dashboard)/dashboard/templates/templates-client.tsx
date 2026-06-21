@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useTransition, useRef } from 'react';
-import { saveTemplate, deleteTemplate } from './actions';
+import { saveTemplate, deleteTemplate, saveAiSettings } from './actions';
 import { NotificationTemplate } from '@/types';
 
-export function TemplatesClient({ templates }: { templates: NotificationTemplate[] }) {
+export function TemplatesClient({ templates, initialConfig }: { templates: NotificationTemplate[], initialConfig: any }) {
   const [isPending, startTransition] = useTransition();
   const [editingId, setEditingId] = useState<string | null>(null);
   
@@ -13,6 +13,10 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
   const [eventType, setEventType] = useState('purchase');
   const [templateString, setTemplateString] = useState('');
   const [isActive, setIsActive] = useState(true);
+
+  // AI State
+  const [aiEnabled, setAiEnabled] = useState(initialConfig?.ai_copy?.enabled || false);
+  const [aiTone, setAiTone] = useState(initialConfig?.ai_copy?.tone || 'professional');
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -131,8 +135,73 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
     });
   };
 
+  const handleSaveAi = async () => {
+    startTransition(async () => {
+      try {
+        await saveAiSettings(aiEnabled, aiTone as any);
+        alert('AI Copywriter settings saved successfully!');
+      } catch (err: any) {
+        alert('Failed to save AI settings: ' + err.message);
+      }
+    });
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+      {/* AI Copywriter Section */}
+      <div className="card" style={{ 
+        border: aiEnabled ? '1px solid var(--accent)' : '1px solid var(--border)',
+        boxShadow: aiEnabled ? '0 0 40px rgba(99, 102, 241, 0.1)' : 'none',
+        transition: 'all 0.3s ease'
+      }}>
+        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+              <div style={{ background: 'var(--accent)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 800, letterSpacing: '0.05em' }}>NEW</div>
+              <h2 className="card-title" style={{ margin: 0, fontSize: '1.25rem' }}>AI-Powered Copywriter</h2>
+            </div>
+            <p className="card-description" style={{ marginTop: 'var(--space-2)', maxWidth: '600px' }}>
+              Let Google Gemini automatically write highly-converting, context-aware psychological copy for your notifications based on the specific product purchased. When enabled, this overrides manual Purchase templates.
+            </p>
+          </div>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem', cursor: 'pointer', background: 'var(--bg-elevated)', padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-full)', border: '1px solid var(--border)' }}>
+            <input 
+              type="checkbox" 
+              checked={aiEnabled}
+              onChange={(e) => setAiEnabled(e.target.checked)}
+              style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }}
+            /> 
+            <span style={{ fontWeight: 500 }}>{aiEnabled ? 'AI Enabled' : 'AI Disabled'}</span>
+          </label>
+        </div>
+
+        {aiEnabled && (
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', borderTop: '1px solid var(--border)', paddingTop: 'var(--space-4)' }}>
+            <div className="input-group" style={{ maxWidth: '400px' }}>
+              <label className="input-label">Copywriting Tone</label>
+              <select 
+                className="input" 
+                value={aiTone}
+                onChange={(e) => setAiTone(e.target.value)}
+              >
+                <option value="professional">Luxury & Professional (e.g. "Just secured by...")</option>
+                <option value="urgent">Urgency & FOMO (e.g. "Almost sold out! Purchased by...")</option>
+                <option value="playful">Playful with Emojis (e.g. "Just bagged this gem 🔥...")</option>
+              </select>
+              <p className="input-hint">Changing the tone will clear your cached templates and the AI will rewrite them on the next orders.</p>
+            </div>
+            
+            <div>
+              <button onClick={handleSaveAi} className="btn btn-primary" disabled={isPending}>
+                {isPending ? 'Saving...' : 'Save AI Settings'}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <hr style={{ border: 'none', borderTop: '1px solid var(--border)' }} />
+
       {/* Template Presets Gallery */}
       <div>
         <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-4)' }}>Quick Start Templates</h3>

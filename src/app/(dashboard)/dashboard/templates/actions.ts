@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 
 export async function saveTemplate(formData: FormData) {
@@ -68,6 +69,57 @@ export async function deleteTemplate(id: string) {
     .delete()
     .eq('id', id)
     .eq('account_id', accountMember.account_id);
+
+  if (error) throw error;
+  revalidatePath('/dashboard/templates');
+}
+
+export async function saveAiSettings(enabled: boolean, tone: 'professional' | 'urgent' | 'playful') {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) throw new Error('Not authenticated');
+
+  const { data: accountMember } = await supabase
+    .from('account_members')
+    .select('account_id')
+    .eq('user_id', user.id)
+    .single();
+
+  if (!accountMember) throw new Error('No account found');
+
+  const { data: account } = await supabase
+    .from('accounts')
+    .select('widget_config')
+    .eq('id', accountMember.account_id)
+    .single();
+
+  const existingConfig = account?.widget_config || {};
+  
+  // Clear templates cache if tone changed so AI regenerates them
+  const currentTone = existingConfig.ai_copy?.tone;
+  let templatesCache = existingConfig.ai_copy?.templates || {};
+  if (currentTone !== tone) {
+    templatesCache = {}; 
+  }
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+  const supabaseAdmin = createAdminClient(supabaseUrl, supabaseServiceKey);
+
+  const { error } = await supabaseAdmin
+    .from('accounts')
+    .update({
+      widget_config: {
+        ...existingConfig,
+        ai_copy: {
+          enabled,
+          tone,
+          templates: templatesCache
+        }
+      }
+    })
+    .eq('id', accountMember.account_id);
 
   if (error) throw error;
   revalidatePath('/dashboard/templates');

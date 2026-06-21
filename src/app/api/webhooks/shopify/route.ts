@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
 import { getGeolocationFromIp } from '@/lib/geolocation';
+import { generateProductTemplate } from '@/lib/ai-copywriter';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -23,10 +24,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing account_id' }, { status: 400 });
     }
 
-    // Fetch account to get shopify_secret
+    // Fetch account to get shopify_secret and widget_config
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('integration_secrets, widget_config')
       .eq('id', accountId)
       .single();
 
@@ -80,6 +81,40 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // AI Copywriter Logic
+    let finalPayload = payload;
+    const widgetConfig = account.widget_config || {};
+    
+    if (widgetConfig.ai_copy?.enabled) {
+      const tone = widgetConfig.ai_copy.tone || 'professional';
+      const templatesCache = widgetConfig.ai_copy.templates || {};
+      
+      let aiTemplate = templatesCache[productName];
+      
+      if (!aiTemplate) {
+        // Generate new template and cache it
+        aiTemplate = await generateProductTemplate(productName, tone);
+        
+        // Update the account's widget_config to cache the new template
+        const updatedConfig = {
+          ...widgetConfig,
+          ai_copy: {
+            ...widgetConfig.ai_copy,
+            templates: {
+              ...templatesCache,
+              [productName]: aiTemplate
+            }
+          }
+        };
+        
+        // We don't need to await this, it can happen in the background
+        supabase.from('accounts').update({ widget_config: updatedConfig }).eq('id', accountId).then();
+      }
+      
+      // Inject the AI template into the raw_payload so the widget can use it
+      finalPayload = { ...payload, ai_copy: aiTemplate };
+    }
+
     // Insert event
     const { error: insertError } = await supabase.from('events').insert({
       account_id: accountId,
@@ -90,7 +125,7 @@ export async function POST(request: NextRequest) {
       product_name: productName,
       product_image_url: productImageUrl,
       session_id: webhookId || null,
-      raw_payload: payload,
+      raw_payload: finalPayload,
     });
 
     if (insertError) {

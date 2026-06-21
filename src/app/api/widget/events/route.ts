@@ -256,10 +256,18 @@ export async function GET(request: NextRequest) {
           const nameStr = sanitize(candidateEvent.customer_name) || 'Someone';
           const productName = sanitize(candidateEvent.product_name) || 'an item';
           
+          const rp = (candidateEvent.raw_payload as any) || {};
+          const aiCopyTemplate = config.ai_copy?.enabled && rp.ai_copy ? rp.ai_copy : null;
+
           let finalMessage = '';
           const purchaseTemplate = templates?.find(t => t.event_type === 'purchase');
           
-          if (purchaseTemplate && purchaseTemplate.template_string) {
+          if (aiCopyTemplate) {
+            finalMessage = aiCopyTemplate
+              .replace(/{{name}}/gi, nameStr)
+              .replace(/{{city}}/gi, safeCity || 'their city')
+              .replace(/{{product}}/gi, productName);
+          } else if (purchaseTemplate && purchaseTemplate.template_string) {
             finalMessage = purchaseTemplate.template_string
               .replace(/{{first_name}}/g, nameStr)
               .replace(/{{city}}/g, safeCity || 'their city')

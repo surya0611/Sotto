@@ -34,6 +34,11 @@ export interface WidgetConfig {
     medium: string;
     campaign?: string;
   };
+  ai_copy?: {
+    enabled: boolean;
+    tone: 'professional' | 'urgent' | 'playful';
+    templates: Record<string, string>;
+  };
 }
 
 export interface WidgetTheme {
