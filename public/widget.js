@@ -247,7 +247,7 @@
         position: absolute;
         z-index: 1;
         inset: 0;
-        background: var(--s-liquid-bg, rgba(255, 255, 255, 0.5));
+        background: var(--s-liquid-bg, rgba(255, 255, 255, 0.75));
         border-radius: inherit;
         pointer-events: none;
         display: none;
@@ -396,7 +396,7 @@
       // Presets
       if (theme.theme_preset === 'glassmorphism') {
         container.setAttribute('data-theme', 'glassmorphism');
-        const bgRgba = hexToRgba(theme.bg_color || '#ffffff', 0.5);
+        const bgRgba = hexToRgba(theme.bg_color || '#ffffff', 0.75);
         container.style.setProperty('--s-liquid-bg', bgRgba);
         container.style.setProperty('--s-bg', 'transparent');
         container.style.setProperty('--s-backdrop', 'none');

@@ -503,7 +503,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: ThemeConfig }) 
                   {theme.theme_preset === 'glassmorphism' && (
                     <>
                       <div style={{ position: 'absolute', inset: 0, zIndex: 0, backdropFilter: 'blur(5px)', WebkitBackdropFilter: 'blur(5px)', borderRadius: 'inherit' }} />
-                      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: `rgba(255, 255, 255, 0.5)`, borderRadius: 'inherit' }} />
+                      <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: `rgba(255, 255, 255, 0.75)`, borderRadius: 'inherit' }} />
                       <div style={{ position: 'absolute', inset: 0, zIndex: 2, boxShadow: 'inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5)', borderRadius: 'inherit' }} />
                     </>
                   )}
