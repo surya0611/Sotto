@@ -604,6 +604,42 @@ a:hover {
   border-top: 1px solid var(--border-subtle);
 }
 
+/* --- Layout --- */
+.layout-dashboard {
+  background: var(--bg-deep);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  height: calc(100vh - var(--space-12));
+  background: var(--bg-base);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.layout-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+.layout-content {
+  padding: var(--space-6) var(--space-10) var(--space-10);
+  flex: 1;
+}
+
 /* --- Sidebar --- */
 .sidebar {
   width: var(--sidebar-width);
@@ -1321,6 +1357,8 @@ a:hover {
   display: inline-block;
   vertical-align: baseline;
   transform: translateY(0%);
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 /* ============================================================
