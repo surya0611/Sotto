@@ -26,6 +26,8 @@ export async function updateWidgetConfig(formData: FormData) {
   const display_mode = formData.get('display_mode') as string;
   const aggregate_window = formData.get('aggregate_window') as string;
   const frequency_cap = parseInt(formData.get('frequency_cap') as string, 10);
+  const max_per_page = parseInt(formData.get('max_per_page') as string, 10);
+  const event_time_threshold = parseInt(formData.get('event_time_threshold') as string, 10);
   
   const delay_ms = parseInt(formData.get('delay_ms') as string, 10);
   const display_ms = parseInt(formData.get('display_ms') as string, 10);
@@ -34,6 +36,20 @@ export async function updateWidgetConfig(formData: FormData) {
 
   const hide_mobile = formData.get('hide_mobile') === 'on';
   const hide_desktop = formData.get('hide_desktop') === 'on';
+
+  // Extract page rules
+  const page_rules = [];
+  const pageRuleTypes = formData.getAll('page_rule_type');
+  const pageRulePatterns = formData.getAll('page_rule_pattern');
+  
+  for (let i = 0; i < pageRuleTypes.length; i++) {
+    if (pageRulePatterns[i]) {
+      page_rules.push({
+        type: pageRuleTypes[i] as 'include' | 'exclude',
+        pattern: pageRulePatterns[i] as string
+      });
+    }
+  }
 
   // Extract conversion rules
   const conversion_rules = [];
@@ -70,6 +86,8 @@ export async function updateWidgetConfig(formData: FormData) {
         display_mode,
         aggregate_window,
         frequency_cap,
+        max_per_page,
+        event_time_threshold,
         timing: {
           delay_ms,
           display_ms,
@@ -80,6 +98,7 @@ export async function updateWidgetConfig(formData: FormData) {
           hide_mobile,
           hide_desktop
         },
+        page_rules,
         conversion_rules
       },
     })

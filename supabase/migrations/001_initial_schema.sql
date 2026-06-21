@@ -28,6 +28,8 @@ CREATE TABLE public.accounts (
     "display_mode": "individual",
     "aggregate_window": "week",
     "frequency_cap": 5,
+    "max_per_page": 20,
+    "event_time_threshold": 14,
     "page_rules": [],
     "suppress_rules": [],
     "conversion_rules": []

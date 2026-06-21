@@ -221,7 +221,8 @@ export async function GET(request: NextRequest) {
     } else {
       // Individual mode
       const lookbackDate = new Date();
-      lookbackDate.setDate(lookbackDate.getDate() - 7); // 7-day max age
+      const maxAgeDays = config.event_time_threshold || 14;
+      lookbackDate.setDate(lookbackDate.getDate() - maxAgeDays);
 
       let query = supabase
         .from('events')
@@ -280,7 +281,8 @@ export async function GET(request: NextRequest) {
       conversion_rules: config.conversion_rules,
       rules: {
         page_rules: config.page_rules,
-        suppress_rules: config.suppress_rules
+        suppress_rules: config.suppress_rules,
+        max_per_page: config.max_per_page || 20
       }
     }, { headers: responseHeaders });
 

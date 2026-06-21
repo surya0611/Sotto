@@ -53,6 +53,34 @@
     sessionStorage.removeItem('sotto_shown_product_ids');
   }
 
+  // Session Limits & Anti-Spam
+  function getSessionDisplays() {
+    return parseInt(sessionStorage.getItem('sotto_session_displays') || '0', 10);
+  }
+
+  function incrementSessionDisplays() {
+    sessionStorage.setItem('sotto_session_displays', (getSessionDisplays() + 1).toString());
+  }
+
+  function isSuppressed() {
+    const until = parseInt(sessionStorage.getItem('sotto_suppress_until') || '0', 10);
+    return Date.now() < until;
+  }
+
+  function handleCloseClick() {
+    hideWidget();
+    let closes = parseInt(sessionStorage.getItem('sotto_close_count') || '0', 10) + 1;
+    sessionStorage.setItem('sotto_close_count', closes.toString());
+    
+    if (closes >= 3) {
+      // Suppress for 24 hours
+      sessionStorage.setItem('sotto_suppress_until', (Date.now() + 24 * 60 * 60 * 1000).toString());
+      isPolling = true; // Stop future polls
+    }
+  }
+
+  let pageDisplayCount = 0;
+
   // 3. Track Telemetry & Init
   let isConversionPage = false;
   let activeConfig = null;
@@ -151,6 +179,26 @@
         opacity: 0.5;
         margin-top: 2px;
       }
+      .sotto-close {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        cursor: pointer;
+        color: var(--s-text, #1a1a1a);
+        transition: opacity 200ms ease;
+      }
+      .sotto-widget:hover .sotto-close {
+        opacity: 0.5;
+      }
+      .sotto-close:hover {
+        opacity: 1 !important;
+      }
       @media (max-width: 480px) {
         .sotto-widget {
           margin: 0 16px;
@@ -163,10 +211,20 @@
     container = document.createElement('div');
     container.className = 'sotto-widget';
     
-    container.addEventListener('click', () => {
+    container.addEventListener('click', (e) => {
+      if (e.target.closest('.sotto-close')) return; // handled separately
       track('click');
       hideWidget();
     });
+
+    const closeBtn = document.createElement('div');
+    closeBtn.className = 'sotto-close';
+    closeBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handleCloseClick();
+    });
+    container.appendChild(closeBtn);
 
     shadowRoot.appendChild(container);
   }
@@ -339,14 +397,48 @@
 
     clearTimeout(hideTimeout);
     hideTimeout = setTimeout(hideWidget, currentDisplayMs);
+
+    pageDisplayCount++;
+    incrementSessionDisplays();
   }
 
   // 5. Polling Engine
   let isPolling = false;
   
+  function checkPageRules(pageRules) {
+    if (!pageRules || pageRules.length === 0) return true;
+    
+    const url = window.location.href;
+    const path = window.location.pathname;
+    
+    let isIncluded = false;
+    let hasIncludes = false;
+    let isExcluded = false;
+
+    for (const rule of pageRules) {
+      if (!rule.pattern) continue;
+      // Convert wildcard to regex
+      const regexStr = '^' + rule.pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$';
+      const regex = new RegExp(regexStr, 'i');
+      
+      const matches = regex.test(url) || regex.test(path);
+      
+      if (rule.type === 'include') {
+        hasIncludes = true;
+        if (matches) isIncluded = true;
+      } else if (rule.type === 'exclude') {
+        if (matches) isExcluded = true;
+      }
+    }
+
+    if (isExcluded) return false;
+    if (hasIncludes && !isIncluded) return false;
+    return true;
+  }
+
   async function poll() {
-    if (isPolling) return;
-    if (isConversionPage) return; // Don't show notifications on conversion pages to avoid distraction
+    if (isPolling || isSuppressed()) return;
+    if (isConversionPage) return; 
     
     isPolling = true;
 
@@ -357,15 +449,38 @@
       const response = await fetch(`${apiBase}/api/widget/events?account_id=${accountId}&session_id=${sessionId}&excluded_event_ids=${excEvents}&excluded_product_ids=${excProducts}`);
       const data = await response.json();
 
-      if (!data.skip && data.event) {
-        
+      if (data.skip) {
+        // Handle looping if no new events
+        if (activeConfig && activeConfig.timing && activeConfig.timing.loop) {
+          clearExclusions();
+          setTimeout(poll, activeConfig.timing.time_between_ms || 8000);
+        }
+        isPolling = false;
+        return;
+      }
+
+      activeConfig = data;
+
+      // Validate Rules & Limits
+      const rules = data.rules || {};
+      if (!checkPageRules(rules.page_rules)) {
+        return; // Abort silently
+      }
+
+      const frequencyCap = data.timing?.frequency_cap || 5; // Fallback if missing
+      const maxPerPage = rules.max_per_page || 20;
+
+      if (pageDisplayCount >= maxPerPage || getSessionDisplays() >= frequencyCap) {
+        return; // Abort silently
+      }
+
+      if (data.event) {
         if (data.event.type === 'individual' && data.event.id) {
           addExclusion('sotto_shown_event_ids', data.event.id);
         } else if (data.event.type === 'aggregate' && data.event.product_id) {
           addExclusion('sotto_shown_product_ids', data.event.product_id);
         }
 
-        activeConfig = data;
         showWidget(data);
       } else {
         // Handle looping
@@ -383,6 +498,8 @@
 
   // 6. Bootstrap
   async function bootstrap() {
+    if (isSuppressed()) return;
+
     // Send init telemetry
     const initData = await track('init');
     

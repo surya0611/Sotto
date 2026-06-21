@@ -23,6 +23,8 @@ export interface WidgetConfig {
   display_mode: 'individual' | 'aggregate';
   aggregate_window: 'day' | 'week';
   frequency_cap: number;
+  max_per_page: number;
+  event_time_threshold: number;
   page_rules: PageRule[];
   suppress_rules: SuppressRule[];
   conversion_rules: ConversionRule[];
