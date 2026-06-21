@@ -37,7 +37,7 @@ export default async function WidgetPage() {
         <p style={{ color: 'var(--text-secondary)' }}>Manage how the Sotto widget behaves on your website.</p>
       </div>
 
-      <WidgetForm initialConfig={widgetConfig} />
+      <WidgetForm initialConfig={widgetConfig} accountId={membership.account_id} />
     </div>
   );
 }

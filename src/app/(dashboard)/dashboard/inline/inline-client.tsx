@@ -97,6 +97,14 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
       </div>
 
       <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'auto' : 'none' }}>
+        
+        <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
+          <div style={{ background: 'var(--accent)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
+            1
+          </div>
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Design your module</h3>
+        </div>
+
         {dataId === 'active-visitors' && (
           <div className="input-group">
             <label className="input-label">Algorithm Mode</label>
@@ -173,23 +181,35 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
           </div>
         </div>
 
-        <div className="input-group">
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
+
+        <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--accent)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
+            2
+          </div>
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Install the Embed Code</h3>
+        </div>
+
+        <div className="input-group" style={{ background: 'var(--bg-base)', padding: 'var(--space-4)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <label className="input-label">Embed Code</label>
             <CopyButton textToCopy={`<span data-sotto-inline="${dataId}"></span>`} />
           </div>
-          <code style={{ 
+          </div>
+          <pre style={{ 
             display: 'block', 
-            background: 'var(--bg-base)', 
-            padding: 'var(--space-3)', 
+            background: 'var(--bg-deep)', 
+            padding: 'var(--space-4)', 
             borderRadius: 'var(--radius-sm)', 
             border: '1px solid var(--border)',
-            color: 'var(--text-muted)',
-            fontSize: '0.875rem'
+            color: 'var(--text-primary)',
+            fontSize: '0.875rem',
+            fontFamily: 'monospace',
+            overflowX: 'auto'
           }}>
-            &lt;span data-sotto-inline="{dataId}"&gt;&lt;/span&gt;
-          </code>
-          <p className="input-hint">Paste this code anywhere on your website (e.g. below the Add to Cart button). The Sotto script will automatically replace it with your Display Text.</p>
+            <code>&lt;span data-sotto-inline="{dataId}"&gt;&lt;/span&gt;</code>
+          </pre>
+          <p className="input-hint" style={{ marginTop: 'var(--space-2)' }}>Paste this HTML snippet into your website builder (Shopify, Webflow, etc) exactly where you want the text to appear.</p>
         </div>
       </div>
     </div>

@@ -115,59 +115,57 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick Start Checklist */}
-      <div className="card" style={{ marginBottom: 'var(--space-6)' }}>
-        <div className="card-header">
-          <div>
-            <h3 className="card-title">Quick Start Guide</h3>
-            <p className="card-description">Complete these steps to get Sotto running on your store</p>
-          </div>
-          <span className="badge badge-accent">0 / 4</span>
-        </div>
-        <div className="card-content">
-          <div className="checklist" style={{ display: 'flex', flexDirection: 'column' }}>
-            <Link href="/dashboard/integrations" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0', borderBottom: '1px solid var(--border)' }}>
-              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>1</span>
-              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>Connect your first integration</span>
-              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
-            </Link>
-            <Link href="/dashboard/appearance" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0', borderBottom: '1px solid var(--border)' }}>
-              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>2</span>
-              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>Configure your widget appearance</span>
-              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
-            </Link>
-            <Link href="/dashboard/embed" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0', borderBottom: '1px solid var(--border)' }}>
-              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>3</span>
-              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>Install the embed snippet</span>
-              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
-            </Link>
-            <Link href="/demo" target="_blank" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0' }}>
-              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>4</span>
-              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>View live demo</span>
-              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Events (Empty State) */}
-      <div className="card">
-        <div className="card-header">
-          <div>
-            <h3 className="card-title">Recent Events</h3>
-            <p className="card-description">Latest activity from your integrations</p>
-          </div>
-        </div>
-        <div className="card-content">
-          <div className="empty-state" style={{ padding: 'var(--space-10) var(--space-6)' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-accent-light)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Zap width="20" height="20" />
+      {/* Quick Start Wizard (Redesigned) */}
+      <div style={{ marginBottom: 'var(--space-10)' }}>
+        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, marginBottom: 'var(--space-4)' }}>
+          Let's get Sotto running on your store
+        </h3>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)' }}>Follow these 3 simple steps to launch your first social proof campaign.</p>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          
+          {/* Step 1 */}
+          <div className="card card-hover" style={{ display: 'flex', gap: 'var(--space-6)', alignItems: 'center', padding: 'var(--space-6)' }}>
+            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+              1
             </div>
-            <h4 className="empty-state-title">No events yet</h4>
-            <p className="empty-state-description">
-              Events will appear here once you connect an integration and receive your first webhook.
-            </p>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-1)' }}>Install the Embed Code</h4>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Paste our tiny snippet into your website's code to enable Sotto.</p>
+            </div>
+            <Link href="/dashboard/embed" className="btn btn-primary">
+              Get Code →
+            </Link>
           </div>
+
+          {/* Step 2 */}
+          <div className="card card-hover" style={{ display: 'flex', gap: 'var(--space-6)', alignItems: 'center', padding: 'var(--space-6)' }}>
+            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+              2
+            </div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-1)' }}>Connect your Data</h4>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Link your Shopify store, Stripe account, or custom webhooks to pull in sales data.</p>
+            </div>
+            <Link href="/dashboard/integrations" className="btn btn-secondary">
+              Connect Apps
+            </Link>
+          </div>
+
+          {/* Step 3 */}
+          <div className="card card-hover" style={{ display: 'flex', gap: 'var(--space-6)', alignItems: 'center', padding: 'var(--space-6)' }}>
+            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+              3
+            </div>
+            <div style={{ flex: 1 }}>
+              <h4 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-1)' }}>Design your Widget</h4>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Customize how the popups look and feel to match your brand perfectly.</p>
+            </div>
+            <Link href="/dashboard/widget" className="btn btn-secondary">
+              Customize
+            </Link>
+          </div>
+
         </div>
       </div>
     </div>

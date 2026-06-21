@@ -3,8 +3,9 @@
 import { useTransition, useState } from 'react';
 import { updateWidgetConfig } from './actions';
 import { WidgetConfig } from '@/types';
+import { CopyButton } from '@/components/copy-button';
 
-export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetConfig> }) {
+export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partial<WidgetConfig>, accountId: string }) {
   const [isPending, startTransition] = useTransition();
   const [timeBetween, setTimeBetween] = useState(initialConfig.timing?.time_between_ms || 8000);
   const [conversionRules, setConversionRules] = useState(initialConfig.conversion_rules || []);
@@ -42,9 +43,14 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
     <form action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
       {/* General Settings */}
       <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Widget Behavior</h2>
-          <p className="card-description">Configure how the social proof widget is displayed to your visitors.</p>
+        <div className="card-header" style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+            1
+          </div>
+          <div>
+            <h2 className="card-title">Widget Behavior & Timing</h2>
+            <p className="card-description">Configure what the widget shows and how often it pops up.</p>
+          </div>
         </div>
 
         <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
@@ -118,12 +124,9 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
         </div>
       </div>
 
-      {/* Timing Controls */}
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Timing</h2>
-          <p className="card-description">Control the display timing of the widget.</p>
         </div>
+
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
 
         <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
@@ -170,11 +173,19 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
         </div>
       </div>
 
+        </div>
+      </div>
+
       {/* Visibility Settings */}
       <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Visibility</h2>
-          <p className="card-description">Control where the widget is shown.</p>
+        <div className="card-header" style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+            2
+          </div>
+          <div>
+            <h2 className="card-title">Visibility & Tracking</h2>
+            <p className="card-description">Control where the widget is shown and how it tracks data.</p>
+          </div>
         </div>
 
         <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
@@ -190,14 +201,13 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
       </div>
 
 
-      {/* Conversion Rules */}
-      <div className="card">
-        <div className="card-header">
-          <h2 className="card-title">Conversion Tracking Rules</h2>
-          <p className="card-description">Define which pages count as a conversion (e.g. thank you page).</p>
         </div>
 
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
+
         <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <h3 style={{ fontSize: '0.875rem', fontWeight: 600 }}>Conversion Tracking Rules</h3>
+          <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-2)' }}>Define which pages count as a conversion (e.g. thank you page).</p>
           {conversionRules.map((rule, index) => (
             <div key={index} style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
               <select 
@@ -236,13 +246,15 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
         </div>
       </div>
 
-      {/* UTM Tracking Settings */}
-      <div className="card">
-        <div className="card-header">
+        </div>
+
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
+
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <h2 className="card-title">UTM Tracking</h2>
-              <p className="card-description">Automatically append tracking parameters to links inside your notifications.</p>
+              <h3 style={{ fontSize: '0.875rem', fontWeight: 600 }}>UTM Tracking</h3>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-2)' }}>Automatically append tracking parameters to links inside your notifications.</p>
             </div>
             <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem', cursor: 'pointer' }}>
               <input 
@@ -254,9 +266,6 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
               Enabled
             </label>
           </div>
-        </div>
-
-        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           <div className="input-group">
             <label htmlFor="utm_source" className="input-label">UTM Source</label>
             <input 
@@ -292,6 +301,35 @@ export function WidgetForm({ initialConfig }: { initialConfig: Partial<WidgetCon
               defaultValue={initialConfig.utm?.campaign || ''} 
             />
           </div>
+        </div>
+      </div>
+
+      {/* Embed Code */}
+      <div className="card" style={{ borderLeft: '4px solid var(--accent)' }}>
+        <div className="card-header" style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+            3
+          </div>
+          <div style={{ flex: 1 }}>
+            <h2 className="card-title">Install the Embed Code</h2>
+            <p className="card-description">Place this script right before the closing <code>&lt;/body&gt;</code> tag on all your website pages.</p>
+          </div>
+          <CopyButton textToCopy={`<script src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.js" data-account-id="${accountId}" defer></script>`} />
+        </div>
+
+        <div className="card-content">
+          <pre style={{ 
+            background: 'var(--bg-deep)', 
+            padding: 'var(--space-6)', 
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border)',
+            overflowX: 'auto',
+            fontSize: '0.875rem',
+            color: 'var(--text-primary)',
+            fontFamily: 'monospace'
+          }}>
+            <code>{`<script src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.js" data-account-id="${accountId}" defer></script>`}</code>
+          </pre>
         </div>
       </div>
 
