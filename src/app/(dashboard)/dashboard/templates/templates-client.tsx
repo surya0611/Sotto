@@ -21,7 +21,43 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
     { label: 'City', value: '{{city}}' },
     { label: 'Province', value: '{{province}}' },
     { label: 'Product Name', value: '{{product_name}}' },
+    { label: 'Count (Visitors)', value: '{{count}}' },
     { label: 'Time Ago', value: '{{time_ago}}' },
+  ];
+
+  const PRESETS = [
+    {
+      id: 'preset-sales',
+      name: 'Recent Sales',
+      event_type: 'purchase',
+      template_string: '{{first_name}} in {{city}} just bought {{product_name}}',
+      description: 'Show recent purchases to build trust.',
+      icon: '🛍️'
+    },
+    {
+      id: 'preset-visitors',
+      name: 'Active Visitors',
+      event_type: 'active_visitors',
+      template_string: '{{count}} people are currently viewing this page',
+      description: 'Show live traffic to create urgency.',
+      icon: '👀'
+    },
+    {
+      id: 'preset-newsletter',
+      name: 'Newsletter Signups',
+      event_type: 'signup',
+      template_string: 'Someone from {{city}} just subscribed to our newsletter!',
+      description: 'Grow your email list faster.',
+      icon: '✉️'
+    },
+    {
+      id: 'preset-custom',
+      name: 'Custom Webhook',
+      event_type: 'custom',
+      template_string: 'Someone just performed an action!',
+      description: 'Build your own custom notification.',
+      icon: '⚙️'
+    }
   ];
 
   const handleEdit = (t: NotificationTemplate) => {
@@ -96,7 +132,36 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: 'var(--space-6)', alignItems: 'start' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+      {/* Template Presets Gallery */}
+      <div>
+        <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-4)' }}>Quick Start Templates</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>
+          {PRESETS.map(preset => (
+            <div 
+              key={preset.id}
+              className="card"
+              onClick={() => {
+                setEditingId(null);
+                setName(preset.name + ' Template');
+                setEventType(preset.event_type);
+                setTemplateString(preset.template_string);
+                setIsActive(true);
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+              }}
+              style={{ cursor: 'pointer', transition: 'all 0.2s', padding: 'var(--space-4)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
+            >
+              <div style={{ fontSize: '28px', marginBottom: '12px' }}>{preset.icon}</div>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '0.875rem', fontWeight: 600 }}>{preset.name}</h4>
+              <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>{preset.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: 'var(--space-6)', alignItems: 'start' }}>
       
       {/* Editor Column */}
       <div className="card">
@@ -128,6 +193,7 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
               <option value="purchase">Purchase (eCommerce)</option>
               <option value="signup">Sign Up (Lead Gen)</option>
               <option value="review">Review / Rating</option>
+              <option value="active_visitors">Active Visitors</option>
               <option value="custom">Custom Webhook</option>
             </select>
           </div>
@@ -270,6 +336,7 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
         </div>
       </div>
 
+    </div>
     </div>
   );
 }

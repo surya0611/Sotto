@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Zap, Eye, PointerClick, BarChart } from '@/components/icons';
 
 export const dynamic = 'force-dynamic';
@@ -124,31 +125,27 @@ export default async function DashboardPage() {
           <span className="badge badge-accent">0 / 4</span>
         </div>
         <div className="card-content">
-          <div className="checklist">
-            <div className="checklist-item">
-              <span className="checklist-number">1</span>
-              <div className="checklist-check">✓</div>
-              <span className="checklist-text">Connect your first integration</span>
-              <span className="badge badge-default">Pending</span>
-            </div>
-            <div className="checklist-item">
-              <span className="checklist-number">2</span>
-              <div className="checklist-check">✓</div>
-              <span className="checklist-text">Configure your widget appearance</span>
-              <span className="badge badge-default">Pending</span>
-            </div>
-            <div className="checklist-item">
-              <span className="checklist-number">3</span>
-              <div className="checklist-check">✓</div>
-              <span className="checklist-text">Install the embed snippet on your store</span>
-              <span className="badge badge-default">Pending</span>
-            </div>
-            <div className="checklist-item">
-              <span className="checklist-number">4</span>
-              <div className="checklist-check">✓</div>
-              <span className="checklist-text">Verify events are flowing</span>
-              <span className="badge badge-default">Pending</span>
-            </div>
+          <div className="checklist" style={{ display: 'flex', flexDirection: 'column' }}>
+            <Link href="/dashboard/integrations" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0', borderBottom: '1px solid var(--border)' }}>
+              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>1</span>
+              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>Connect your first integration</span>
+              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
+            </Link>
+            <Link href="/dashboard/appearance" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0', borderBottom: '1px solid var(--border)' }}>
+              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>2</span>
+              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>Configure your widget appearance</span>
+              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
+            </Link>
+            <Link href="/dashboard/embed" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0', borderBottom: '1px solid var(--border)' }}>
+              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>3</span>
+              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>Install the embed snippet</span>
+              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
+            </Link>
+            <Link href="/demo" target="_blank" className="checklist-item" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 'var(--space-4)', padding: 'var(--space-3) 0' }}>
+              <span className="checklist-number" style={{ background: 'var(--bg-elevated)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>4</span>
+              <span className="checklist-text" style={{ flex: 1, color: 'var(--text-primary)', fontWeight: 500 }}>View live demo</span>
+              <span className="badge badge-default" style={{ transition: 'all 0.2s', cursor: 'pointer' }}>→ Go</span>
+            </Link>
           </div>
         </div>
       </div>
