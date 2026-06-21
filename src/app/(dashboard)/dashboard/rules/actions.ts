@@ -2,9 +2,9 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
-import { PageRule } from '@/types';
+import { AdvancedRule } from '@/types';
 
-export async function saveRules(rules: PageRule[]) {
+export async function saveRules(rules: AdvancedRule[]) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -28,7 +28,7 @@ export async function saveRules(rules: PageRule[]) {
 
   const newConfig = {
     ...account.widget_config,
-    page_rules: rules,
+    advanced_rules: rules,
   };
 
   const { error } = await supabase

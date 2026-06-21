@@ -16,7 +16,7 @@ export interface WidgetConfig {
     loop: boolean;
     time_between_ms: number;
   };
-  visibility: {
+  visibility?: {
     hide_mobile: boolean;
     hide_desktop: boolean;
   };
@@ -25,7 +25,7 @@ export interface WidgetConfig {
   frequency_cap: number;
   max_per_page: number;
   event_time_threshold: number;
-  page_rules: PageRule[];
+  advanced_rules?: AdvancedRule[];
   suppress_rules: SuppressRule[];
   conversion_rules: ConversionRule[];
 }
@@ -41,10 +41,26 @@ export interface WidgetTheme {
   slide_animation: 'slide-up' | 'slide-in-left' | 'slide-in-right';
 }
 
-export interface PageRule {
-  type: 'include' | 'exclude';
-  pattern: string;
+export interface RuleCondition {
+  variable: 'url_path' | 'url_host' | 'url_parameter' | 'home_page' | 'mobile_browser';
+  operator: 'equals' | 'not_equals' | 'contains' | 'does_not_contain' | 'begins_with';
+  value: string;
 }
+
+export interface RuleAction {
+  setting: 'notifications' | 'do_not_show_template' | 'only_show_template' | 'max_per_page' | 'initial_delay' | 'display_interval' | 'position' | 'mobile_position' | 'loop_notifications' | 'links_open_new_tab' | 'entire_notification_clickable';
+  value: string | number | boolean;
+}
+
+export interface AdvancedRule {
+  id: string;
+  title: string;
+  description: string;
+  conditions: RuleCondition[];
+  action: RuleAction;
+  is_active: boolean;
+}
+
 
 export interface SuppressRule {
   field: string;

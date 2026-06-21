@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { RulesClient } from './rules-client';
-import { PageRule } from '@/types';
+import { AdvancedRule } from '@/types';
 
 export const metadata = {
   title: 'Advanced Rules | Sotto',
@@ -36,7 +36,7 @@ export default async function RulesPage() {
     return <div>Account not found</div>;
   }
 
-  const pageRules = account.widget_config?.page_rules || [];
+  const advancedRules = account.widget_config?.advanced_rules || [];
 
   return (
     <div className="layout-content-inner">
@@ -48,7 +48,7 @@ export default async function RulesPage() {
       </div>
 
       <div style={{ maxWidth: '800px' }}>
-        <RulesClient initialRules={pageRules as PageRule[]} />
+        <RulesClient initialRules={advancedRules as AdvancedRule[]} />
       </div>
     </div>
   );

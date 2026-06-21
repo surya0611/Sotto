@@ -300,7 +300,7 @@ export async function GET(request: NextRequest) {
       visibility: config.visibility,
       conversion_rules: config.conversion_rules,
       rules: {
-        page_rules: config.page_rules,
+        advanced_rules: config.advanced_rules,
         suppress_rules: config.suppress_rules,
         max_per_page: config.max_per_page || 20
       }

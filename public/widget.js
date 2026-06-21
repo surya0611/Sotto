@@ -440,34 +440,73 @@
   // 5. Polling Engine
   let isPolling = false;
   
-  function checkPageRules(pageRules) {
-    if (!pageRules || pageRules.length === 0) return true;
-    
+  function evaluateCondition(cond) {
     const url = window.location.href;
     const path = window.location.pathname;
-    
-    let isIncluded = false;
-    let hasIncludes = false;
-    let isExcluded = false;
+    const search = window.location.search;
+    let target = '';
 
-    for (const rule of pageRules) {
-      if (!rule.pattern) continue;
-      // Convert wildcard to regex
-      const regexStr = '^' + rule.pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$';
-      const regex = new RegExp(regexStr, 'i');
-      
-      const matches = regex.test(url) || regex.test(path);
-      
-      if (rule.type === 'include') {
-        hasIncludes = true;
-        if (matches) isIncluded = true;
-      } else if (rule.type === 'exclude') {
-        if (matches) isExcluded = true;
+    if (cond.variable === 'url_path') target = path;
+    else if (cond.variable === 'url_host') target = window.location.host;
+    else if (cond.variable === 'url_parameter') target = search;
+    else if (cond.variable === 'home_page') target = (path === '/' || path === '') ? 'true' : 'false';
+    else if (cond.variable === 'mobile_browser') target = window.innerWidth <= 480 ? 'true' : 'false';
+
+    // Handle boolean comparisons easily
+    const val = (cond.value || '').toLowerCase();
+    const t = target.toLowerCase();
+    
+    if (cond.variable === 'home_page' || cond.variable === 'mobile_browser') {
+      return t === 'true'; 
+    }
+    
+    switch (cond.operator) {
+      case 'equals': return t === val;
+      case 'not_equals': return t !== val;
+      case 'contains': return t.includes(val);
+      case 'does_not_contain': return !t.includes(val);
+      case 'begins_with': return t.startsWith(val);
+      default: return false;
+    }
+  }
+
+  function evaluateAdvancedRules(rules) {
+    if (!rules || rules.length === 0) return true;
+
+    for (const rule of rules) {
+      if (!rule.is_active) continue;
+
+      let allConditionsMet = true;
+      if (!rule.conditions || rule.conditions.length === 0) allConditionsMet = false;
+
+      for (const cond of rule.conditions || []) {
+        if (!evaluateCondition(cond)) {
+          allConditionsMet = false;
+          break;
+        }
+      }
+
+      if (allConditionsMet && rule.action) {
+        const action = rule.action;
+        
+        if (action.setting === 'do_not_show_template') return false;
+        
+        // Apply dynamic overrides to activeConfig
+        if (action.setting === 'max_per_page') {
+          activeConfig.rules = activeConfig.rules || {};
+          activeConfig.rules.max_per_page = parseInt(action.value, 10);
+        } else if (action.setting === 'initial_delay') {
+          activeConfig.timing = activeConfig.timing || {};
+          activeConfig.timing.delay_ms = parseInt(action.value, 10);
+        } else if (action.setting === 'display_interval') {
+          activeConfig.timing = activeConfig.timing || {};
+          activeConfig.timing.time_between_ms = parseInt(action.value, 10);
+        } else if (action.setting === 'position') {
+          activeConfig.theme = activeConfig.theme || {};
+          activeConfig.theme.position = action.value;
+        }
       }
     }
-
-    if (isExcluded) return false;
-    if (hasIncludes && !isIncluded) return false;
     return true;
   }
 
@@ -498,7 +537,7 @@
 
       // Validate Rules & Limits
       const rules = data.rules || {};
-      if (!checkPageRules(rules.page_rules)) {
+      if (!evaluateAdvancedRules(rules.advanced_rules)) {
         return; // Abort silently
       }
 
