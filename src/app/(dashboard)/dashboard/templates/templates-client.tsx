@@ -32,7 +32,7 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
       event_type: 'purchase',
       template_string: '{{first_name}} in {{city}} just bought {{product_name}}',
       description: 'Show recent purchases to build trust.',
-      icon: '🛍️'
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
     },
     {
       id: 'preset-visitors',
@@ -40,7 +40,7 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
       event_type: 'active_visitors',
       template_string: '{{count}} people are currently viewing this page',
       description: 'Show live traffic to create urgency.',
-      icon: '👀'
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
     },
     {
       id: 'preset-newsletter',
@@ -48,7 +48,7 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
       event_type: 'signup',
       template_string: 'Someone from {{city}} just subscribed to our newsletter!',
       description: 'Grow your email list faster.',
-      icon: '✉️'
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
     },
     {
       id: 'preset-custom',
@@ -56,7 +56,7 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
       event_type: 'custom',
       template_string: 'Someone just performed an action!',
       description: 'Build your own custom notification.',
-      icon: '⚙️'
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
     }
   ];
 
@@ -153,7 +153,7 @@ export function TemplatesClient({ templates }: { templates: NotificationTemplate
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
             >
-              <div style={{ fontSize: '28px', marginBottom: '12px' }}>{preset.icon}</div>
+              <div style={{ fontSize: '28px', marginBottom: '12px', color: 'var(--text-muted)' }}>{preset.icon}</div>
               <h4 style={{ margin: '0 0 6px 0', fontSize: '0.875rem', fontWeight: 600 }}>{preset.name}</h4>
               <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>{preset.description}</p>
             </div>
