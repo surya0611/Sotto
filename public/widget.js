@@ -703,6 +703,75 @@
     isPolling = false;
   }
 
+  // 5.5. Inline Notifications
+  async function initInline() {
+    const inlineElements = document.querySelectorAll('[data-sotto-inline]');
+    if (inlineElements.length === 0) return;
+
+    try {
+      const response = await fetch(`${apiBase}/api/widget/inline?account_id=${accountId}&url=${encodeURIComponent(window.location.href)}`);
+      const data = await response.json();
+      
+      inlineElements.forEach(el => {
+        const type = el.getAttribute('data-sotto-inline');
+        let config = null;
+        
+        if (type === 'active-visitors') config = data.active_visitors;
+        else if (type === 'page-stream') config = data.page_stream;
+        else if (type === 'custom-roundups') config = data.custom_roundups;
+
+        if (config && config.enabled) {
+          // Build inner HTML with icon and text
+          let innerHtml = '';
+          
+          if (config.icon && config.icon !== 'none') {
+            let iconHtml = '';
+            if (config.icon === 'pulse_green') {
+              iconHtml = '<span style="display:inline-block; width:8px; height:8px; background-color:#10B981; border-radius:50%; margin-right:6px; animation: sotto-pulse 2s infinite;"></span>';
+            } else if (config.icon === 'pulse_red') {
+              iconHtml = '<span style="display:inline-block; width:8px; height:8px; background-color:#EF4444; border-radius:50%; margin-right:6px; animation: sotto-pulse 2s infinite;"></span>';
+            } else if (config.icon === 'fire') {
+              iconHtml = '<span style="margin-right:6px;">🔥</span>';
+            } else if (config.icon === 'eyes') {
+              iconHtml = '<span style="margin-right:6px;">👀</span>';
+            } else if (config.icon === 'bag') {
+              iconHtml = '<span style="margin-right:6px;">🛍️</span>';
+            }
+            innerHtml += iconHtml;
+          }
+          
+          innerHtml += `<span>${config.text}</span>`;
+          
+          el.innerHTML = innerHtml;
+          el.style.display = 'inline-flex';
+          el.style.alignItems = 'center';
+          
+          // Apply styles
+          if (config.color && config.color !== 'inherit') {
+            el.style.color = config.color;
+          }
+          if (config.size && config.size !== 'inherit') {
+            el.style.fontSize = config.size;
+          }
+          
+          // Inject keyframes if needed
+          if (config.icon && config.icon.includes('pulse') && !document.getElementById('sotto-inline-styles')) {
+            const style = document.createElement('style');
+            style.id = 'sotto-inline-styles';
+            if (config.icon === 'pulse_green') {
+              style.innerHTML = '@keyframes sotto-pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }';
+            } else {
+              style.innerHTML = '@keyframes sotto-pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }';
+            }
+            document.head.appendChild(style);
+          }
+        }
+      });
+    } catch (e) {
+      console.error('[Sotto] Inline Init Error:', e);
+    }
+  }
+
   // 6. Bootstrap
   async function bootstrap() {
     if (isSuppressed()) return;
@@ -715,6 +784,9 @@
       // We don't start polling if it's a conversion page, to keep the thank you page clean.
       return;
     }
+
+    // Initialize Inline elements
+    initInline();
 
     // Default delay is 3000ms. We could fetch config first, but doing an optimistic poll is fine.
     // We'll let the first poll happen quickly and rely on its delay if any.

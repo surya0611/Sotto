@@ -10,12 +10,21 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
   const [activeVisitorsEnabled, setActiveVisitorsEnabled] = useState(initialConfig.active_visitors_enabled ?? true);
   const [activeVisitorsMode, setActiveVisitorsMode] = useState(initialConfig.active_visitors_mode || 'simulated');
   const [activeVisitorsText, setActiveVisitorsText] = useState(initialConfig.active_visitors_text || '{{count}} people are currently viewing this page');
+  const [activeVisitorsColor, setActiveVisitorsColor] = useState(initialConfig.active_visitors_color || 'inherit');
+  const [activeVisitorsSize, setActiveVisitorsSize] = useState(initialConfig.active_visitors_size || 'inherit');
+  const [activeVisitorsIcon, setActiveVisitorsIcon] = useState(initialConfig.active_visitors_icon || 'none');
 
   const [pageStreamEnabled, setPageStreamEnabled] = useState(initialConfig.page_stream_enabled ?? true);
   const [pageStreamText, setPageStreamText] = useState(initialConfig.page_stream_text || '{{count}} people bought this in the last 24 hours');
+  const [pageStreamColor, setPageStreamColor] = useState(initialConfig.page_stream_color || 'inherit');
+  const [pageStreamSize, setPageStreamSize] = useState(initialConfig.page_stream_size || 'inherit');
+  const [pageStreamIcon, setPageStreamIcon] = useState(initialConfig.page_stream_icon || 'none');
 
   const [customRoundupsEnabled, setCustomRoundupsEnabled] = useState(initialConfig.custom_roundups_enabled ?? true);
   const [customRoundupsText, setCustomRoundupsText] = useState(initialConfig.custom_roundups_text || '{{count}} people subscribed recently');
+  const [customRoundupsColor, setCustomRoundupsColor] = useState(initialConfig.custom_roundups_color || 'inherit');
+  const [customRoundupsSize, setCustomRoundupsSize] = useState(initialConfig.custom_roundups_size || 'inherit');
+  const [customRoundupsIcon, setCustomRoundupsIcon] = useState(initialConfig.custom_roundups_icon || 'none');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,10 +32,21 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
     if (activeVisitorsEnabled) formData.append('active_visitors_enabled', 'on');
     formData.append('active_visitors_mode', activeVisitorsMode);
     formData.append('active_visitors_text', activeVisitorsText);
+    formData.append('active_visitors_color', activeVisitorsColor);
+    formData.append('active_visitors_size', activeVisitorsSize);
+    formData.append('active_visitors_icon', activeVisitorsIcon);
+
     if (pageStreamEnabled) formData.append('page_stream_enabled', 'on');
     formData.append('page_stream_text', pageStreamText);
+    formData.append('page_stream_color', pageStreamColor);
+    formData.append('page_stream_size', pageStreamSize);
+    formData.append('page_stream_icon', pageStreamIcon);
+
     if (customRoundupsEnabled) formData.append('custom_roundups_enabled', 'on');
     formData.append('custom_roundups_text', customRoundupsText);
+    formData.append('custom_roundups_color', customRoundupsColor);
+    formData.append('custom_roundups_size', customRoundupsSize);
+    formData.append('custom_roundups_icon', customRoundupsIcon);
 
     startTransition(async () => {
       try {
@@ -46,6 +66,12 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
     setEnabled: (val: boolean) => void, 
     text: string, 
     setText: (val: string) => void,
+    color: string,
+    setColor: (val: string) => void,
+    size: string,
+    setSize: (val: string) => void,
+    iconSetting: string,
+    setIconSetting: (val: string) => void,
     icon: React.ReactNode
   ) => (
     <div className="card" style={{ borderLeft: enabled ? '4px solid var(--accent)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
@@ -102,6 +128,51 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
           <p className="input-hint">Use <code>{`{{count}}`}</code> to display the dynamic number.</p>
         </div>
 
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--space-4)' }}>
+          <div className="input-group">
+            <label className="input-label">Text Color</label>
+            <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+              <input 
+                type="color" 
+                value={color === 'inherit' ? '#000000' : color}
+                onChange={(e) => setColor(e.target.value)}
+                style={{ width: '40px', height: '40px', padding: '0', border: '1px solid var(--border)', borderRadius: '4px', cursor: 'pointer' }}
+                disabled={color === 'inherit'}
+              />
+              <select className="input" value={color === 'inherit' ? 'inherit' : 'custom'} onChange={(e) => {
+                if (e.target.value === 'inherit') setColor('inherit');
+                else setColor('#1a1a1a');
+              }}>
+                <option value="inherit">Inherit from site</option>
+                <option value="custom">Custom Color</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="input-group">
+            <label className="input-label">Font Size</label>
+            <select className="input" value={size} onChange={(e) => setSize(e.target.value)}>
+              <option value="inherit">Inherit</option>
+              <option value="12px">Small (12px)</option>
+              <option value="14px">Medium (14px)</option>
+              <option value="16px">Large (16px)</option>
+              <option value="18px">Extra Large (18px)</option>
+            </select>
+          </div>
+
+          <div className="input-group">
+            <label className="input-label">Visual Indicator</label>
+            <select className="input" value={iconSetting} onChange={(e) => setIconSetting(e.target.value)}>
+              <option value="none">None</option>
+              <option value="pulse_green">🟢 Blinking Green Dot</option>
+              <option value="pulse_red">🔴 Blinking Red Dot</option>
+              <option value="fire">🔥 Fire Emoji</option>
+              <option value="eyes">👀 Eyes Emoji</option>
+              <option value="bag">🛍️ Shopping Bag</option>
+            </select>
+          </div>
+        </div>
+
         <div className="input-group">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <label className="input-label">Embed Code</label>
@@ -133,6 +204,9 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
         'active-visitors',
         activeVisitorsEnabled, setActiveVisitorsEnabled,
         activeVisitorsText, setActiveVisitorsText,
+        activeVisitorsColor, setActiveVisitorsColor,
+        activeVisitorsSize, setActiveVisitorsSize,
+        activeVisitorsIcon, setActiveVisitorsIcon,
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
       )}
 
@@ -142,6 +216,9 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
         'page-stream',
         pageStreamEnabled, setPageStreamEnabled,
         pageStreamText, setPageStreamText,
+        pageStreamColor, setPageStreamColor,
+        pageStreamSize, setPageStreamSize,
+        pageStreamIcon, setPageStreamIcon,
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       )}
 
@@ -151,6 +228,9 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
         'custom-roundups',
         customRoundupsEnabled, setCustomRoundupsEnabled,
         customRoundupsText, setCustomRoundupsText,
+        customRoundupsColor, setCustomRoundupsColor,
+        customRoundupsSize, setCustomRoundupsSize,
+        customRoundupsIcon, setCustomRoundupsIcon,
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       )}
 

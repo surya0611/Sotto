@@ -95,17 +95,26 @@ export async function GET(request: Request) {
       active_visitors: {
         enabled: inlineConfig.active_visitors_enabled,
         count: activeVisitorsCount,
-        text: inlineConfig.active_visitors_text.replace('{{count}}', activeVisitorsCount.toString())
+        text: inlineConfig.active_visitors_text.replace('{{count}}', activeVisitorsCount.toString()),
+        color: inlineConfig.active_visitors_color || 'inherit',
+        size: inlineConfig.active_visitors_size || 'inherit',
+        icon: inlineConfig.active_visitors_icon || 'none'
       },
       page_stream: {
         enabled: inlineConfig.page_stream_enabled,
         count: purchaseCount || 0,
-        text: inlineConfig.page_stream_text.replace('{{count}}', (purchaseCount || 0).toString())
+        text: inlineConfig.page_stream_text.replace('{{count}}', (purchaseCount || 0).toString()),
+        color: inlineConfig.page_stream_color || 'inherit',
+        size: inlineConfig.page_stream_size || 'inherit',
+        icon: inlineConfig.page_stream_icon || 'none'
       },
       custom_roundups: {
         enabled: inlineConfig.custom_roundups_enabled,
         count: signupCount || 0,
-        text: inlineConfig.custom_roundups_text.replace('{{count}}', (signupCount || 0).toString())
+        text: inlineConfig.custom_roundups_text.replace('{{count}}', (signupCount || 0).toString()),
+        color: inlineConfig.custom_roundups_color || 'inherit',
+        size: inlineConfig.custom_roundups_size || 'inherit',
+        icon: inlineConfig.custom_roundups_icon || 'none'
       }
     };
 
