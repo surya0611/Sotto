@@ -13,40 +13,40 @@
 }
 
 :root {
-  /* Backgrounds - Oliva Theme */
-  --bg-deep: hsl(40, 33%, 98%); /* Cream */
-  --bg-base: hsl(45, 33%, 96%); /* Darker cream */
-  --bg-surface: hsl(0, 0%, 100%); /* White */
-  --bg-surface-hover: hsl(40, 20%, 94%);
-  --bg-surface-active: hsl(40, 20%, 90%);
+  /* Backgrounds - ElevenLabs Cool Grey/White */
+  --bg-deep: hsl(240, 5%, 96%); /* Subtle cool grey */
+  --bg-base: hsl(240, 5%, 98%); /* Lighter grey */
+  --bg-surface: hsl(0, 0%, 100%); /* Pure White */
+  --bg-surface-hover: hsl(240, 5%, 96%);
+  --bg-surface-active: hsl(240, 5%, 92%);
   --bg-elevated: hsl(0, 0%, 100%);
   --bg-input: hsl(0, 0%, 100%);
 
   /* Borders */
-  --border: hsl(40, 20%, 85%);
-  --border-subtle: hsl(40, 20%, 92%);
-  --border-focus: hsl(33, 43%, 59%);
+  --border: hsl(240, 5.9%, 90%); /* zinc-200 */
+  --border-subtle: hsl(240, 4.8%, 95.9%); /* zinc-100 */
+  --border-focus: hsl(240, 10%, 3.9%); /* zinc-950 */
 
-  /* Text - Deep Olive */
-  --text-primary: hsl(98, 15%, 18%);
-  --text-secondary: hsl(98, 10%, 30%);
-  --text-muted: hsl(98, 5%, 50%);
-  --text-inverse: hsl(40, 33%, 98%);
+  /* Text - High Contrast Zinc */
+  --text-primary: hsl(240, 10%, 3.9%); /* zinc-950 */
+  --text-secondary: hsl(240, 3.8%, 46.1%); /* zinc-500 */
+  --text-muted: hsl(240, 4.8%, 65.9%); /* zinc-400 */
+  --text-inverse: hsl(0, 0%, 100%);
 
-  /* Accent — Warm Camel */
-  --accent: hsl(33, 43%, 59%);
-  --accent-hover: hsl(33, 34%, 53%);
-  --accent-subtle: hsla(33, 43%, 59%, 0.15);
-  --accent-border: hsla(33, 43%, 59%, 0.3);
+  /* Accent — Solid Black */
+  --accent: hsl(240, 10%, 3.9%);
+  --accent-hover: hsl(240, 5.9%, 10%);
+  --accent-subtle: hsl(240, 4.8%, 95.9%);
+  --accent-border: hsl(240, 5.9%, 90%);
   --accent-text: hsl(0, 0%, 100%);
 
   /* Semantic Colors */
-  --success: hsl(145, 40%, 35%);
-  --success-subtle: hsla(145, 40%, 35%, 0.1);
-  --warning: hsl(38, 80%, 45%);
-  --warning-subtle: hsla(38, 80%, 45%, 0.1);
-  --error: hsl(0, 60%, 45%);
-  --error-subtle: hsla(0, 60%, 45%, 0.1);
+  --success: hsl(142.1, 76.2%, 36.3%);
+  --success-subtle: hsla(142.1, 76.2%, 36.3%, 0.1);
+  --warning: hsl(38, 92%, 50%);
+  --warning-subtle: hsla(38, 92%, 50%, 0.1);
+  --error: hsl(346.8, 77.2%, 49.8%);
+  --error-subtle: hsla(346.8, 77.2%, 49.8%, 0.1);
 
   /* Spacing */
   --space-1: 4px;
@@ -60,23 +60,23 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  /* Radius - slightly softer for luxury feel */
+  /* Radius - Sharper, technical feel */
   --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 20px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
   --radius-full: 9999px;
 
-  /* Shadows - softer, more diffuse */
-  --shadow-sm: 0 2px 8px hsla(30, 10%, 15%, 0.04);
-  --shadow-md: 0 8px 24px hsla(30, 10%, 15%, 0.06);
-  --shadow-lg: 0 16px 40px hsla(30, 10%, 15%, 0.08);
-  --shadow-glow: 0 0 24px hsla(27, 40%, 40%, 0.15);
+  /* Shadows - Crisp and tight */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 0 2px var(--border-focus);
 
   /* Transitions */
-  --transition-fast: 200ms ease;
-  --transition-base: 300ms ease;
-  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Layout */
   --sidebar-width: 260px;
@@ -84,8 +84,8 @@
   --topbar-height: 72px;
 
   /* Font */
-  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'SF Mono', ui-monospace, 'JetBrains Mono', monospace;
 }
 
@@ -201,16 +201,16 @@ a:hover {
 }
 
 .btn-primary {
-  background: var(--accent);
-  color: var(--accent-text);
-  border-color: var(--accent);
+  background: var(--text-primary);
+  color: var(--bg-surface);
+  border-color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
-  color: var(--accent-text);
-  box-shadow: var(--shadow-glow);
+  color: var(--bg-surface);
 }
 
 .btn-secondary {
@@ -309,8 +309,8 @@ a:hover {
 }
 
 .input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-subtle);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 1px var(--border-focus);
 }
 
 .input-error {
@@ -355,9 +355,10 @@ a:hover {
 /* --- Card --- */
 .card {
   background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
 }
 
@@ -611,7 +612,7 @@ a:hover {
   width: var(--sidebar-width);
   height: 100vh;
   background: var(--bg-base);
-  border-right: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -632,10 +633,10 @@ a:hover {
   align-items: center;
   gap: var(--space-3);
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  color: var(--accent);
-  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
   text-decoration: none;
 }
 
@@ -689,8 +690,8 @@ a:hover {
 }
 
 .sidebar-link.active {
-  background: var(--accent-subtle);
-  color: var(--accent);
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
   font-weight: 500;
 }
 
@@ -767,9 +768,9 @@ a:hover {
   position: sticky;
   top: 0;
   height: var(--topbar-height);
-  background: hsla(40, 20%, 98%, 0.8);
+  background: hsla(240, 5%, 98%, 0.8);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
