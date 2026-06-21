@@ -4,16 +4,32 @@
 
   // 1. Identify configuration
   const scriptTag = document.currentScript || document.querySelector('script[src*="widget.js"]');
-  if (!scriptTag) return;
+  if (!scriptTag) {
+    console.log('[Sotto] Could not find script tag');
+    return;
+  }
 
   const accountId = scriptTag.getAttribute('data-account-id');
-  if (!accountId) return;
+  if (!accountId) {
+    console.log('[Sotto] Missing data-account-id on script tag');
+    return;
+  }
 
   const scriptUrl = new URL(scriptTag.src);
   const apiBase = scriptUrl.origin;
+  console.log('[Sotto] Initialized with Account ID:', accountId);
 
   // 2. Session Management
   function getOrCreateSession() {
+    // Demo Mode bypass: Clear session storage every load to allow infinite testing
+    if (window.location.pathname.includes('/demo')) {
+      sessionStorage.removeItem('sotto_shown_event_ids');
+      sessionStorage.removeItem('sotto_shown_product_ids');
+      sessionStorage.removeItem('sotto_session_displays');
+      sessionStorage.removeItem('sotto_suppress_until');
+      sessionStorage.removeItem('sotto_close_count');
+    }
+
     let sessionId = sessionStorage.getItem('sotto_session_id');
     if (sessionId) return sessionId;
     
@@ -517,13 +533,16 @@
     isPolling = true;
 
     try {
+      console.log('[Sotto] Polling API...');
       const excEvents = encodeURIComponent(JSON.stringify(getExclusions('sotto_shown_event_ids')));
       const excProducts = encodeURIComponent(JSON.stringify(getExclusions('sotto_shown_product_ids')));
       
       const response = await fetch(`${apiBase}/api/widget/events?account_id=${accountId}&session_id=${sessionId}&excluded_event_ids=${excEvents}&excluded_product_ids=${excProducts}`);
       const data = await response.json();
+      console.log('[Sotto] API Response:', data);
 
       if (data.skip) {
+        console.log('[Sotto] API returned skip: true');
         // Handle looping if no new events
         if (activeConfig && activeConfig.timing && activeConfig.timing.loop) {
           clearExclusions();
@@ -538,6 +557,7 @@
       // Validate Rules & Limits
       const rules = data.rules || {};
       if (!evaluateAdvancedRules(rules.advanced_rules)) {
+        console.log('[Sotto] Aborted by Advanced Rules');
         return; // Abort silently
       }
 
@@ -545,6 +565,7 @@
       const maxPerPage = rules.max_per_page || 20;
 
       if (pageDisplayCount >= maxPerPage || getSessionDisplays() >= frequencyCap) {
+        console.log('[Sotto] Aborted by Limits (MaxPerPage or FrequencyCap)');
         return; // Abort silently
       }
 
@@ -590,11 +611,13 @@
     
     // We fetch the config on the first poll
     try {
+      console.log('[Sotto] Bootstrapping...');
       const response = await fetch(`${apiBase}/api/widget/events?account_id=${accountId}&session_id=${sessionId}`);
       const data = await response.json();
       activeConfig = data;
 
       const delayMs = data?.timing?.delay_ms || 3000;
+      console.log(`[Sotto] Starting first poll in ${delayMs}ms...`);
       setTimeout(poll, delayMs);
     } catch(e) {
       setTimeout(poll, 3000);
