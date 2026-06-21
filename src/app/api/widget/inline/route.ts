@@ -38,17 +38,38 @@ export async function GET(request: Request) {
       custom_roundups_enabled: true
     };
 
-    // 2. Calculate "Active Visitors" (Smart Algorithm)
-    // We want a realistic fluctuating number. We hash the URL + current time (rounded to 10 mins).
-    const timeSlot = Math.floor(Date.now() / (1000 * 60 * 10)); 
-    const strToHash = accountId + url + timeSlot.toString();
-    let hash = 0;
-    for (let i = 0; i < strToHash.length; i++) {
-      hash = ((hash << 5) - hash) + strToHash.charCodeAt(i);
-      hash |= 0;
+    // 2. Calculate "Active Visitors"
+    let activeVisitorsCount = 0;
+    const mode = inlineConfig.active_visitors_mode || 'simulated';
+
+    if (mode === 'true_live') {
+      // Count unique session_ids from the last 15 minutes
+      const fifteenMinsAgo = new Date();
+      fifteenMinsAgo.setMinutes(fifteenMinsAgo.getMinutes() - 15);
+      
+      const { data: recentSessions } = await supabaseAdmin
+        .from('events')
+        .select('session_id')
+        .eq('account_id', accountId)
+        .gte('created_at', fifteenMinsAgo.toISOString());
+        
+      if (recentSessions) {
+        const uniqueSessions = new Set(recentSessions.map(s => s.session_id));
+        activeVisitorsCount = uniqueSessions.size;
+      }
+    } else {
+      // Smart Algorithm (Simulated)
+      // We want a realistic fluctuating number. We hash the URL + current time (rounded to 10 mins).
+      const timeSlot = Math.floor(Date.now() / (1000 * 60 * 10)); 
+      const strToHash = accountId + url + timeSlot.toString();
+      let hash = 0;
+      for (let i = 0; i < strToHash.length; i++) {
+        hash = ((hash << 5) - hash) + strToHash.charCodeAt(i);
+        hash |= 0;
+      }
+      // Generate a number between 12 and 47
+      activeVisitorsCount = Math.abs(hash) % 35 + 12;
     }
-    // Generate a number between 12 and 47
-    const activeVisitorsCount = Math.abs(hash) % 35 + 12;
 
     // 3. Calculate "Page Stream" (Purchases in last 24h)
     const yesterday = new Date();

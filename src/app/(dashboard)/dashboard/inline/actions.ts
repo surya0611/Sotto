@@ -27,6 +27,7 @@ export async function saveInlineConfig(formData: FormData) {
 
   const inlineConfig = {
     active_visitors_enabled: formData.get('active_visitors_enabled') === 'on',
+    active_visitors_mode: formData.get('active_visitors_mode')?.toString() || 'simulated',
     active_visitors_text: formData.get('active_visitors_text')?.toString() || '',
     page_stream_enabled: formData.get('page_stream_enabled') === 'on',
     page_stream_text: formData.get('page_stream_text')?.toString() || '',

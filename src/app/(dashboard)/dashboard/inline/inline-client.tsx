@@ -8,6 +8,7 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
   const [isPending, startTransition] = useTransition();
 
   const [activeVisitorsEnabled, setActiveVisitorsEnabled] = useState(initialConfig.active_visitors_enabled ?? true);
+  const [activeVisitorsMode, setActiveVisitorsMode] = useState(initialConfig.active_visitors_mode || 'simulated');
   const [activeVisitorsText, setActiveVisitorsText] = useState(initialConfig.active_visitors_text || '{{count}} people are currently viewing this page');
 
   const [pageStreamEnabled, setPageStreamEnabled] = useState(initialConfig.page_stream_enabled ?? true);
@@ -20,6 +21,7 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
     e.preventDefault();
     const formData = new FormData();
     if (activeVisitorsEnabled) formData.append('active_visitors_enabled', 'on');
+    formData.append('active_visitors_mode', activeVisitorsMode);
     formData.append('active_visitors_text', activeVisitorsText);
     if (pageStreamEnabled) formData.append('page_stream_enabled', 'on');
     formData.append('page_stream_text', pageStreamText);
@@ -69,6 +71,25 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
       </div>
 
       <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'auto' : 'none' }}>
+        {dataId === 'active-visitors' && (
+          <div className="input-group">
+            <label className="input-label">Algorithm Mode</label>
+            <select 
+              className="input" 
+              value={activeVisitorsMode} 
+              onChange={(e) => setActiveVisitorsMode(e.target.value)}
+            >
+              <option value="simulated">Smart Algorithm (Highly Realistic, High Conversion)</option>
+              <option value="true_live">True Live Metric (Exact Session Count)</option>
+            </select>
+            <p className="input-hint">
+              {activeVisitorsMode === 'simulated' 
+                ? 'We use a smart hashing algorithm to ensure your store never looks "dead" by showing 0 or 1 visitors.'
+                : 'We will show the exact number of active sessions in the last 15 minutes. Warning: Can cause negative social proof if traffic is low.'}
+            </p>
+          </div>
+        )}
+
         <div className="input-group">
           <label className="input-label">Display Text</label>
           <input 
