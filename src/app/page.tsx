@@ -80,9 +80,9 @@ export default function Home() {
               <p style={{ color: 'var(--text-secondary)' }}>Perfect for testing the waters.</p>
               <div className="pricing-price">$0<span className="pricing-period">/mo</span></div>
               <ul className="checklist" style={{ textAlign: 'left', marginTop: '16px', marginBottom: '24px' }}>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">Up to 1,000 events/mo</span></li>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">1 Domain</span></li>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">Standard Support</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Up to 1,000 events/mo</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">1 Domain</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Standard Support</span></li>
               </ul>
               <Link href="/signup" className="btn btn-secondary w-full" style={{ marginTop: 'auto' }}>Get Started</Link>
             </div>
@@ -93,9 +93,9 @@ export default function Home() {
               <p style={{ color: 'var(--text-secondary)' }}>For growing luxury storefronts.</p>
               <div className="pricing-price">$49<span className="pricing-period">/mo</span></div>
               <ul className="checklist" style={{ textAlign: 'left', marginTop: '16px', marginBottom: '24px' }}>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">Up to 50,000 events/mo</span></li>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">3 Domains</span></li>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">Priority Support</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Up to 50,000 events/mo</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">3 Domains</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Priority Support</span></li>
               </ul>
               <Link href="/signup" className="btn btn-primary w-full" style={{ marginTop: 'auto' }}>Start Free Trial</Link>
             </div>
@@ -105,9 +105,9 @@ export default function Home() {
               <p style={{ color: 'var(--text-secondary)' }}>High volume, multi-region brands.</p>
               <div className="pricing-price">$149<span className="pricing-period">/mo</span></div>
               <ul className="checklist" style={{ textAlign: 'left', marginTop: '16px', marginBottom: '24px' }}>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">Up to 500,000 events/mo</span></li>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">10 Domains</span></li>
-                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--text-primary)', backgroundColor: 'var(--text-primary)', color: 'var(--bg-surface)' }}>✓</span><span className="checklist-text">Dedicated Success Manager</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Up to 500,000 events/mo</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">10 Domains</span></li>
+                <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Dedicated Success Manager</span></li>
               </ul>
               <Link href="/signup" className="btn btn-secondary w-full" style={{ marginTop: 'auto' }}>Contact Sales</Link>
             </div>

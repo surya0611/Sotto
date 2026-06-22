@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display, Outfit } from 'next/font/google';
+import { Inter, Playfair_Display, Outfit, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({
@@ -20,6 +20,13 @@ const outfit = Outfit({
   display: 'swap',
 });
 
+const jakarta = Plus_Jakarta_Sans({
+  variable: '--font-jakarta',
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700', '800'],
+});
+
 export const metadata: Metadata = {
   title: {
     default: 'Sotto',
@@ -34,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} ${outfit.variable}`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable} ${outfit.variable} ${jakarta.variable}`}>
       <body>{children}</body>
     </html>
   );

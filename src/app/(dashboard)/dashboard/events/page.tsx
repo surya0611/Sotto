@@ -53,8 +53,8 @@ export default async function EventsPage() {
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {events.length === 0 ? (
           <div className="empty-state" style={{ padding: 'var(--space-12) var(--space-6)' }}>
-            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-accent-light)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-              <Zap width="20" height="20" />
+            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--accent-subtle)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', border: '1px solid var(--accent-border)' }}>
+              <Zap width="18" height="18" />
             </div>
             <h4 className="empty-state-title">No events yet</h4>
             <p className="empty-state-description">

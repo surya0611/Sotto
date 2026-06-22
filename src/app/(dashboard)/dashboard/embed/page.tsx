@@ -45,13 +45,14 @@ export default async function EmbedPage() {
         <div className="card-content">
           <div style={{ position: 'relative' }}>
             <pre style={{ 
-              background: 'var(--bg-deep)', 
+              background: 'var(--bg-surface-hover)', 
               padding: 'var(--space-4)', 
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--border)',
               overflowX: 'auto',
-              fontSize: '0.875rem',
-              color: 'var(--text-primary)'
+              fontSize: '0.8125rem',
+              color: 'var(--text-primary)',
+              fontFamily: 'var(--font-mono)'
             }}>
               <code>{widgetScript}</code>
             </pre>

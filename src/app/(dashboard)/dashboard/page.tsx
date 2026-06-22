@@ -50,120 +50,109 @@ export default async function DashboardPage() {
 
   return (
     <div className="animate-fade-in">
-      {/* Welcome Section */}
-      <div style={{ marginBottom: 'var(--space-8)' }}>
-        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 600, marginBottom: 'var(--space-2)' }}>
-          Welcome, {brandName}
+      {/* Welcome */}
+      <div style={{ marginBottom: '32px' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '4px', letterSpacing: '-0.03em' }}>
+          Welcome back, {brandName} 👋
         </h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-          Here&apos;s an overview of your social proof activity.
+        <p style={{ fontSize: '0.8125rem', color: 'var(--fg-subtle)' }}>
+          Here&apos;s your social proof activity this week.
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="stats-grid" style={{ marginBottom: 'var(--space-8)' }}>
+      <div className="stats-grid stagger-in" style={{ marginBottom: '32px' }}>
         <div className="stats-card">
           <div className="stats-card-header">
-            <span className="stats-card-label">Total Events</span>
+            <span className="stats-card-label">Events</span>
             <div className="stats-card-icon">
-              <Zap width="16" height="16" />
+              <Zap width="14" height="14" />
             </div>
           </div>
           <div className="stats-card-value">{totalEvents}</div>
-          <div className="stats-card-trend" style={{ color: 'var(--text-muted)' }}>
-            This week
-          </div>
+          <div className="stats-card-trend">This week</div>
         </div>
 
         <div className="stats-card">
           <div className="stats-card-header">
             <span className="stats-card-label">Impressions</span>
-            <div className="stats-card-icon">
-              <Eye width="16" height="16" />
+            <div className="stats-card-icon" style={{ background: '#EAF5FE', color: '#3EB0EF' }}>
+              <Eye width="14" height="14" />
             </div>
           </div>
           <div className="stats-card-value">{impressions}</div>
-          <div className="stats-card-trend" style={{ color: 'var(--text-muted)' }}>
-            This week
-          </div>
+          <div className="stats-card-trend">This week</div>
         </div>
 
         <div className="stats-card">
           <div className="stats-card-header">
-            <span className="stats-card-label">Click-throughs</span>
-            <div className="stats-card-icon">
-              <PointerClick width="16" height="16" />
+            <span className="stats-card-label">Clicks</span>
+            <div className="stats-card-icon" style={{ background: '#FEF0F0', color: '#F67E7E' }}>
+              <PointerClick width="14" height="14" />
             </div>
           </div>
           <div className="stats-card-value">{clickThroughs}</div>
-          <div className="stats-card-trend" style={{ color: 'var(--text-muted)' }}>
-            This week
-          </div>
+          <div className="stats-card-trend">This week</div>
         </div>
 
         <div className="stats-card">
           <div className="stats-card-header">
-            <span className="stats-card-label">Click-through Rate</span>
-            <div className="stats-card-icon">
-              <BarChart width="16" height="16" />
+            <span className="stats-card-label">CTR</span>
+            <div className="stats-card-icon" style={{ background: 'var(--success-bg)', color: 'var(--success)' }}>
+              <BarChart width="14" height="14" />
             </div>
           </div>
           <div className="stats-card-value">{clickThroughRate}%</div>
-          <div className="stats-card-trend" style={{ color: 'var(--text-muted)' }}>
-            This week
-          </div>
+          <div className="stats-card-trend">This week</div>
         </div>
       </div>
 
-      {/* Quick Start Wizard (Redesigned) */}
-      <div style={{ marginBottom: 'var(--space-10)' }}>
-        <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', fontWeight: 600, marginBottom: 'var(--space-4)' }}>
-          Let's get Sotto running on your store
+      {/* Quick Start */}
+      <div style={{ marginBottom: '40px' }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '4px' }}>
+          Get started
         </h3>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-6)' }}>Follow these 3 simple steps to launch your first social proof campaign.</p>
+        <p style={{ color: 'var(--fg-subtle)', marginBottom: '20px', fontSize: '0.8125rem' }}>3 steps to launch your first campaign.</p>
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <div className="stagger-in" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           
-          {/* Step 1 */}
-          <div className="card card-hover" style={{ display: 'flex', gap: 'var(--space-6)', alignItems: 'center', padding: 'var(--space-6)' }}>
-            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
-              1
-            </div>
+          <div className="card card-hover" style={{ display: 'flex', gap: '16px', alignItems: 'center', padding: '16px 20px' }}>
+            <div style={{ 
+              background: 'var(--bg-muted)', width: '32px', height: '32px', borderRadius: '8px', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center', 
+              fontSize: '0.75rem', fontWeight: 800, color: 'var(--primary)', flexShrink: 0,
+            }}>1</div>
             <div style={{ flex: 1 }}>
-              <h4 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-1)' }}>Install the Embed Code</h4>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Paste our tiny snippet into your website's code to enable Sotto.</p>
+              <h4 style={{ fontSize: '0.875rem', fontWeight: 700, marginBottom: '1px' }}>Install the Embed Code</h4>
+              <p style={{ color: 'var(--fg-subtle)', fontSize: '0.75rem' }}>Paste our snippet into your website&apos;s code.</p>
             </div>
-            <Link href="/dashboard/embed" className="btn btn-primary">
-              Get Code →
-            </Link>
+            <Link href="/dashboard/embed" className="btn btn-primary btn-sm">Get Code →</Link>
           </div>
 
-          {/* Step 2 */}
-          <div className="card card-hover" style={{ display: 'flex', gap: 'var(--space-6)', alignItems: 'center', padding: 'var(--space-6)' }}>
-            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
-              2
-            </div>
+          <div className="card card-hover" style={{ display: 'flex', gap: '16px', alignItems: 'center', padding: '16px 20px' }}>
+            <div style={{ 
+              background: '#EAF5FE', width: '32px', height: '32px', borderRadius: '8px', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center', 
+              fontSize: '0.75rem', fontWeight: 800, color: '#3EB0EF', flexShrink: 0,
+            }}>2</div>
             <div style={{ flex: 1 }}>
-              <h4 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-1)' }}>Connect your Data</h4>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Link your Shopify store, Stripe account, or custom webhooks to pull in sales data.</p>
+              <h4 style={{ fontSize: '0.875rem', fontWeight: 700, marginBottom: '1px' }}>Connect your Data</h4>
+              <p style={{ color: 'var(--fg-subtle)', fontSize: '0.75rem' }}>Link Shopify, Razorpay, or custom webhooks.</p>
             </div>
-            <Link href="/dashboard/integrations" className="btn btn-secondary">
-              Connect Apps
-            </Link>
+            <Link href="/dashboard/integrations" className="btn btn-secondary btn-sm">Connect</Link>
           </div>
 
-          {/* Step 3 */}
-          <div className="card card-hover" style={{ display: 'flex', gap: 'var(--space-6)', alignItems: 'center', padding: 'var(--space-6)' }}>
-            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
-              3
-            </div>
+          <div className="card card-hover" style={{ display: 'flex', gap: '16px', alignItems: 'center', padding: '16px 20px' }}>
+            <div style={{ 
+              background: 'var(--success-bg)', width: '32px', height: '32px', borderRadius: '8px', 
+              display: 'flex', alignItems: 'center', justifyContent: 'center', 
+              fontSize: '0.75rem', fontWeight: 800, color: 'var(--success)', flexShrink: 0,
+            }}>3</div>
             <div style={{ flex: 1 }}>
-              <h4 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-1)' }}>Design your Widget</h4>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Customize how the popups look and feel to match your brand perfectly.</p>
+              <h4 style={{ fontSize: '0.875rem', fontWeight: 700, marginBottom: '1px' }}>Design your Widget</h4>
+              <p style={{ color: 'var(--fg-subtle)', fontSize: '0.75rem' }}>Customize the popup to match your brand.</p>
             </div>
-            <Link href="/dashboard/widget" className="btn btn-secondary">
-              Customize
-            </Link>
+            <Link href="/dashboard/widget" className="btn btn-secondary btn-sm">Customize</Link>
           </div>
 
         </div>

@@ -378,7 +378,7 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
                     <button 
                       onClick={() => handleDelete(t.id)}
                       disabled={isPending}
-                      style={{ background: 'none', border: 'none', color: '#ff5f57', cursor: 'pointer', fontSize: '13px' }}
+                      style={{ background: 'none', border: 'none', color: 'var(--error)', cursor: 'pointer', fontSize: '13px' }}
                     >
                       Delete
                     </button>

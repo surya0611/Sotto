@@ -79,7 +79,8 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
           style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0,0,0,0.5)',
+            background: 'rgba(30, 27, 75, 0.2)',
+            backdropFilter: 'blur(2px)',
             zIndex: 99,
           }}
           onClick={() => setSidebarOpen(false)}
@@ -91,7 +92,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
         <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <Link href="/dashboard" className="sidebar-logo" style={{ textDecoration: 'none' }}>
-            <div className="brand-logo-container" style={{ fontSize: '1.25rem' }}>
+            <div className="brand-logo-container" style={{ fontSize: '1.125rem' }}>
               S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
             </div>
           </Link>
@@ -149,7 +150,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
           <button
             onClick={handleLogout}
             className="btn btn-ghost btn-sm w-full"
-            style={{ marginTop: '8px', justifyContent: 'flex-start', paddingLeft: '12px' }}
+            style={{ marginTop: '4px', justifyContent: 'flex-start', paddingLeft: '12px' }}
           >
             ↪ Sign out
           </button>
@@ -174,7 +175,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
           </div>
           <div className="topbar-right">
             {account && (
-              <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
+              <span style={{ fontSize: '0.8125rem', color: 'var(--fg-muted)' }}>
                 {account.name}
               </span>
             )}

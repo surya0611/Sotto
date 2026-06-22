@@ -23,24 +23,24 @@ export default async function AdminLayout({
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-default)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bg-deep)' }}>
       {/* Admin Topbar */}
       <header style={{
-        background: '#1a1a1a',
-        color: '#ffffff',
+        background: 'var(--bg-base)',
+        color: 'var(--text-primary)',
         padding: '0 var(--space-6)',
         height: '60px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255,255,255,0.1)'
+        borderBottom: '1px solid var(--border)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
-          <div className="sidebar-logo-icon" style={{ background: '#333', color: '#fff' }}>S</div>
+          <div className="sidebar-logo-icon" style={{ background: 'var(--accent-subtle)', color: 'var(--accent)' }}>S</div>
           <span style={{ fontWeight: 600, letterSpacing: '-0.5px' }}>Sotto Super Admin</span>
         </div>
         <nav style={{ display: 'flex', gap: 'var(--space-4)' }}>
-          <Link href="/dashboard" style={{ color: '#a0a0a0', fontSize: '0.875rem', textDecoration: 'none' }}>
+          <Link href="/dashboard" style={{ color: 'var(--text-muted)', fontSize: '0.875rem', textDecoration: 'none' }}>
             ← Back to Brand Dashboard
           </Link>
         </nav>
