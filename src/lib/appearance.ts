@@ -1,3 +1,4 @@
+import { PAPER_TEXTURE } from "./textures";
 // STRICT CONSTRAINT: Zero framework dependencies (No React, No Next.js imports)
 // This file is compiled into the static widget.js AND consumed by the React Dashboard.
 
@@ -252,14 +253,32 @@ export function computeWidgetStyles(config: AppearanceConfig): any {
   }
 
   if (['grain', 'paper', 'linen'].includes(c.surface_style)) {
-    const opacity = (c.texture_intensity || 20) / 100;
-    bg.backgroundImage = `url("${NOISE_TEXTURE}")`;
-    bg.backgroundRepeat = 'repeat';
-    // Use an overlay to tint the noise
-    bg.boxShadow = `inset 0 0 0 9999px ${bgRgba}`;
-    bg.opacity = opacity; // Will need to ensure background color still shines through.
-    if (c.surface_style === 'linen') {
-      bg.backgroundSize = '20px 100px'; // Directional stretch for linen feel
+    const intensity = Math.min(100, Math.max(0, c.texture_intensity ?? 20)) / 100;
+    
+    if (c.surface_style === 'grain') {
+      const svgGrain = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)" opacity="${intensity * 0.5}"/></svg>`;
+      const GRAIN_TEXTURE = `data:image/svg+xml,${encodeURIComponent(svgGrain)}`;
+      bg.backgroundImage = `url("${GRAIN_TEXTURE}")`;
+      bg.backgroundRepeat = 'repeat';
+      bg.backgroundSize = '100px 100px';
+    } 
+    else if (c.surface_style === 'linen') {
+      const alpha = (0.15 * intensity).toFixed(3);
+      bg.backgroundImage = `
+        repeating-linear-gradient(90deg, rgba(0,0,0,${alpha}) 0px, rgba(0,0,0,${alpha}) 1px, transparent 1px, transparent 4px),
+        repeating-linear-gradient(0deg, rgba(0,0,0,${alpha}) 0px, rgba(0,0,0,${alpha}) 1px, transparent 1px, transparent 4px)
+      `;
+      bg.backgroundSize = '4px 4px';
+    } 
+    else if (c.surface_style === 'paper') {
+      // Paper uses an optimized PNG base64 texture.
+      // We use a linear-gradient of the base color to act as a wash/opacity mask over the texture.
+      const [r, g, b] = hexToRGB(c.bg_color);
+      const maskAlpha = (1 - (intensity * 0.8)).toFixed(3); // even at 100% intensity, we wash it slightly so it isn't pure black
+      const maskColor = `rgba(${r}, ${g}, ${b}, ${maskAlpha})`;
+      bg.backgroundImage = `linear-gradient(${maskColor}, ${maskColor}), url("${PAPER_TEXTURE}")`;
+      bg.backgroundRepeat = 'repeat';
+      bg.backgroundSize = '128px 128px'; // Same as the generated tile size
     }
   }
 
