@@ -84,7 +84,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
     setPreviewVisible(false);
     const t = setTimeout(() => setPreviewVisible(true), 150);
     return () => clearTimeout(t);
-  }, [theme]);
+  }, [theme.slide_animation, theme.position, theme.surface_style]);
 
   async function handleSubmit(formData: FormData) {
     // Pack the flat state into the expected DB structure
@@ -230,8 +230,8 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
               pointerEvents: 'none',
               transform: previewVisible 
                 ? (theme.hover_animation === 'lift' ? 'translateY(-4px)' : 
-                   theme.hover_animation === 'scale' ? 'scale(1.02)' : 'none') 
-                : undefined,
+                   theme.hover_animation === 'scale' ? 'scale(1.02)' : getPositionStyles().transform) 
+                : getPositionStyles().transform,
             }}>
               <div style={{ ...liveStyles.bgStyles }} />
               <div style={{ position: 'relative', zIndex: 3, display: 'flex', alignItems: 'center', gap: liveStyles.containerStyles.gap }}>

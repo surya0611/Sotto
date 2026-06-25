@@ -212,7 +212,7 @@ export function computeWidgetStyles(config: AppearanceConfig): any {
     fontFamily: c.surface_style === 'brutalist' ? 'monospace' : c.font_family,
     color: c.text_color,
     position: 'relative',
-    overflow: 'hidden',
+    zIndex: 0,
     display: 'flex',
     alignItems: 'center',
     gap: '12px',
