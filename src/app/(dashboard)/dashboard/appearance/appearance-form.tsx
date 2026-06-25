@@ -292,7 +292,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                 >
                   <div style={{
                     width: '100%',
-                    height: '100px',
+                    height: '60px',
                     position: 'relative',
                     background: '#f8f9fa',
                     borderRadius: '8px',
