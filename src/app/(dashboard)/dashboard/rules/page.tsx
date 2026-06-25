@@ -39,15 +39,15 @@ export default async function RulesPage() {
   const advancedRules = account.widget_config?.advanced_rules || [];
 
   return (
-    <div className="layout-content-inner">
-      <div style={{ marginBottom: 'var(--space-6)' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '0 0 var(--space-2) 0' }}>Advanced Rules Engine</h1>
+    <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
+      <div>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '0 0 var(--s-2) 0' }}>Advanced Rules Engine</h1>
         <p style={{ color: 'var(--text-muted)', margin: 0 }}>
           Customize exactly where and when the Sotto widget appears on your site.
         </p>
       </div>
 
-      <div style={{ maxWidth: '800px' }}>
+      <div>
         <RulesClient initialRules={advancedRules as AdvancedRule[]} />
       </div>
     </div>

@@ -24,6 +24,19 @@ export async function saveTemplate(formData: FormData) {
   const template_string = formData.get('template_string') as string;
   const is_active = formData.get('is_active') === 'on';
 
+  // Server-Side Template Validation (Security Fix)
+  // Extract all instances of {{variable}}
+  const matches = template_string.match(/{{([^}]+)}}/g);
+  if (matches) {
+    const allowedVariables = ['name', 'first_name', 'city', 'province', 'product', 'product_name', 'time_ago', 'count'];
+    for (const match of matches) {
+      const varName = match.replace(/[{}]/g, '').trim();
+      if (!allowedVariables.includes(varName)) {
+        throw new Error(`Invalid template variable: {{${varName}}}. Allowed variables are: ${allowedVariables.map(v => `{{${v}}}`).join(', ')}`);
+      }
+    }
+  }
+
   const payload = {
     account_id: accountMember.account_id,
     name,

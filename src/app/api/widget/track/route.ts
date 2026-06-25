@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limit';
+
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -21,6 +23,25 @@ export async function OPTIONS() {
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate Limiting (100 requests per minute per IP)
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const { success, limit, remaining, reset } = rateLimit(ip, 100, 60 * 1000);
+    
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Too many requests' },
+        { 
+          status: 429, 
+          headers: {
+            ...corsHeaders(),
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': remaining.toString(),
+            'X-RateLimit-Reset': reset.toString(),
+          } 
+        }
+      );
+    }
+
     const body = await request.json();
     const { account_id, session_id, event_type, url } = body;
 

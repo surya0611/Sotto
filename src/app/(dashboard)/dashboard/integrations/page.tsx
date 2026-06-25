@@ -30,11 +30,11 @@ export default async function IntegrationsPage() {
 
   return (
     <div className="animate-fade-in">
-      <div style={{ marginBottom: 'var(--space-6)' }}>
-        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 600, marginBottom: 'var(--space-2)' }}>
+      <div style={{ marginBottom: 'var(--s-6)' }}>
+        <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 600, marginBottom: 'var(--s-2)' }}>
           Integrations
         </h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+        <p style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}>
           Connect your tools to start capturing events automatically.
         </p>
       </div>

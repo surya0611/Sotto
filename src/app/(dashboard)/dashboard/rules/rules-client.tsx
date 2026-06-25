@@ -66,15 +66,15 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-8)' }}>
       {rules.map((rule, ruleIndex) => (
-        <div key={rule.id} className="card" style={{ borderTop: '4px solid var(--accent)' }}>
+        <div key={rule.id} className="card" style={{ borderTop: '4px solid var(--primary)' }}>
           <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div style={{ flex: 1 }}>
               <input
                 type="text"
                 className="input"
-                style={{ fontSize: '1.25rem', fontWeight: 600, border: 'none', background: 'transparent', padding: '0', marginBottom: 'var(--space-2)' }}
+                style={{ fontSize: '1.25rem', fontWeight: 600, border: 'none', background: 'transparent', padding: '0', marginBottom: 'var(--s-2)' }}
                 value={rule.title}
                 onChange={(e) => updateRule(ruleIndex, 'title', e.target.value)}
                 placeholder="Rule Title"
@@ -88,8 +88,8 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
                 placeholder="Description: Example Checkout Page"
               />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-3)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem' }}>
                 <input 
                   type="checkbox" 
                   checked={rule.is_active} 
@@ -99,28 +99,28 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
               <button 
                 onClick={() => removeRule(ruleIndex)}
                 className="btn btn-ghost btn-sm"
-                style={{ color: 'var(--error)' }}
+                style={{ color: 'var(--destructive)' }}
               >
                 Delete
               </button>
             </div>
           </div>
 
-          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
             
             {/* Conditions Section */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s-3)' }}>
                 <h3 style={{ fontSize: '1.125rem', fontWeight: 600, margin: 0 }}>Conditions</h3>
                 <button className="btn btn-secondary btn-sm" onClick={() => addCondition(ruleIndex)}>
                   Add Condition
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-3)' }}>
                 {rule.conditions.map((cond, condIndex) => (
-                  <div key={condIndex} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', background: 'var(--bg-surface)', padding: 'var(--space-4)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
-                    <div style={{ background: 'var(--bg-elevated)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>
+                  <div key={condIndex} style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-3)', background: 'var(--bg-surface)', padding: 'var(--s-4)', borderRadius: 'var(--r-md)', border: '1px solid var(--border)' }}>
+                    <div style={{ background: 'var(--bg-muted)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', fontWeight: 600 }}>
                       {condIndex === 0 ? 'If...' : 'And...'}
                     </div>
                     
@@ -167,7 +167,7 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
                   </div>
                 ))}
               </div>
-              <div style={{ textAlign: 'center', marginTop: 'var(--space-4)', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+              <div style={{ textAlign: 'center', marginTop: 'var(--s-4)', color: 'var(--text-muted)', fontSize: '0.9375rem' }}>
                 If all conditions are met, apply this rule
                 <br/>↓
               </div>
@@ -175,8 +175,8 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
 
             {/* Rule Action Section */}
             <div>
-              <h3 style={{ fontSize: '1.125rem', fontWeight: 600, margin: '0 0 var(--space-3) 0' }}>Rule</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', background: 'var(--bg-surface)', padding: 'var(--space-4)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+              <h3 style={{ fontSize: '1.125rem', fontWeight: 600, margin: '0 0 var(--s-3) 0' }}>Rule</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-3)', background: 'var(--bg-surface)', padding: 'var(--s-4)', borderRadius: 'var(--r-md)', border: '1px solid var(--border)' }}>
                 <select 
                   className="input" 
                   value={rule.action.setting} 
@@ -203,7 +203,7 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
                     <option value="top-right">Top Right</option>
                   </select>
                 ) : rule.action.setting === 'do_not_show_template' ? (
-                  <div style={{ flex: 1, color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                  <div style={{ flex: 1, color: 'var(--text-muted)', fontSize: '0.9375rem' }}>
                     Widget will be hidden when conditions are met.
                   </div>
                 ) : (
@@ -223,7 +223,7 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
         </div>
       ))}
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--space-4)', padding: 'var(--space-6) 0' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--s-4)', padding: 'var(--s-6) 0' }}>
         <button className="btn btn-outline" onClick={addRule} style={{ width: '200px' }}>
           + Add New Rule
         </button>
@@ -233,7 +233,7 @@ export function RulesClient({ initialRules }: { initialRules: AdvancedRule[] }) 
       </div>
 
       {rules.length === 0 && (
-        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 'var(--space-8)' }}>
+        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 'var(--s-8)' }}>
           No rules defined. Create one above to get started.
         </div>
       )}

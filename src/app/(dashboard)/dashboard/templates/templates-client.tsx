@@ -147,36 +147,36 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-8)' }}>
       {/* AI Copywriter Section */}
       <div className="card" style={{ 
-        border: aiEnabled ? '1px solid var(--accent)' : '1px solid var(--border)',
+        border: aiEnabled ? '1px solid var(--primary)' : '1px solid var(--border)',
         boxShadow: aiEnabled ? '0 0 40px rgba(99, 102, 241, 0.1)' : 'none',
         transition: 'all 0.3s ease'
       }}>
         <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-              <div style={{ background: 'var(--accent)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 800, letterSpacing: '0.05em' }}>NEW</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)' }}>
+              <div style={{ background: 'var(--primary)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 800, letterSpacing: '0.05em' }}>NEW</div>
               <h2 className="card-title" style={{ margin: 0, fontSize: '1.25rem' }}>AI-Powered Copywriter</h2>
             </div>
-            <p className="card-description" style={{ marginTop: 'var(--space-2)', maxWidth: '600px' }}>
+            <p className="card-description" style={{ marginTop: 'var(--s-2)', maxWidth: '600px' }}>
               Let Google Gemini automatically write highly-converting, context-aware psychological copy for your notifications based on the specific product purchased. When enabled, this overrides manual Purchase templates.
             </p>
           </div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem', cursor: 'pointer', background: 'var(--bg-elevated)', padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-full)', border: '1px solid var(--border)' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem', cursor: 'pointer', background: 'var(--bg-muted)', padding: 'var(--s-2) var(--s-4)', borderRadius: 'var(--r-full)', border: '1px solid var(--border)' }}>
             <input 
               type="checkbox" 
               checked={aiEnabled}
               onChange={(e) => setAiEnabled(e.target.checked)}
-              style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }}
+              style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
             /> 
             <span style={{ fontWeight: 500 }}>{aiEnabled ? 'AI Enabled' : 'AI Disabled'}</span>
           </label>
         </div>
 
         {aiEnabled && (
-          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', borderTop: '1px solid var(--border)', paddingTop: 'var(--space-4)' }}>
+          <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)', borderTop: '1px solid var(--border)', paddingTop: 'var(--s-4)' }}>
             <div className="input-group" style={{ maxWidth: '400px' }}>
               <label className="input-label">Copywriting Tone</label>
               <select 
@@ -204,8 +204,8 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
 
       {/* Template Presets Gallery */}
       <div>
-        <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--space-4)' }}>Quick Start Templates</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>
+        <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--s-4)' }}>Quick Start Templates</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--s-4)' }}>
           {PRESETS.map(preset => (
             <div 
               key={preset.id}
@@ -218,19 +218,19 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
                 setIsActive(true);
                 window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
               }}
-              style={{ cursor: 'pointer', transition: 'all 0.2s', padding: 'var(--space-4)' }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; }}
+              style={{ cursor: 'pointer', transition: 'all 0.2s', padding: 'var(--s-4)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.08)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
             >
               <div style={{ fontSize: '28px', marginBottom: '12px', color: 'var(--text-muted)' }}>{preset.icon}</div>
-              <h4 style={{ margin: '0 0 6px 0', fontSize: '0.875rem', fontWeight: 600 }}>{preset.name}</h4>
-              <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>{preset.description}</p>
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '0.9375rem', fontWeight: 600 }}>{preset.name}</h4>
+              <p style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--text-muted)' }}>{preset.description}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: 'var(--space-6)', alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: 'var(--s-6)', alignItems: 'start' }}>
       
       {/* Editor Column */}
       <div className="card">
@@ -239,7 +239,7 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
           <p className="card-description">Design what your notifications actually say.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+        <form onSubmit={handleSubmit} className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
           <div className="input-group">
             <label className="input-label">Template Name</label>
             <input 
@@ -282,23 +282,23 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
 
           <div className="input-group">
             <label className="input-label">Insert Variables</label>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--s-2)' }}>
               {VARIABLES.map(v => (
                 <button
                   key={v.value}
                   type="button"
                   onClick={() => insertVariable(v.value)}
                   style={{
-                    background: 'var(--bg-elevated)',
+                    background: 'var(--bg-muted)',
                     border: '1px solid var(--border)',
                     padding: '4px 10px',
                     borderRadius: '16px',
                     fontSize: '12px',
                     cursor: 'pointer',
-                    color: 'var(--text-primary)',
+                    color: 'var(--fg)',
                     transition: 'all 150ms',
                   }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--accent)'}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary)'}
                   onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
                 >
                   {v.label}
@@ -310,20 +310,20 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
             </p>
           </div>
 
-          <div className="input-group" style={{ flexDirection: 'row', alignItems: 'center', gap: 'var(--space-3)' }}>
+          <div className="input-group" style={{ flexDirection: 'row', alignItems: 'center', gap: 'var(--s-3)' }}>
             <input 
               type="checkbox" 
               id="is_active" 
               checked={isActive}
               onChange={e => setIsActive(e.target.checked)}
-              style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }}
+              style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
             />
             <label htmlFor="is_active" className="input-label" style={{ margin: 0, cursor: 'pointer' }}>
               Template is Active
             </label>
           </div>
 
-          <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-4)' }}>
+          <div style={{ display: 'flex', gap: 'var(--s-3)', marginTop: 'var(--s-4)' }}>
             <button type="submit" className="btn btn-primary" disabled={isPending}>
               {isPending ? 'Saving...' : (editingId ? 'Update Template' : 'Create Template')}
             </button>
@@ -350,7 +350,7 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
         
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {templates.length === 0 ? (
-            <div style={{ padding: 'var(--space-6)', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <div style={{ padding: 'var(--s-6)', textAlign: 'center', color: 'var(--text-muted)' }}>
               No templates yet. Create one to get started!
             </div>
           ) : (
@@ -358,7 +358,7 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
               <div 
                 key={t.id} 
                 style={{ 
-                  padding: 'var(--space-4)', 
+                  padding: 'var(--s-4)', 
                   borderBottom: '1px solid var(--border)',
                   background: editingId === t.id ? 'var(--bg-accent-light)' : 'transparent',
                 }}
@@ -371,14 +371,14 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button 
                       onClick={() => handleEdit(t)}
-                      style={{ background: 'none', border: 'none', color: 'var(--accent)', cursor: 'pointer', fontSize: '13px' }}
+                      style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '13px' }}
                     >
                       Edit
                     </button>
                     <button 
                       onClick={() => handleDelete(t.id)}
                       disabled={isPending}
-                      style={{ background: 'none', border: 'none', color: 'var(--error)', cursor: 'pointer', fontSize: '13px' }}
+                      style={{ background: 'none', border: 'none', color: 'var(--destructive)', cursor: 'pointer', fontSize: '13px' }}
                     >
                       Delete
                     </button>
@@ -390,11 +390,11 @@ export function TemplatesClient({ templates, initialConfig }: { templates: Notif
                 </div>
                 
                 <div style={{ 
-                  background: 'var(--bg-elevated)', 
+                  background: 'var(--bg-muted)', 
                   padding: '8px 12px', 
-                  borderRadius: 'var(--radius-sm)',
+                  borderRadius: 'var(--r-sm)',
                   fontSize: '13px',
-                  color: 'var(--text-primary)',
+                  color: 'var(--fg)',
                   fontFamily: 'monospace'
                 }}>
                   {t.template_string}

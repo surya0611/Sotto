@@ -74,10 +74,10 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
     setIconSetting: (val: string) => void,
     icon: React.ReactNode
   ) => (
-    <div className="card" style={{ borderLeft: enabled ? '4px solid var(--accent)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
+    <div className="card" style={{ borderLeft: enabled ? '4px solid var(--primary)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
       <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
-          <div style={{ fontSize: '24px', background: 'var(--bg-elevated)', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+        <div style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center' }}>
+          <div style={{ fontSize: '24px', background: 'var(--bg-muted)', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
             {icon}
           </div>
           <div>
@@ -85,21 +85,21 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
             <p className="card-description" style={{ margin: 0 }}>{description}</p>
           </div>
         </div>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem', cursor: 'pointer' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem', cursor: 'pointer' }}>
           <input 
             type="checkbox" 
             checked={enabled}
             onChange={(e) => setEnabled(e.target.checked)}
-            style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }}
+            style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
           /> 
           Enabled
         </label>
       </div>
 
-      <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'auto' : 'none' }}>
+      <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)', opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'auto' : 'none' }}>
         
-        <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
-          <div style={{ background: 'var(--accent)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center', marginBottom: 'var(--s-2)' }}>
+          <div style={{ background: 'var(--primary)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
             1
           </div>
           <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Design your module</h3>
@@ -136,10 +136,10 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
           <p className="input-hint">Use <code>{`{{count}}`}</code> to display the dynamic number.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--space-4)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--s-4)' }}>
           <div className="input-group">
             <label className="input-label">Text Color</label>
-            <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+            <div style={{ display: 'flex', gap: 'var(--s-2)' }}>
               <input 
                 type="color" 
                 value={color === 'inherit' ? '#000000' : color}
@@ -181,41 +181,41 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
           </div>
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--s-6) 0' }} />
 
-        <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', marginBottom: 'var(--space-4)' }}>
-          <div style={{ background: 'var(--accent)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center', marginBottom: 'var(--s-4)' }}>
+          <div style={{ background: 'var(--primary)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
             2
           </div>
           <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Install the Embed Code</h3>
         </div>
 
-        <div className="input-group" style={{ background: 'var(--bg-base)', padding: 'var(--space-4)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+        <div className="input-group" style={{ background: 'var(--bg-base)', padding: 'var(--s-4)', borderRadius: 'var(--r-md)', border: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <label className="input-label">Embed Code</label>
             <CopyButton textToCopy={`<span data-sotto-inline="${dataId}"></span>`} />
           </div>
           <pre style={{ 
             display: 'block', 
-            background: 'var(--bg-deep)', 
-            padding: 'var(--space-4)', 
-            borderRadius: 'var(--radius-sm)', 
+            background: 'var(--bg)', 
+            padding: 'var(--s-4)', 
+            borderRadius: 'var(--r-sm)', 
             border: '1px solid var(--border)',
-            color: 'var(--text-primary)',
-            fontSize: '0.875rem',
+            color: 'var(--fg)',
+            fontSize: '0.9375rem',
             fontFamily: 'monospace',
             overflowX: 'auto'
           }}>
             <code>&lt;span data-sotto-inline="{dataId}"&gt;&lt;/span&gt;</code>
           </pre>
-          <p className="input-hint" style={{ marginTop: 'var(--space-2)' }}>Paste this HTML snippet into your website builder (Shopify, Webflow, etc) exactly where you want the text to appear.</p>
+          <p className="input-hint" style={{ marginTop: 'var(--s-2)' }}>Paste this HTML snippet into your website builder (Shopify, Webflow, etc) exactly where you want the text to appear.</p>
         </div>
       </div>
     </div>
   );
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)', maxWidth: '800px' }}>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)', maxWidth: '800px' }}>
       
       {renderCard(
         'Active Visitors',
@@ -253,7 +253,7 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       )}
 
-      <div style={{ position: 'sticky', bottom: 'var(--space-4)', alignSelf: 'flex-end', zIndex: 10, marginTop: 'var(--space-4)' }}>
+      <div style={{ position: 'sticky', bottom: 'var(--s-4)', alignSelf: 'flex-end', zIndex: 10, marginTop: 'var(--s-4)' }}>
         <button type="submit" className="btn btn-primary" disabled={isPending}>
           {isPending ? 'Saving...' : 'Save Settings'}
         </button>

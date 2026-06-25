@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rate-limit';
+
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -23,6 +25,25 @@ export async function OPTIONS() {
 
 export async function GET(request: NextRequest) {
   try {
+    // Rate Limiting (100 requests per minute per IP)
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    const { success, limit, remaining, reset } = rateLimit(ip, 100, 60 * 1000);
+    
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Too many requests' },
+        { 
+          status: 429, 
+          headers: {
+            ...corsHeaders(),
+            'X-RateLimit-Limit': limit.toString(),
+            'X-RateLimit-Remaining': remaining.toString(),
+            'X-RateLimit-Reset': reset.toString(),
+          } 
+        }
+      );
+    }
+
     const searchParams = request.nextUrl.searchParams;
     const accountId = searchParams.get('account_id');
     const sessionId = searchParams.get('session_id');
@@ -87,7 +108,19 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const config = account.widget_config;
+
+    const config = account.widget_config || {};
+
+    // Mark as installed on first successful ping (even from localhost/testing environments)
+    if (!config.is_installed) {
+      const updatedConfig = { ...config, is_installed: true };
+      // Background update (fire and forget)
+      supabase.from('accounts').update({ widget_config: updatedConfig }).eq('id', accountId).then(({ error }) => {
+        if (error) console.error('Failed to mark widget as installed', error);
+      });
+      config.is_installed = true;
+    }
+
 
     // Implement frequency capping check using session_id
     if (sessionId) {

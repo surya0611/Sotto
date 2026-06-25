@@ -29,9 +29,9 @@ export async function updateWidgetConfig(formData: FormData) {
   const max_per_page = parseInt(formData.get('max_per_page') as string, 10);
   const event_time_threshold = parseInt(formData.get('event_time_threshold') as string, 10);
   
-  const delay_ms = parseInt(formData.get('delay_ms') as string, 10);
-  const display_ms = parseInt(formData.get('display_ms') as string, 10);
-  const time_between_ms = parseInt(formData.get('time_between_ms') as string, 10);
+  const delay_ms = Math.round(parseFloat(formData.get('delay_sec') as string) * 1000);
+  const display_ms = Math.round(parseFloat(formData.get('display_sec') as string) * 1000);
+  const time_between_ms = Math.round(parseFloat(formData.get('time_between_sec') as string) * 1000);
   const loop = formData.get('loop') === 'on';
 
   const hide_mobile = formData.get('hide_mobile') === 'on';

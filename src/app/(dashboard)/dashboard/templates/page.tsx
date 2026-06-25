@@ -39,9 +39,9 @@ export default async function TemplatesPage() {
     .order('created_at', { ascending: false });
 
   return (
-    <div className="layout-content-inner">
-      <div style={{ marginBottom: 'var(--space-6)' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '0 0 var(--space-2) 0' }}>Dynamic Template Engine</h1>
+    <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
+      <div>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '0 0 var(--s-2) 0' }}>Dynamic Template Engine</h1>
         <p style={{ color: 'var(--text-muted)', margin: 0 }}>
           Design exactly what your notifications say. Insert dynamic variables that automatically populate with real data from your webhooks.
         </p>

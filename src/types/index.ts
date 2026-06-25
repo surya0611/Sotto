@@ -46,7 +46,9 @@ export interface WidgetTheme {
   hover_animation?: 'none' | 'lift' | 'glow' | 'scale';
   font_family: string;
   text_color: string;
+  text_opacity?: number;
   bg_color: string;
+  bg_opacity?: number;
   border_radius: number;
   position: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
   slide_animation: 'slide-up' | 'slide-in-left' | 'slide-in-right';

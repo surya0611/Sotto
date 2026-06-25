@@ -1,4 +1,6 @@
+const fs = require('fs');
 
+const content = `
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
@@ -75,3 +77,7 @@ export async function updateAppearanceConfig(formData: FormData) {
 
   revalidatePath('/dashboard/appearance');
 }
+`;
+
+fs.writeFileSync('src/app/(dashboard)/dashboard/appearance/actions.ts', content);
+console.log('Rewrote actions.ts');

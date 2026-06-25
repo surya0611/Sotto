@@ -32,10 +32,10 @@ export default async function AppearancePage() {
   const themeConfig = widgetConfig.theme || {};
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
       <div>
-        <h1 style={{ marginBottom: 'var(--space-2)' }}>Appearance</h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Design your widget to match your brand's look and feel.</p>
+        <h1 style={{ marginBottom: 'var(--s-2)' }}>Appearance</h1>
+        <p style={{ color: 'var(--fg-muted)' }}>Design your widget to match your brand's look and feel.</p>
       </div>
 
       <AppearanceForm initialTheme={themeConfig} />

@@ -38,12 +38,12 @@ export default async function EventsPage() {
 
   return (
     <div className="animate-fade-in">
-      <div style={{ marginBottom: 'var(--space-6)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ marginBottom: 'var(--s-6)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 600, marginBottom: 'var(--space-2)' }}>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 600, marginBottom: 'var(--s-2)' }}>
             Events Log
           </h2>
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '0.9375rem', color: 'var(--text-muted)' }}>
             Live stream of events ingested from your integrations.
           </p>
         </div>
@@ -52,8 +52,8 @@ export default async function EventsPage() {
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {events.length === 0 ? (
-          <div className="empty-state" style={{ padding: 'var(--space-12) var(--space-6)' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--accent-subtle)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', border: '1px solid var(--accent-border)' }}>
+          <div className="empty-state" style={{ padding: 'var(--s-12) var(--s-6)' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--accent-subtle)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', border: '1px solid var(--accent-border)' }}>
               <Zap width="18" height="18" />
             </div>
             <h4 className="empty-state-title">No events yet</h4>
@@ -83,7 +83,7 @@ export default async function EventsPage() {
                       </span>
                     </td>
                     <td>
-                      <span style={{ textTransform: 'capitalize', fontSize: '0.8125rem' }}>
+                      <span style={{ textTransform: 'capitalize', fontSize: '0.875rem' }}>
                         {event.source.replace('_', ' ')}
                       </span>
                     </td>
@@ -93,7 +93,7 @@ export default async function EventsPage() {
                     <td>
                       {event.customer_city ? (
                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <span style={{ fontSize: '0.75rem' }}>📍</span>
+                          <span style={{ fontSize: '0.8125rem' }}>📍</span>
                           {event.customer_city}
                           {event.customer_region ? `, ${event.customer_region}` : ''}
                         </span>
@@ -104,7 +104,7 @@ export default async function EventsPage() {
                     <td>
                       {event.product_name || <span style={{ color: 'var(--text-muted)' }}>-</span>}
                     </td>
-                    <td style={{ color: 'var(--text-muted)', fontSize: '0.8125rem', whiteSpace: 'nowrap' }}>
+                    <td style={{ color: 'var(--text-muted)', fontSize: '0.875rem', whiteSpace: 'nowrap' }}>
                       {formatRelativeTime(event.created_at)}
                     </td>
                   </tr>

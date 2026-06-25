@@ -19,6 +19,33 @@ const nextConfig: NextConfig = {
         source: '/(.*)',
         headers: securityHeaders,
       },
+      {
+        source: '/widget.min.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            // Edge CDN caching: cache for 1 day (86400s), serve stale while revalidating
+            value: 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          }
+        ],
+      },
+      {
+        source: '/widget.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=43200',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          }
+        ],
+      }
     ];
   },
 };

@@ -41,9 +41,9 @@ export default async function InlinePage() {
   };
 
   return (
-    <div className="layout-content-inner">
-      <div style={{ marginBottom: 'var(--space-6)' }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '0 0 var(--space-2) 0' }}>Inline Notifications</h1>
+    <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
+      <div>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '0 0 var(--s-2) 0' }}>Inline Notifications</h1>
         <p style={{ color: 'var(--text-muted)', margin: 0 }}>
           Embed aggregate statistics directly into your webpage content. Perfect for displaying below "Add to Cart" buttons.
         </p>

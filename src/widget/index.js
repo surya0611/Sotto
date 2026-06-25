@@ -1,3 +1,5 @@
+import { computeWidgetStyles } from '../lib/appearance';
+
 (function() {
   // Sotto MVP - Unified Widget & Pixel Script
   // Served asynchronously from public/widget.js
@@ -124,6 +126,9 @@
   let shadowRoot = null;
   let container = null;
 
+  
+  let bgWrapper = null;
+
   function initUI() {
     if (container) return;
     
@@ -139,26 +144,11 @@
     const style = document.createElement('style');
     style.textContent = `
       .sotto-widget {
-        display: flex;
-        align-items: center;
-        gap: var(--s-gap, 12px);
-        padding: var(--s-pad-y, 12px) var(--s-pad-x, 16px);
-        background: var(--s-bg, #ffffff);
-        color: var(--s-text, #1a1a1a);
-        font-family: var(--s-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
-        border-radius: var(--s-radius, 8px);
-        box-shadow: var(--s-shadow, 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05));
-        border: var(--s-border, 1px solid rgba(0,0,0,0.05));
-        backdrop-filter: var(--s-backdrop, none);
-        -webkit-backdrop-filter: var(--s-backdrop, none);
         opacity: 0;
-        position: relative;
-        overflow: hidden;
         transform: var(--s-transform-hidden, translateY(10px));
         transition: opacity 200ms ease-in, transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
         pointer-events: auto;
         cursor: pointer;
-        max-width: var(--s-max-w, 320px);
         will-change: opacity, transform, box-shadow;
       }
       .sotto-widget.sotto-visible {
@@ -166,15 +156,15 @@
         transform: translate(0, 0);
         transition: opacity 300ms ease-out, transform 400ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
       }
-      .sotto-widget.sotto-visible:hover {
+      .sotto-widget:hover {
         transform: var(--s-hover-transform, none);
-        box-shadow: var(--s-hover-shadow, var(--s-shadow, 0 4px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05)));
+        box-shadow: var(--s-hover-shadow, none);
       }
       .sotto-icon {
         width: var(--s-icon, 16px);
         height: var(--s-icon, 16px);
         flex-shrink: 0;
-        color: var(--s-text, #1a1a1a);
+        color: inherit;
       }
       .sotto-image {
         width: var(--s-img-size, 48px);
@@ -215,8 +205,9 @@
         justify-content: center;
         opacity: 0;
         cursor: pointer;
-        color: var(--s-text, #1a1a1a);
+        color: inherit;
         transition: opacity 200ms ease;
+        z-index: 4;
       }
       .sotto-widget:hover .sotto-close {
         opacity: 0.5;
@@ -227,72 +218,23 @@
       @media (max-width: 480px) {
         .sotto-widget {
           margin: 0 16px;
-          max-width: calc(100vw - 32px);
+          max-width: calc(100vw - 32px) !important;
         }
-      }
-
-      /* LIQUID GLASS STYLES */
-      .sotto-liquid-effect {
-        position: absolute;
-        z-index: 0;
-        inset: 0;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        filter: url(#glass-distortion);
-        border-radius: inherit;
-        pointer-events: none;
-        display: none;
-      }
-      .sotto-liquid-tint {
-        position: absolute;
-        z-index: 1;
-        inset: 0;
-        background: var(--s-liquid-bg, rgba(255, 255, 255, 0.75));
-        border-radius: inherit;
-        pointer-events: none;
-        display: none;
-      }
-      .sotto-liquid-shine {
-        position: absolute;
-        z-index: 2;
-        inset: 0;
-        box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5), inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
-        border-radius: inherit;
-        pointer-events: none;
-        display: none;
-      }
-
-      .sotto-widget[data-theme="glassmorphism"] .sotto-liquid-effect,
-      .sotto-widget[data-theme="glassmorphism"] .sotto-liquid-tint,
-      .sotto-widget[data-theme="glassmorphism"] .sotto-liquid-shine {
-        display: block;
       }
     `;
     
-    // Inject SVG Filter for Liquid Glass
-    const svgFilter = document.createElement('div');
-    svgFilter.innerHTML = `
-      <svg style="position: absolute; width: 0; height: 0;" aria-hidden="true">
-        <filter id="glass-distortion">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="1" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
-    `;
-    shadowRoot.appendChild(svgFilter);
     shadowRoot.appendChild(style);
 
     container = document.createElement('div');
     container.className = 'sotto-widget';
     
     container.addEventListener('click', (e) => {
-      if (e.target.closest('.sotto-close')) return; // handled separately
+      if (e.target.closest('.sotto-close')) return;
       track('click');
-      
-      if (event.url) {
+      if (activeConfig?.event?.url) {
         try {
-          const targetUrl = new URL(event.url, window.location.origin);
-          if (activeConfig && activeConfig.utm && activeConfig.utm.enabled) {
+          const targetUrl = new URL(activeConfig.event.url, window.location.origin);
+          if (activeConfig.utm && activeConfig.utm.enabled) {
             targetUrl.searchParams.set('utm_source', activeConfig.utm.source || 'sotto_widget');
             targetUrl.searchParams.set('utm_medium', activeConfig.utm.medium || 'social_proof');
             if (activeConfig.utm.campaign) {
@@ -301,17 +243,14 @@
           }
           window.location.href = targetUrl.toString();
           return;
-        } catch(err) {
-          console.error('[Sotto] Invalid event URL:', event.url);
-        }
+        } catch(err) {}
       }
-
       hideWidget();
     });
 
-    const effect = document.createElement('div'); effect.className = 'sotto-liquid-effect';
-    const tint = document.createElement('div'); tint.className = 'sotto-liquid-tint';
-    const shine = document.createElement('div'); shine.className = 'sotto-liquid-shine';
+    bgWrapper = document.createElement('div');
+    bgWrapper.id = 'sotto-bg-wrapper';
+    container.appendChild(bgWrapper);
 
     const innerContent = document.createElement('div');
     innerContent.id = 'sotto-inner';
@@ -324,23 +263,18 @@
 
     const closeBtn = document.createElement('div');
     closeBtn.className = 'sotto-close';
-    closeBtn.style.zIndex = '4';
     closeBtn.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
     closeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       handleCloseClick();
     });
 
-    container.appendChild(effect);
-    container.appendChild(tint);
-    container.appendChild(shine);
     container.appendChild(innerContent);
     container.appendChild(closeBtn);
-
     shadowRoot.appendChild(container);
   }
 
-  function formatTimeAgo(dateString) {
+function formatTimeAgo(dateString) {
     if (!dateString) return 'just now';
     const seconds = Math.floor((new Date() - new Date(dateString)) / 1000);
     if (seconds < 60) return 'just now';
@@ -388,14 +322,13 @@
     return true;
   }
 
+  
   function showWidget(data) {
     initUI();
     
     const { event, theme, timing, visibility } = data;
     
-    // Check device visibility before showing
     if (!applyVisibility(visibility)) {
-      // Start polling again after cooldown since we skipped this one
       setTimeout(poll, timing?.time_between_ms || 8000);
       return;
     }
@@ -405,33 +338,34 @@
       currentTimeBetweenMs = timing.time_between_ms || 8000;
     }
 
-    // Apply theme
-    if (theme) {
-      const bgOpacity = theme.bg_opacity !== undefined ? theme.bg_opacity / 100 : 1;
-      const textOpacity = theme.text_opacity !== undefined ? theme.text_opacity / 100 : 1;
+    // Apply computeWidgetStyles!
+    if (theme && theme.appearance) {
+      const styles = computeWidgetStyles(theme.appearance);
       
-      if (theme.bg_color) container.style.setProperty('--s-bg', hexToRgba(theme.bg_color, bgOpacity));
-      if (theme.text_color) container.style.setProperty('--s-text', hexToRgba(theme.text_color, textOpacity));
-      if (theme.border_radius !== undefined) container.style.setProperty('--s-radius', theme.border_radius + 'px');
+      Object.assign(container.style, styles.containerStyles);
+      Object.assign(bgWrapper.style, styles.bgStyles);
       
-      // Presets
-      if (theme.theme_preset === 'glassmorphism') {
-        container.setAttribute('data-theme', 'glassmorphism');
-        const bgRgba = hexToRgba(theme.bg_color || '#ffffff', 0.75);
-        container.style.setProperty('--s-liquid-bg', bgRgba);
-        container.style.setProperty('--s-bg', 'transparent');
-        container.style.setProperty('--s-backdrop', 'none');
-        container.style.setProperty('--s-border', 'none');
-        container.style.setProperty('--s-shadow', '0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1)');
-      } else if (theme.theme_preset === 'neumorphism') {
-        container.removeAttribute('data-theme');
-        container.style.setProperty('--s-shadow', '8px 8px 16px rgba(0,0,0,0.06), -8px -8px 16px rgba(255,255,255,0.7)');
-        container.style.setProperty('--s-border', 'none');
-      } else {
-        container.removeAttribute('data-theme');
-        container.style.setProperty('--s-backdrop', 'none');
-        container.style.setProperty('--s-border', '1px solid rgba(0,0,0,0.05)');
-        container.style.setProperty('--s-shadow', '0 4px 12px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06)');
+      // Position
+      var host = document.getElementById('sotto-widget-host');
+      if (host) {
+        host.style.top = '';
+        host.style.bottom = '';
+        host.style.left = '';
+        host.style.right = '';
+        switch (theme.position) {
+          case 'bottom-right': host.style.bottom = '20px'; host.style.right = '20px'; break;
+          case 'top-left': host.style.top = '20px'; host.style.left = '20px'; break;
+          case 'top-right': host.style.top = '20px'; host.style.right = '20px'; break;
+          default: host.style.bottom = '20px'; host.style.left = '20px'; break;
+        }
+      }
+
+      // Animation Direction
+      switch (theme.slide_animation) {
+        case 'slide-down': container.style.setProperty('--s-transform-hidden', 'translateY(-10px)'); break;
+        case 'slide-left': container.style.setProperty('--s-transform-hidden', 'translateX(10px)'); break;
+        case 'slide-right': container.style.setProperty('--s-transform-hidden', 'translateX(-10px)'); break;
+        default: container.style.setProperty('--s-transform-hidden', 'translateY(10px)'); break;
       }
 
       // Hover Animations
@@ -446,60 +380,14 @@
         container.style.setProperty('--s-hover-shadow', '0 8px 24px rgba(0,0,0,0.12)');
       } else {
         container.style.setProperty('--s-hover-transform', 'none');
-        container.style.setProperty('--s-hover-shadow', 'var(--s-shadow)');
-      }
-      
-      if (theme.font_family === 'System') {
-        container.style.setProperty('--s-font', '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif');
-      } else if (theme.font_family === 'Serif') {
-        container.style.setProperty('--s-font', 'Georgia, "Times New Roman", Times, serif');
-      } else {
-        container.style.setProperty('--s-font', 'inherit');
+        container.style.setProperty('--s-hover-shadow', 'none');
       }
 
-      // Apply position
-      var host = document.getElementById('sotto-widget-host');
-      if (host) {
-        host.style.top = '';
-        host.style.bottom = '';
-        host.style.left = '';
-        host.style.right = '';
-        switch (theme.position) {
-          case 'bottom-right':
-            host.style.bottom = '20px';
-            host.style.right = '20px';
-            break;
-          case 'top-left':
-            host.style.top = '20px';
-            host.style.left = '20px';
-            break;
-          case 'top-right':
-            host.style.top = '20px';
-            host.style.right = '20px';
-            break;
-          default: // bottom-left
-            host.style.bottom = '20px';
-            host.style.left = '20px';
-            break;
-        }
-      }
-
-      // Apply animation direction
-      switch (theme.slide_animation) {
-        case 'slide-down': container.style.setProperty('--s-transform-hidden', 'translateY(-10px)'); break;
-        case 'slide-left': container.style.setProperty('--s-transform-hidden', 'translateX(10px)'); break;
-        case 'slide-right': container.style.setProperty('--s-transform-hidden', 'translateX(-10px)'); break;
-        default: container.style.setProperty('--s-transform-hidden', 'translateY(10px)'); break; // slide-up
-      }
-
-      // Apply size
+      // Size Vars
       var scale = 1;
       if (theme.size === 'small') scale = 0.85;
       else if (theme.size === 'large') scale = 1.15;
       container.style.setProperty('--s-gap', Math.round(12 * scale) + 'px');
-      container.style.setProperty('--s-pad-y', Math.round(12 * scale) + 'px');
-      container.style.setProperty('--s-pad-x', Math.round(16 * scale) + 'px');
-      container.style.setProperty('--s-max-w', Math.round(320 * scale) + 'px');
       container.style.setProperty('--s-icon', Math.round(16 * scale) + 'px');
       container.style.setProperty('--s-img-size', Math.round(48 * scale) + 'px');
       container.style.setProperty('--s-title-size', Math.round(13 * scale) + 'px');
@@ -512,12 +400,10 @@
     inner.innerHTML = ''; 
 
     let visualElement;
-
     if (event.image_url) {
       visualElement = document.createElement('img');
       visualElement.className = 'sotto-image';
       visualElement.src = event.image_url;
-      // Provide an empty alt attribute or default so it's accessible
       visualElement.alt = "Product image";
     } else {
       visualElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -569,8 +455,6 @@
   }
 
   // 5. Polling Engine
-  let isPolling = false;
-  
   function evaluateCondition(cond) {
     const url = window.location.href;
     const path = window.location.pathname;

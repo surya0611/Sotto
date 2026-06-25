@@ -7,7 +7,8 @@ import { CopyButton } from '@/components/copy-button';
 
 export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partial<WidgetConfig>, accountId: string }) {
   const [isPending, startTransition] = useTransition();
-  const [timeBetween, setTimeBetween] = useState(initialConfig.timing?.time_between_ms || 8000);
+  const defaultTimeBetweenMs = initialConfig.timing?.time_between_ms || 8000;
+  const [timeBetweenSec, setTimeBetweenSec] = useState(Math.round(defaultTimeBetweenMs / 1000));
   const [conversionRules, setConversionRules] = useState(initialConfig.conversion_rules || []);
 
   const addConversionRule = () => {
@@ -40,11 +41,11 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
   }
 
   return (
-    <form action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+    <form action={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
       {/* General Settings */}
       <div className="card">
-        <div className="card-header" style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+        <div className="card-header" style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center', justifyContent: 'flex-start' }}>
+          <div style={{ background: 'var(--bg-muted)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--fg)', flexShrink: 0 }}>
             1
           </div>
           <div>
@@ -53,15 +54,15 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
           </div>
         </div>
 
-        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
           <div className="input-group">
             <label className="input-label">Display Mode</label>
-            <div style={{ display: 'flex', gap: 'var(--space-4)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+            <div style={{ display: 'flex', gap: 'var(--s-4)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem' }}>
                 <input type="radio" name="display_mode" value="individual" defaultChecked={initialConfig.display_mode !== 'aggregate'} />
                 Individual Events
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem' }}>
                 <input type="radio" name="display_mode" value="aggregate" defaultChecked={initialConfig.display_mode === 'aggregate'} />
                 Aggregate (e.g., "50 people recently purchased")
               </label>
@@ -80,7 +81,7 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
             </select>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-4)' }}>
             <div className="input-group">
               <label htmlFor="frequency_cap" className="input-label">Frequency Cap (displays per session)</label>
               <input 
@@ -123,45 +124,45 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
           </div>
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--s-6) 0' }} />
 
-        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-4)' }}>
             <div className="input-group">
-              <label htmlFor="delay_ms" className="input-label">Initial Delay (ms)</label>
-              <input type="number" id="delay_ms" name="delay_ms" className="input" defaultValue={initialConfig.timing?.delay_ms || 3000} />
+              <label htmlFor="delay_sec" className="input-label">Initial Delay (Seconds)</label>
+              <input type="number" id="delay_sec" name="delay_sec" className="input" step="1" defaultValue={initialConfig.timing?.delay_ms ? Math.round(initialConfig.timing.delay_ms / 1000) : 3} />
               <p className="input-hint">Delay before the first widget appears.</p>
             </div>
 
             <div className="input-group">
-              <label htmlFor="display_ms" className="input-label">Display Duration (ms)</label>
-              <input type="number" id="display_ms" name="display_ms" className="input" defaultValue={initialConfig.timing?.display_ms || 4000} />
+              <label htmlFor="display_sec" className="input-label">Display Duration (Seconds)</label>
+              <input type="number" id="display_sec" name="display_sec" className="input" step="1" defaultValue={initialConfig.timing?.display_ms ? Math.round(initialConfig.timing.display_ms / 1000) : 4} />
               <p className="input-hint">How long the widget stays on screen.</p>
             </div>
           </div>
 
           <div className="input-group">
-            <label htmlFor="time_between_ms" className="input-label">Time Between Notifications (ms)</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+            <label htmlFor="time_between_sec" className="input-label">Time Between Notifications (Seconds)</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-4)' }}>
               <input 
                 type="range" 
-                id="time_between_ms" 
-                name="time_between_ms" 
-                min="1000" 
-                max="60000" 
-                step="1000"
-                value={timeBetween}
-                onChange={(e) => setTimeBetween(parseInt(e.target.value, 10))}
+                id="time_between_sec" 
+                name="time_between_sec" 
+                min="1" 
+                max="60" 
+                step="1"
+                value={timeBetweenSec}
+                onChange={(e) => setTimeBetweenSec(parseInt(e.target.value, 10))}
                 style={{ flex: 1 }}
               />
-              <span style={{ fontSize: '0.875rem', fontWeight: 500, minWidth: '60px' }}>
-                {timeBetween / 1000}s
+              <span style={{ fontSize: '0.9375rem', fontWeight: 500, minWidth: '60px' }}>
+                {timeBetweenSec}s
               </span>
             </div>
           </div>
 
           <div className="input-group">
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem' }}>
               <input type="checkbox" name="loop" defaultChecked={initialConfig.timing?.loop} />
               Loop notifications
             </label>
@@ -172,8 +173,8 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
 
       {/* Visibility Settings */}
       <div className="card">
-        <div className="card-header" style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+        <div className="card-header" style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center', justifyContent: 'flex-start' }}>
+          <div style={{ background: 'var(--bg-muted)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--fg)', flexShrink: 0 }}>
             2
           </div>
           <div>
@@ -182,24 +183,24 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
           </div>
         </div>
 
-        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem' }}>
             <input type="checkbox" name="hide_mobile" defaultChecked={initialConfig.visibility?.hide_mobile} />
             Hide on Mobile Devices
           </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem' }}>
             <input type="checkbox" name="hide_desktop" defaultChecked={initialConfig.visibility?.hide_desktop} />
             Hide on Desktop Devices
           </label>
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--s-6) 0' }} />
 
-        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          <h3 style={{ fontSize: '0.875rem', fontWeight: 600 }}>Conversion Tracking Rules</h3>
-          <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-2)' }}>Define which pages count as a conversion (e.g. thank you page).</p>
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)' }}>
+          <h3 style={{ fontSize: '0.9375rem', fontWeight: 600 }}>Conversion Tracking Rules</h3>
+          <p style={{ fontSize: '0.875rem', color: 'var(--fg-muted)', marginBottom: 'var(--s-2)' }}>Define which pages count as a conversion (e.g. thank you page).</p>
           {conversionRules.map((rule, index) => (
-            <div key={index} style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+            <div key={index} style={{ display: 'flex', gap: 'var(--s-2)', alignItems: 'center' }}>
               <select 
                 name="conversion_rule_type" 
                 className="input" 
@@ -223,7 +224,7 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
                 type="button" 
                 className="btn btn-ghost" 
                 onClick={() => removeConversionRule(index)}
-                style={{ padding: 'var(--space-2)', color: 'var(--error)' }}
+                style={{ padding: 'var(--s-2)', color: 'var(--destructive)' }}
               >
                 Delete
               </button>
@@ -235,20 +236,20 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
           </button>
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--space-6) 0' }} />
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--s-6) 0' }} />
 
-        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <h3 style={{ fontSize: '0.875rem', fontWeight: 600 }}>UTM Tracking</h3>
-              <p style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-2)' }}>Automatically append tracking parameters to links inside your notifications.</p>
+              <h3 style={{ fontSize: '0.9375rem', fontWeight: 600 }}>UTM Tracking</h3>
+              <p style={{ fontSize: '0.875rem', color: 'var(--fg-muted)', marginBottom: 'var(--s-2)' }}>Automatically append tracking parameters to links inside your notifications.</p>
             </div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: '0.875rem', cursor: 'pointer' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem', cursor: 'pointer' }}>
               <input 
                 type="checkbox" 
                 name="utm_enabled" 
                 defaultChecked={initialConfig.utm?.enabled} 
-                style={{ width: '18px', height: '18px', accentColor: 'var(--accent)' }}
+                style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
               /> 
               Enabled
             </label>
@@ -292,9 +293,9 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
       </div>
 
       {/* Embed Code */}
-      <div className="card" style={{ borderLeft: '4px solid var(--accent)' }}>
-        <div className="card-header" style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', flexShrink: 0 }}>
+      <div className="card" style={{ borderLeft: '4px solid var(--primary)' }}>
+        <div className="card-header" style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center', justifyContent: 'flex-start' }}>
+          <div style={{ background: 'var(--bg-muted)', border: '1px solid var(--border)', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 600, color: 'var(--fg)', flexShrink: 0 }}>
             3
           </div>
           <div style={{ flex: 1 }}>
@@ -306,13 +307,13 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
 
         <div className="card-content">
           <pre style={{ 
-            background: 'var(--bg-deep)', 
-            padding: 'var(--space-6)', 
-            borderRadius: 'var(--radius-md)',
+            background: 'var(--bg)', 
+            padding: 'var(--s-6)', 
+            borderRadius: 'var(--r-md)',
             border: '1px solid var(--border)',
             overflowX: 'auto',
-            fontSize: '0.875rem',
-            color: 'var(--text-primary)',
+            fontSize: '0.9375rem',
+            color: 'var(--fg)',
             fontFamily: 'monospace'
           }}>
             <code>{`<script src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.js" data-account-id="${accountId}" defer></script>`}</code>
@@ -320,7 +321,7 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
         </div>
       </div>
 
-      <div style={{ position: 'sticky', bottom: 'var(--space-4)', alignSelf: 'flex-end', zIndex: 10 }}>
+      <div style={{ position: 'sticky', bottom: 'var(--s-4)', alignSelf: 'flex-end', zIndex: 10 }}>
         <button type="submit" className="btn btn-primary" disabled={isPending}>
           {isPending ? 'Saving...' : 'Save Configuration'}
         </button>

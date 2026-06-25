@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { CopyButton } from '@/components/copy-button';
+import { VerificationClient } from './verification-client';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,14 +26,25 @@ export default async function EmbedPage() {
   const accountId = membership.account_id;
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-  const widgetScript = `<script src="${appUrl}/widget.js" data-account-id="${accountId}" defer></script>`;
+  const { data: account } = await supabase
+    .from('accounts')
+    .select('widget_config')
+    .eq('id', accountId)
+    .single();
+
+  const isInstalled = account?.widget_config?.is_installed === true;
+
+
+  const widgetScript = `<script src="${appUrl}/widget.min.js" data-account-id="${accountId}" async defer></script>`;
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
       <div>
-        <h1 style={{ marginBottom: 'var(--space-2)' }}>Installation</h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Add this script to your website to display the social proof widget and track conversions automatically.</p>
+        <h1 style={{ marginBottom: 'var(--s-2)' }}>Installation</h1>
+        <p style={{ color: 'var(--fg-muted)' }}>Add this script to your website to display the social proof widget and track conversions automatically.</p>
       </div>
+
+      <VerificationClient initialIsInstalled={isInstalled} />
 
       <div className="card">
         <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -46,12 +58,12 @@ export default async function EmbedPage() {
           <div style={{ position: 'relative' }}>
             <pre style={{ 
               background: 'var(--bg-surface-hover)', 
-              padding: 'var(--space-4)', 
-              borderRadius: 'var(--radius-md)',
+              padding: 'var(--s-4)', 
+              borderRadius: 'var(--r-md)',
               border: '1px solid var(--border)',
               overflowX: 'auto',
-              fontSize: '0.8125rem',
-              color: 'var(--text-primary)',
+              fontSize: '0.875rem',
+              color: 'var(--fg)',
               fontFamily: 'var(--font-mono)'
             }}>
               <code>{widgetScript}</code>

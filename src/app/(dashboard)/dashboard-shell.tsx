@@ -92,7 +92,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
         <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <Link href="/dashboard" className="sidebar-logo" style={{ textDecoration: 'none' }}>
-            <div className="brand-logo-container" style={{ fontSize: '1.125rem' }}>
+            <div className="brand-logo-container" style={{ fontSize: '2rem' }}>
               S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
             </div>
           </Link>
@@ -146,13 +146,18 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
               <div className="sidebar-user-name">{user.name}</div>
               <div className="sidebar-user-email">{user.email}</div>
             </div>
+            {account && (
+              <span className="badge badge-accent" style={{ fontSize: '10px', padding: '2px 6px', flexShrink: 0 }}>
+                {planLabels[account.plan] || 'Free'}
+              </span>
+            )}
           </div>
           <button
             onClick={handleLogout}
             className="btn btn-ghost btn-sm w-full"
             style={{ marginTop: '4px', justifyContent: 'flex-start', paddingLeft: '12px' }}
           >
-            ↪ Sign out
+            Sign out
           </button>
         </div>
       </aside>
@@ -166,19 +171,15 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
               onClick={() => setSidebarOpen(!sidebarOpen)}
               aria-label="Toggle menu"
             >
-              ☰
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
             </button>
-            <h1 className="topbar-title">{getPageTitle()}</h1>
-            {account && (
-              <span className="badge badge-accent">{planLabels[account.plan] || 'Free'}</span>
-            )}
           </div>
           <div className="topbar-right">
-            {account && (
-              <span style={{ fontSize: '0.8125rem', color: 'var(--fg-muted)' }}>
-                {account.name}
-              </span>
-            )}
+            {/* Kept empty as per user request to move plan/brand to sidebar */}
           </div>
         </header>
 

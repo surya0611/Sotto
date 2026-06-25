@@ -120,7 +120,7 @@ export function IntegrationCards({
 
   return (
     <>
-      <div style={{ display: 'flex', gap: 'var(--space-4)', marginBottom: 'var(--space-6)', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 'var(--s-4)', marginBottom: 'var(--s-6)', flexWrap: 'wrap' }}>
         <input 
           type="text" 
           className="input" 
@@ -129,7 +129,7 @@ export function IntegrationCards({
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ maxWidth: '300px' }}
         />
-        <div style={{ display: 'flex', gap: 'var(--space-2)', overflowX: 'auto', paddingBottom: '4px' }}>
+        <div style={{ display: 'flex', gap: 'var(--s-2)', overflowX: 'auto', paddingBottom: '4px' }}>
           {CATEGORIES.map(category => (
             <button
               key={category}
@@ -143,7 +143,7 @@ export function IntegrationCards({
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 'var(--space-4)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 'var(--s-4)' }}>
         {filteredIntegrations.map((integration) => {
           const isConnected = !!secrets[`${integration.id}_secret`];
           
@@ -154,11 +154,11 @@ export function IntegrationCards({
               style={{ cursor: 'pointer' }}
               onClick={() => handleOpen(integration.id)}
             >
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-4)' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--s-4)' }}>
                 <div style={{
                   width: 48,
                   height: 48,
-                  borderRadius: 'var(--radius-md)',
+                  borderRadius: 'var(--r-md)',
                   background: 'var(--accent-subtle)',
                   display: 'flex',
                   alignItems: 'center',
@@ -169,10 +169,10 @@ export function IntegrationCards({
                   {integration.icon}
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: 'var(--space-1)' }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: 'var(--s-1)' }}>
                     {integration.name}
                   </h3>
-                  <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: 'var(--space-3)' }}>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: 'var(--s-3)' }}>
                     {integration.description}
                   </p>
                   {isConnected ? (
@@ -196,7 +196,7 @@ export function IntegrationCards({
             </div>
             
             <form onSubmit={handleSave}>
-              <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)' }}>
                 <div className="input-group">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <label className="input-label">Webhook URL</label>
