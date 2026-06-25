@@ -292,7 +292,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                 >
                   <div style={{
                     width: '100%',
-                    height: '60px',
+                    height: '100px',
                     position: 'relative',
                     background: '#f8f9fa',
                     borderRadius: '8px',
@@ -304,7 +304,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                     {/* Mini Widget Component */}
                     <div style={{
                       ...miniStyles.containerStyles,
-                      transform: 'scale(0.5)',
+                      transform: 'scale(0.85)',
                       padding: '12px',
                       whiteSpace: 'nowrap'
                     }}>
