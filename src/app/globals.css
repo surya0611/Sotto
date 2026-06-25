@@ -963,3 +963,5 @@ pre {
   color: var(--fg) !important;
 }
 code { font-family: var(--font-mono); font-size: 0.875em; }
+
+input[type="range"] { accent-color: var(--primary); }
