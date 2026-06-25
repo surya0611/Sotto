@@ -168,6 +168,8 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
   // Generate styles using the pure function engine
   const liveStyles = computeWidgetStyles(theme);
 
+  const sizeScale = theme.size === 'small' ? 0.85 : theme.size === 'large' ? 1.15 : 1;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-8)' }}>
       {/* Contrast Warning Banner */}
@@ -224,8 +226,12 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
 
             {/* The actual widget toast preview using the shared engine */}
             <div style={{
-              ...getPositionStyles(),
               ...liveStyles.containerStyles,
+              ...getPositionStyles(),
+              width: 'max-content',
+              maxWidth: `${Math.round(320 * sizeScale)}px`,
+              padding: `${Math.round(16 * sizeScale)}px`,
+              gap: `${Math.round(12 * sizeScale)}px`,
               opacity: previewVisible ? 1 : 0,
               pointerEvents: 'none',
               transform: previewVisible 
@@ -234,16 +240,16 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                 : getPositionStyles().transform,
             }}>
               <div style={{ ...liveStyles.bgStyles }} />
-              <div style={{ position: 'relative', zIndex: 3, display: 'flex', alignItems: 'center', gap: liveStyles.containerStyles.gap }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+              <div style={{ position: 'relative', zIndex: 3, display: 'flex', alignItems: 'center', gap: `${Math.round(12 * sizeScale)}px` }}>
+                <svg width={Math.round(20 * sizeScale)} height={Math.round(20 * sizeScale)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                  <p style={{ margin: 0, fontSize: '13px', opacity: 0.8, lineHeight: 1.4, ...liveStyles.textStyles }}>
+                  <p style={{ margin: 0, fontSize: `${Math.round(13 * sizeScale)}px`, opacity: 0.8, lineHeight: 1.4, ...liveStyles.textStyles }}>
                     Sarah M. from NY bought Aura Pro
                   </p>
-                  <p style={{ margin: '2px 0 0 0', fontSize: '10px', opacity: 0.5, lineHeight: 1.3, ...liveStyles.textStyles }}>
+                  <p style={{ margin: '2px 0 0 0', fontSize: `${Math.round(10 * sizeScale)}px`, opacity: 0.5, lineHeight: 1.3, ...liveStyles.textStyles }}>
                     21h ago
                   </p>
                 </div>
@@ -341,6 +347,11 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                   <input type="color" name="text_color" value={theme.text_color} onChange={handleChange} style={{ width: '32px', height: '32px', padding: 0, border: 'none' }} />
                   <input type="text" className="input" name="text_color" value={theme.text_color} onChange={handleChange} />
                 </div>
+              </div>
+
+              <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                <label className="input-label">Background Opacity: {theme.bg_opacity}%</label>
+                <input type="range" name="bg_opacity" min="0" max="100" step="1" value={theme.bg_opacity} onChange={handleChange} style={{ width: '100%' }} />
               </div>
 
               <div className="input-group" style={{ gridColumn: '1 / -1' }}>
