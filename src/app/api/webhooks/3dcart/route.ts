@@ -24,13 +24,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const 3dcart_secret = account.integration_secrets?.3dcart_secret;
-    if (!3dcart_secret) {
+    const secret3dcart = account.integration_secrets?.['3dcart_secret'];
+    if (!secret3dcart) {
       return NextResponse.json({ error: '3dcart integration not configured' }, { status: 401 });
     }
 
     const secretProvided = request.headers.get('x-3dcart-secret') || searchParams.get('secret');
-    if (secretProvided && secretProvided !== 3dcart_secret) {
+    if (secretProvided && secretProvided !== secret3dcart) {
       return NextResponse.json({ error: 'Invalid secret' }, { status: 401 });
     }
 
