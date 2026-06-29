@@ -968,11 +968,47 @@ select.input {
 .pricing-period { font-size: 0.9375rem; color: var(--fg-subtle); font-weight: 400; }
 
 .landing-footer {
-  padding: var(--s-10) var(--s-6);
-  text-align: center;
-  border-top: 1px solid var(--border);
-  margin-top: var(--s-16);
-  color: var(--fg-subtle);
+  padding: var(--s-16) var(--s-10) var(--s-10);
+  background-color: #1A1A1A;
+  color: #9A9A9A;
+  margin-top: 0;
+  border-top: none;
+}
+.landing-footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--s-10);
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+}
+.landing-footer-heading {
+  color: #FFFFFF;
+  font-weight: 600;
+  margin-bottom: var(--s-4);
+  font-size: 0.9375rem;
+}
+.landing-footer-link {
+  display: block;
+  color: #9A9A9A;
+  text-decoration: none;
+  margin-bottom: var(--s-3);
+  transition: color var(--ease);
+  font-size: 0.875rem;
+}
+.landing-footer-link:hover {
+  color: #F5F0E8;
+}
+.landing-footer-divider {
+  height: 1px;
+  background-color: #333333;
+  margin: var(--s-10) 0 var(--s-6);
+}
+.landing-footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+  font-size: 0.875rem;
 }
 
 /* ── Integration Cards ── */

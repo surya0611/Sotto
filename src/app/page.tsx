@@ -170,12 +170,32 @@ export default function Home() {
         </main>
 
         <footer className="landing-footer scroll-reveal">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '16px' }}>
-            <div className="brand-logo-container">
-              S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
+          <div className="landing-footer-grid">
+            <div>
+              <div className="brand-logo-container" style={{ color: '#ffffff', marginBottom: '16px' }}>
+                S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" style={{ filter: 'brightness(0) invert(1)' }} />TTO
+              </div>
+              <p>Quiet social proof for premium storefronts.</p>
+            </div>
+            <div>
+              <h4 className="landing-footer-heading">Product</h4>
+              <Link href="#" className="landing-footer-link">Features</Link>
+              <Link href="#" className="landing-footer-link">Pricing</Link>
+              <Link href="#" className="landing-footer-link">Integrations</Link>
+              <Link href="#" className="landing-footer-link">Changelog</Link>
+            </div>
+            <div>
+              <h4 className="landing-footer-heading">Company</h4>
+              <Link href="#" className="landing-footer-link">About</Link>
+              <Link href="#" className="landing-footer-link">Contact</Link>
+              <Link href="#" className="landing-footer-link">Privacy Policy</Link>
+              <Link href="#" className="landing-footer-link">Terms of Service</Link>
             </div>
           </div>
-          <p>© {new Date().getFullYear()} Sotto. All rights reserved.</p>
+          <div className="landing-footer-divider"></div>
+          <div className="landing-footer-bottom">
+            <p>© {new Date().getFullYear()} Sotto. All rights reserved.</p>
+          </div>
         </footer>
       </div>
     </div>
