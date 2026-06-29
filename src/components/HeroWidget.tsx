@@ -76,7 +76,7 @@ const WIDGETS = [
       border: 'none',
       borderRadius: '999px', // Pill shaped
       padding: '12px 20px',
-      boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.1), -4px -4px 10px rgba(255, 255, 255, 0.7)'
+      boxShadow: '6px 6px 12px #ff6a80, -6px -6px 12px #ffffff'
     }
   }
 ];
