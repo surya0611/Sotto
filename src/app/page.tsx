@@ -16,25 +16,6 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && !CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('in-view-fallback');
-              observer.unobserve(entry.target);
-            }
-          }
-        },
-        { threshold: 0.1 }
-      );
-      document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
-      
-      return () => observer.disconnect();
-    }
-  }, []);
-
   return (
     <div style={{ backgroundColor: 'var(--bg)', minHeight: '100vh', position: 'relative' }}>
       
@@ -69,7 +50,7 @@ export default function Home() {
 
         <main className="landing-container">
           {/* Hero Section */}
-          <section className="hero-section stagger-in">
+          <section className="hero-section">
             <Link href="#pricing" className="badge badge-accent" style={{ marginBottom: '16px', textDecoration: 'none' }}>Free during beta — limited spots</Link>
             <h1 className="hero-title">Social proof, <em style={{ fontStyle: 'italic', fontWeight: 400 }}>sotto voce</em>.</h1>
             <p className="hero-subtitle">
@@ -85,7 +66,7 @@ export default function Home() {
 
           {/* Features Section */}
           <section className="features-section">
-            <div className="scroll-reveal" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
+            <div className="" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
               <h2 className="hero-title" style={{ fontSize: '2.5rem' }}>Everything you need. Nothing you don't.</h2>
               <p className="hero-subtitle" style={{ fontSize: '1rem', marginTop: '16px', marginLeft: 'auto', marginRight: 'auto' }}>
                 We stripped away the noise, the fake timers, and the aggressive animations to focus entirely on beautiful, quiet conversion lifts.
@@ -93,21 +74,21 @@ export default function Home() {
             </div>
             
             <div className="features-grid">
-              <div className="feature-card scroll-reveal">
+              <div className="feature-card">
                 <div className="feature-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                 </div>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Premium Aesthetics</h3>
                 <p style={{ color: 'var(--text-secondary)' }}>Sotto's widget styles are designed to match your storefront, not fight it. No custom CSS needed — pick a preset and it just fits.</p>
               </div>
-              <div className="feature-card scroll-reveal" style={{ animationDelay: '100ms' }}>
+              <div className="feature-card" style={{ animationDelay: '100ms' }}>
                 <div className="feature-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
                 </div>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Frequency Capping</h3>
                 <p style={{ color: 'var(--text-secondary)' }}>Set a hard limit on how many times a widget appears per browsing session. Customers never feel followed or pressured.</p>
               </div>
-              <div className="feature-card scroll-reveal" style={{ animationDelay: '200ms' }}>
+              <div className="feature-card" style={{ animationDelay: '200ms' }}>
                 <div className="feature-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
                 </div>
@@ -119,7 +100,7 @@ export default function Home() {
 
           {/* Pricing Section */}
           <section id="pricing" className="pricing-section">
-            <div className="scroll-reveal" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
+            <div className="" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
               <h2 className="hero-title" style={{ fontSize: '2.5rem' }}>Simple, transparent pricing.</h2>
               <p className="hero-subtitle" style={{ fontSize: '1rem', marginTop: '16px', marginLeft: 'auto', marginRight: 'auto' }}>
                 Start for free, upgrade when you need more volume.
@@ -127,7 +108,7 @@ export default function Home() {
             </div>
             
             <div className="pricing-grid">
-              <div className="pricing-card scroll-reveal">
+              <div className="pricing-card">
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Free</h3>
                 <p style={{ color: 'var(--text-secondary)' }}>Perfect for testing the waters.</p>
                 <div className="pricing-price">$0<span className="pricing-period">/mo</span></div>
@@ -139,7 +120,7 @@ export default function Home() {
                 <Link href="/signup" className="btn btn-secondary w-full" style={{ marginTop: 'auto' }}>Start for free</Link>
               </div>
               
-              <div className="pricing-card popular scroll-reveal" style={{ animationDelay: '100ms' }}>
+              <div className="pricing-card popular" style={{ animationDelay: '100ms' }}>
                 <div className="pricing-badge">Most Popular</div>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Boutique</h3>
                 <p style={{ color: 'var(--text-secondary)' }}>For growing luxury storefronts.</p>
@@ -152,7 +133,7 @@ export default function Home() {
                 <Link href="/signup" className="btn btn-primary w-full" style={{ marginTop: 'auto' }}>Try Boutique free</Link>
               </div>
 
-              <div className="pricing-card scroll-reveal" style={{ animationDelay: '200ms' }}>
+              <div className="pricing-card" style={{ animationDelay: '200ms' }}>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Enterprise</h3>
                 <p style={{ color: 'var(--text-secondary)' }}>High volume, multi-region brands.</p>
                 <div className="pricing-price">$149<span className="pricing-period">/mo</span></div>
@@ -169,7 +150,7 @@ export default function Home() {
           <FaqSection />
         </main>
 
-        <footer className="landing-footer scroll-reveal">
+        <footer className="landing-footer">
           <div className="landing-footer-grid">
             <div>
               <div className="brand-logo-container" style={{ color: '#ffffff', marginBottom: '16px' }}>

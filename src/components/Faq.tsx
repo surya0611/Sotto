@@ -73,10 +73,10 @@ function FaqItem({ question, answer }: { question: string, answer: string }) {
 export function FaqSection() {
   return (
     <section className="faq-section" style={{ padding: '120px 20px', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
-      <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '60px' }}>
+      <div className="" style={{ textAlign: 'center', marginBottom: '60px' }}>
         <h2 className="hero-title" style={{ fontSize: '2.5rem' }}>Frequently Asked Questions</h2>
       </div>
-      <div className="scroll-reveal" style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="" style={{ display: 'flex', flexDirection: 'column' }}>
         {faqs.map((faq, index) => (
           <FaqItem key={index} question={faq.question} answer={faq.answer} />
         ))}
