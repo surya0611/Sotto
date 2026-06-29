@@ -843,7 +843,7 @@ select.input {
 .brand-logo-container {
   display: flex; align-items: center;
   font-family: var(--font-outfit), var(--font-jakarta), sans-serif;
-  font-size: 1.5rem; font-weight: 500;
+  font-size: 1.75rem; font-weight: 500;
   color: var(--fg); letter-spacing: -0.02em;
   text-transform: lowercase;
 }
