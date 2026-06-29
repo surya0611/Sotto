@@ -69,13 +69,13 @@ export default function Home() {
         <main className="landing-container">
           {/* Hero Section */}
           <section className="hero-section stagger-in">
-            <div className="badge badge-accent" style={{ marginBottom: '16px' }}>Now in Beta</div>
+            <Link href="#pricing" className="badge badge-accent" style={{ marginBottom: '16px', textDecoration: 'none' }}>Free during beta — limited spots</Link>
             <h1 className="hero-title">Social proof, <em style={{ fontStyle: 'italic', fontWeight: 400 }}>sotto voce</em>.</h1>
             <p className="hero-subtitle">
-              Generic popups scream at your customers. Sotto provides gentle, premium social proof crafted exclusively for design-forward DTC brands.
+              Most social proof tools were built for volume. Sotto was built for brands that care what their store looks like.
             </p>
             <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
-              <Link href="/signup" className="btn btn-primary btn-lg">Start Free Trial</Link>
+              <Link href="/signup" className="btn btn-primary btn-lg">Try it free — no card required</Link>
               <Link href="#pricing" className="btn btn-secondary btn-lg">View Pricing</Link>
             </div>
             
@@ -85,7 +85,7 @@ export default function Home() {
           {/* Features Section */}
           <section className="features-section">
             <div className="scroll-reveal" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-              <h2 className="hero-title" style={{ fontSize: '2.5rem' }}>Built for restraint.</h2>
+              <h2 className="hero-title" style={{ fontSize: '2.5rem' }}>Everything you need. Nothing you don't.</h2>
               <p className="hero-subtitle" style={{ fontSize: '1rem', marginTop: '16px', marginLeft: 'auto', marginRight: 'auto' }}>
                 We stripped away the noise, the fake timers, and the aggressive animations to focus entirely on beautiful, quiet conversion lifts.
               </p>
@@ -97,21 +97,21 @@ export default function Home() {
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                 </div>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Premium Aesthetics</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>Zero CSS required. Sotto seamlessly blends into your storefront with elegant, minimal design presets.</p>
+                <p style={{ color: 'var(--text-secondary)' }}>Sotto's widget styles are designed to match your storefront, not fight it. No custom CSS needed — pick a preset and it just fits.</p>
               </div>
               <div className="feature-card scroll-reveal" style={{ animationDelay: '100ms' }}>
                 <div className="feature-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/></svg>
                 </div>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Frequency Capping</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>Never annoy a customer. Set strict limits on how often social proof appears during a browsing session.</p>
+                <p style={{ color: 'var(--text-secondary)' }}>Set a hard limit on how many times a widget appears per browsing session. Customers never feel followed or pressured.</p>
               </div>
               <div className="feature-card scroll-reveal" style={{ animationDelay: '200ms' }}>
                 <div className="feature-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg>
                 </div>
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>One-Click Integrations</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>Connects instantly to Shopify, Razorpay, Typeform, and Google Forms to pull real, verified purchase data.</p>
+                <p style={{ color: 'var(--text-secondary)' }}>Pulls real, verified data from Shopify, Razorpay, Typeform, and Google Forms. No fake events, no manual setup.</p>
               </div>
             </div>
           </section>
@@ -135,7 +135,7 @@ export default function Home() {
                   <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">1 Domain</span></li>
                   <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Standard Support</span></li>
                 </ul>
-                <Link href="/signup" className="btn btn-secondary w-full" style={{ marginTop: 'auto' }}>Get Started</Link>
+                <Link href="/signup" className="btn btn-secondary w-full" style={{ marginTop: 'auto' }}>Start for free</Link>
               </div>
               
               <div className="pricing-card popular scroll-reveal" style={{ animationDelay: '100ms' }}>
@@ -148,7 +148,7 @@ export default function Home() {
                   <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">3 Domains</span></li>
                   <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Priority Support</span></li>
                 </ul>
-                <Link href="/signup" className="btn btn-primary w-full" style={{ marginTop: 'auto' }}>Start Free Trial</Link>
+                <Link href="/signup" className="btn btn-primary w-full" style={{ marginTop: 'auto' }}>Try Boutique free</Link>
               </div>
 
               <div className="pricing-card scroll-reveal" style={{ animationDelay: '200ms' }}>
