@@ -3,82 +3,81 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
+const CheckIcon = ({ color }: { color: string }) => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 11.08V12a10 10 10 0 1 1-5.93-9.14"></path>
+    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+  </svg>
+);
+
 const WIDGETS = [
   {
     id: 1,
     theme: 'paper',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ width: '56px', height: '56px', borderRadius: '4px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-          <Image src="/images/linen-pants.png" alt="Linen Pants" fill style={{ objectFit: 'cover' }} />
+        <div style={{ flexShrink: 0 }}>
+          <CheckIcon color="#1a1a1a" />
         </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '13px', color: 'var(--fg-subtle)', fontWeight: 500, marginBottom: '2px', fontFamily: 'serif', fontStyle: 'italic' }}>Someone in Milan, Italy</div>
-          <div style={{ fontSize: '14px', color: 'var(--fg)', fontWeight: 400, lineHeight: 1.3 }}>Just purchased <span style={{ fontWeight: 600 }}>Linen Trousers</span></div>
-          <div style={{ fontSize: '12px', color: 'var(--fg-muted)', marginTop: '4px' }}>2 hours ago</div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>Sarah M. from NY bought Aura Pro</div>
+          <div style={{ fontSize: '13px', color: '#888' }}>21h ago</div>
         </div>
       </div>
     ),
     style: {
-      backgroundColor: '#FDFBF7', /* Warm paper */
-      border: '1px solid #E8E5DF',
-      boxShadow: '0 8px 30px rgba(196, 155, 106, 0.12), inset 0 0 40px rgba(196, 155, 106, 0.03)',
-      color: 'var(--fg)'
+      backgroundColor: '#fdfdfc',
+      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E")`,
+      border: '1px solid #E5E5E5',
+      borderRadius: '4px',
+      padding: '16px 20px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
     }
   },
   {
     id: 2,
-    theme: 'glass',
+    theme: 'brutalist',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-          <Image src="/images/handheld-fan.jpg" alt="Minimalist Handheld Fan" fill style={{ objectFit: 'cover' }} />
+        <div style={{ flexShrink: 0 }}>
+          <CheckIcon color="#fff" />
         </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '14px', color: 'var(--fg)', fontWeight: 400, lineHeight: 1.4 }}>
-            <strong style={{ fontWeight: 700 }}>24 people</strong> joined the waitlist for the <strong style={{ fontWeight: 600 }}>Minimalist Handheld Fan</strong>
-          </div>
-          <a href="#" style={{ display: 'inline-block', fontSize: '13px', color: 'var(--primary)', fontWeight: 600, marginTop: '6px', textDecoration: 'none' }}>
-            Join waitlist &rarr;
-          </a>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <div style={{ fontSize: '15px', color: '#fff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>Sarah M. from NY bought Aura Pro</div>
+          <div style={{ fontSize: '13px', color: '#B4D496', fontFamily: 'monospace' }}>21h ago</div>
         </div>
       </div>
     ),
     style: {
-      backgroundColor: 'rgba(253, 251, 247, 0.65)',
-      backdropFilter: 'blur(24px)',
-      WebkitBackdropFilter: 'blur(24px)',
-      border: '1px solid rgba(255, 255, 255, 0.8)',
-      boxShadow: '0 12px 32px 0 rgba(196, 155, 106, 0.15)',
-      borderRadius: '16px'
+      backgroundColor: '#6B9E3D',
+      border: '4px solid #000',
+      borderRadius: '0',
+      padding: '16px 20px',
+      boxShadow: '4px 4px 0px #000'
     }
   },
   {
     id: 3,
-    theme: 'brutalist',
+    theme: 'glass',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ width: '56px', height: '56px', border: '2px solid #000', flexShrink: 0, position: 'relative', backgroundColor: '#000', padding: '4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          {/* Abstract UI Kit Graphic */}
-          <div style={{ width: '100%', height: '12px', backgroundColor: '#4ADE80' }}></div>
-          <div style={{ display: 'flex', gap: '4px', flex: 1 }}>
-            <div style={{ flex: 1, backgroundColor: '#333' }}></div>
-            <div style={{ flex: 2, backgroundColor: '#333' }}></div>
-          </div>
+        <div style={{ flexShrink: 0 }}>
+          <CheckIcon color="#1a1a1a" />
         </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '15px', color: '#000', fontWeight: 600, lineHeight: 1.4, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
-            <strong style={{ fontWeight: 800, background: '#000', color: '#4ADE80', padding: '0 4px' }}>15 creators</strong> downloaded the <strong style={{ fontWeight: 800 }}>Sotto UI Kit</strong> today
-          </div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
+          <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>Sarah M. from NY bought Aura Pro</div>
+          <div style={{ fontSize: '13px', color: '#666' }}>21h ago</div>
         </div>
       </div>
     ),
     style: {
-      backgroundColor: '#4ADE80', /* Vibrant green background */
-      border: '3px solid #000',
-      borderRadius: '0',
-      boxShadow: '6px 6px 0px #000',
-      color: '#000'
+      backgroundColor: 'rgba(255, 255, 255, 0.65)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      border: '1px solid rgba(255, 255, 255, 0.4)',
+      borderRadius: '16px',
+      padding: '16px 20px',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
     }
   }
 ];
@@ -184,9 +183,7 @@ export function HeroWidget() {
                 position: 'absolute',
                 top: 0,
                 left: 0,
-                width: '100%', 
-                padding: '20px', 
-                borderRadius: '16px',
+                width: '100%',
                 transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                 opacity: isActive ? 1 : 0,
                 transform: isActive ? 'translateY(0) scale(1)' : 'translateY(15px) scale(0.95)',
