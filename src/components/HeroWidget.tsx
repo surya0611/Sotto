@@ -15,7 +15,7 @@ const WIDGETS = [
     theme: 'paper',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ width: '56px', height: '56px', borderRadius: '4px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+        <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
           <Image src="/images/linen-pants.png" alt="Linen Pants" fill style={{ objectFit: 'cover' }} />
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px', textAlign: 'left' }}>
@@ -30,7 +30,7 @@ const WIDGETS = [
       backgroundRepeat: 'repeat',
       backgroundSize: '128px 128px',
       border: '1px solid #E8E1CD',
-      borderRadius: '4px',
+      borderRadius: '8px',
       padding: '16px 20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
     }
