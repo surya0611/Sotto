@@ -238,7 +238,7 @@ Every webhook payload, widget impression, and click is stored here.
 |---|---|---|
 | `id` | UUID | Primary key |
 | `account_id` | UUID | Foreign key → `accounts.id` (CASCADE) |
-| `source` | TEXT | `shopify`, `razorpay`, `typeform`, `google_forms`, or `sotto_pixel` |
+| `source` | TEXT | `shopify`, `razorpay`, `typeform`, `google_forms`, `sotto_pixel`, `custom`, `easebuzz`, `cratejoy`, `3dcart`, `magento`, `lightspeed`, `bigcommerce`, `ecwid`, `thrivecart`, `squarespace`, `jumpseller`, `bigcartel`, `woocommerce`, `instamojo`, `cashfree`, `payu`, `dukaan` |
 | `event_type` | TEXT | `purchase`, `signup`, `form_submission`, `impression`, `click`, or `conversion` |
 | `session_id` | TEXT | Shopper session ID (widget) or webhook dedup ID (webhooks) |
 | `customer_name` | TEXT | Customer's name (from webhook payload) |

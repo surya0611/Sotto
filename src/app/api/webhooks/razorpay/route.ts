@@ -56,8 +56,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Extract fields
-    const customerName = data.payload?.payment?.entity?.notes?.name || 'Customer';
+    let customerName = data.payload?.payment?.entity?.notes?.name || 'Someone';
     let customerCity = data.payload?.payment?.entity?.notes?.city;
+    let productName = data.payload?.payment?.entity?.notes?.product_name || data.payload?.payment?.entity?.description || 'a product';
 
     // Resolve IP geolocation if city is missing
     if (!customerCity) {
@@ -89,6 +90,7 @@ export async function POST(request: NextRequest) {
       event_type: 'purchase',
       customer_name: customerName,
       customer_city: customerCity || null,
+      product_name: productName,
       session_id: webhookId || null,
     });
 
