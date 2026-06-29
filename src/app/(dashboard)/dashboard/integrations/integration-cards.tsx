@@ -19,7 +19,7 @@ interface Integration {
 function IntegrationIcon({ id, defaultIcon }: { id: string; defaultIcon: React.ReactNode }) {
   const [error, setError] = useState(false);
   
-  const simpleIcons = ['shopify', 'razorpay', 'typeform', 'magento', 'bigcommerce', 'squarespace', 'woocommerce', 'stripe', 'bigcartel'];
+  const simpleIcons = ['shopify', 'razorpay', 'typeform', 'bigcommerce', 'squarespace', 'woocommerce', 'stripe', 'bigcartel'];
   const slugMap: Record<string, string> = {
     'google_forms': 'google'
   };
