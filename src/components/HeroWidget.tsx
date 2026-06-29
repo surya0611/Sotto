@@ -6,71 +6,79 @@ import Image from 'next/image';
 const WIDGETS = [
   {
     id: 1,
-    theme: 'classic',
+    theme: 'paper',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+        <div style={{ width: '56px', height: '56px', borderRadius: '4px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
           <Image src="/images/linen-pants.png" alt="Linen Pants" fill style={{ objectFit: 'cover' }} />
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '13px', color: 'var(--text-secondary)', fontWeight: 500, marginBottom: '2px' }}>Someone in Milan, Italy</div>
-          <div style={{ fontSize: '14px', color: 'var(--text-primary)', fontWeight: 400, lineHeight: 1.3 }}>Just purchased <span style={{ fontWeight: 600 }}>Linen Trousers</span></div>
-          <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>2 hours ago</div>
+          <div style={{ fontSize: '13px', color: 'var(--fg-subtle)', fontWeight: 500, marginBottom: '2px', fontFamily: 'serif', fontStyle: 'italic' }}>Someone in Milan, Italy</div>
+          <div style={{ fontSize: '14px', color: 'var(--fg)', fontWeight: 400, lineHeight: 1.3 }}>Just purchased <span style={{ fontWeight: 600 }}>Linen Trousers</span></div>
+          <div style={{ fontSize: '12px', color: 'var(--fg-muted)', marginTop: '4px' }}>2 hours ago</div>
         </div>
       </div>
     ),
     style: {
-      backgroundColor: 'var(--bg-surface)',
-      border: '1px solid var(--border)',
-      boxShadow: 'var(--shadow-md)',
-      color: 'var(--text-primary)'
+      backgroundColor: '#FDFBF7', /* Warm paper */
+      border: '1px solid #E8E5DF',
+      boxShadow: '0 8px 30px rgba(196, 155, 106, 0.12), inset 0 0 40px rgba(196, 155, 106, 0.03)',
+      color: 'var(--fg)'
     }
   },
   {
     id: 2,
-    theme: 'dark',
-    render: () => (
-      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-          <Image src="/images/sneakers.png" alt="Minimalist Sneaker" fill style={{ objectFit: 'cover' }} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '15px', color: '#FDFBF7', fontWeight: 400, lineHeight: 1.4 }}>
-            <strong style={{ color: 'var(--accent)', fontWeight: 700 }}>15 people</strong> bought the <strong style={{ fontWeight: 600 }}>Minimalist Sneaker</strong> today
-          </div>
-        </div>
-      </div>
-    ),
-    style: {
-      backgroundColor: '#2C3527',
-      border: '1px solid #4A5445',
-      boxShadow: '0 12px 30px -5px rgba(44, 53, 39, 0.5)'
-    }
-  },
-  {
-    id: 3,
     theme: 'glass',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
         <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-          <Image src="/images/bridal-gown.png" alt="Bridal Gown" fill style={{ objectFit: 'cover' }} />
+          <Image src="/images/handheld-fan.jpg" alt="Minimalist Handheld Fan" fill style={{ objectFit: 'cover' }} />
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '14px', color: 'var(--text-primary)', fontWeight: 400, lineHeight: 1.4 }}>
-            <strong style={{ fontWeight: 700 }}>24 people</strong> joined the waitlist for the <strong style={{ fontWeight: 600 }}>Silk Bodice Gown</strong>
+          <div style={{ fontSize: '14px', color: 'var(--fg)', fontWeight: 400, lineHeight: 1.4 }}>
+            <strong style={{ fontWeight: 700 }}>24 people</strong> joined the waitlist for the <strong style={{ fontWeight: 600 }}>Minimalist Handheld Fan</strong>
           </div>
-          <a href="#" style={{ display: 'inline-block', fontSize: '13px', color: 'var(--accent)', fontWeight: 600, marginTop: '6px', textDecoration: 'none' }}>
+          <a href="#" style={{ display: 'inline-block', fontSize: '13px', color: 'var(--primary)', fontWeight: 600, marginTop: '6px', textDecoration: 'none' }}>
             Join waitlist &rarr;
           </a>
         </div>
       </div>
     ),
     style: {
-      backgroundColor: 'rgba(253, 251, 247, 0.75)',
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
-      border: '1px solid rgba(255, 255, 255, 0.6)',
-      boxShadow: '0 12px 32px 0 rgba(196, 155, 106, 0.15)'
+      backgroundColor: 'rgba(253, 251, 247, 0.65)',
+      backdropFilter: 'blur(24px)',
+      WebkitBackdropFilter: 'blur(24px)',
+      border: '1px solid rgba(255, 255, 255, 0.8)',
+      boxShadow: '0 12px 32px 0 rgba(196, 155, 106, 0.15)',
+      borderRadius: '16px'
+    }
+  },
+  {
+    id: 3,
+    theme: 'brutalist',
+    render: () => (
+      <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+        <div style={{ width: '56px', height: '56px', border: '2px solid #000', flexShrink: 0, position: 'relative', backgroundColor: '#000', padding: '4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          {/* Abstract UI Kit Graphic */}
+          <div style={{ width: '100%', height: '12px', backgroundColor: '#4ADE80' }}></div>
+          <div style={{ display: 'flex', gap: '4px', flex: 1 }}>
+            <div style={{ flex: 1, backgroundColor: '#333' }}></div>
+            <div style={{ flex: 2, backgroundColor: '#333' }}></div>
+          </div>
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '15px', color: '#000', fontWeight: 600, lineHeight: 1.4, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+            <strong style={{ fontWeight: 800, background: '#000', color: '#4ADE80', padding: '0 4px' }}>15 creators</strong> downloaded the <strong style={{ fontWeight: 800 }}>Sotto UI Kit</strong> today
+          </div>
+        </div>
+      </div>
+    ),
+    style: {
+      backgroundColor: '#4ADE80', /* Vibrant green background */
+      border: '3px solid #000',
+      borderRadius: '0',
+      boxShadow: '6px 6px 0px #000',
+      color: '#000'
     }
   }
 ];
