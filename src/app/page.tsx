@@ -35,7 +35,15 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-deep)', minHeight: '100vh', position: 'relative' }}>
+    <div style={{ backgroundColor: 'var(--bg)', minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
+      
+      {/* Aurora Mesh Backdrop */}
+      <div className="aurora-container">
+        <div className="aurora-blob aurora-blob-1"></div>
+        <div className="aurora-blob aurora-blob-2"></div>
+        <div className="aurora-blob aurora-blob-3"></div>
+      </div>
+
       {/* Background Texture Overlay */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 0, opacity: 0.03, pointerEvents: 'none',

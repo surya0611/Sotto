@@ -1053,3 +1053,46 @@ input[type="range"] { accent-color: var(--primary); }
   opacity: 1;
   filter: grayscale(0%);
 }
+
+/* ── Aurora Mesh Backdrop ── */
+.aurora-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+.aurora-blob {
+  position: absolute;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: aurora-float 20s infinite ease-in-out alternate;
+  border-radius: 50%;
+}
+.aurora-blob-1 {
+  top: -10%; left: -10%;
+  width: 50vw; height: 50vw;
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  animation-delay: 0s;
+}
+.aurora-blob-2 {
+  bottom: -20%; right: -10%;
+  width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(150, 160, 140, 0.5) 0%, transparent 70%); /* Soft muted olive */
+  animation-delay: -5s;
+  animation-duration: 25s;
+}
+.aurora-blob-3 {
+  top: 30%; left: 40%;
+  width: 40vw; height: 40vw;
+  background: radial-gradient(circle, rgba(230, 220, 200, 0.8) 0%, transparent 70%); /* Warm cream light */
+  animation-delay: -10s;
+  animation-duration: 30s;
+}
+
+@keyframes aurora-float {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(5%, -5%) scale(1.1); }
+  66% { transform: translate(-2%, 5%) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
