@@ -45,14 +45,16 @@ export default function Home() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Navigation */}
         <nav className={`landing-nav ${isScrolled ? 'scrolled' : ''}`}>
-          <Link href="/" style={{ textDecoration: 'none' }}>
-            <div className="brand-logo-container">
-              S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
+          <div className="landing-nav-inner">
+            <Link href="/" style={{ textDecoration: 'none' }}>
+              <div className="brand-logo-container">
+                S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
+              </div>
+            </Link>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <Link href="/login" className="btn btn-ghost btn-sm">Log in</Link>
+              <Link href="/signup" className="btn btn-primary btn-sm">Get Started</Link>
             </div>
-          </Link>
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <Link href="/login" className="btn btn-ghost btn-sm">Log in</Link>
-            <Link href="/signup" className="btn btn-primary btn-sm">Get Started</Link>
           </div>
         </nav>
 
@@ -70,26 +72,6 @@ export default function Home() {
             </div>
             
             <HeroWidget />
-            
-            {/* Trusted By Marquee */}
-            <div className="scroll-reveal" style={{ marginTop: '64px', width: '100%' }}>
-              <p style={{ fontSize: '0.875rem', color: 'var(--fg-subtle)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '16px' }}>
-                Trusted by modern brands & platforms
-              </p>
-              <div className="marquee-container">
-                <div className="marquee-content">
-                  {/* Duplicated for seamless loop */}
-                  {[...Array(2)].map((_, idx) => (
-                    <div key={idx} style={{ display: 'flex', gap: 'var(--s-12)' }}>
-                      <img src="/shopify.svg" alt="Shopify" className="brand-logo-img" />
-                      <img src="/typeform.svg" alt="Typeform" className="brand-logo-img" />
-                      <img src="/google.svg" alt="Google" className="brand-logo-img" />
-                      <img src="/razorpay.svg" alt="Razorpay" className="brand-logo-img" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
           </section>
 
           {/* Features Section */}
