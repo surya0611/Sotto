@@ -969,8 +969,8 @@ select.input {
 
 .landing-footer {
   padding: var(--s-16) var(--s-10) var(--s-10);
-  background-color: #1A1A1A;
-  color: #9A9A9A;
+  background-color: var(--bg-muted);
+  color: var(--fg-muted);
   margin-top: 0;
   border-top: none;
 }
@@ -983,25 +983,25 @@ select.input {
   text-align: left;
 }
 .landing-footer-heading {
-  color: #FFFFFF;
+  color: var(--fg);
   font-weight: 600;
   margin-bottom: var(--s-4);
   font-size: 0.9375rem;
 }
 .landing-footer-link {
   display: block;
-  color: #9A9A9A;
+  color: var(--fg-muted);
   text-decoration: none;
   margin-bottom: var(--s-3);
   transition: color var(--ease);
   font-size: 0.875rem;
 }
 .landing-footer-link:hover {
-  color: #F5F0E8;
+  color: var(--fg);
 }
 .landing-footer-divider {
   height: 1px;
-  background-color: #333333;
+  background-color: var(--border);
   margin: var(--s-10) 0 var(--s-6);
 }
 .landing-footer-bottom {

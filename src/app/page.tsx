@@ -153,8 +153,8 @@ export default function Home() {
         <footer className="landing-footer">
           <div className="landing-footer-grid">
             <div>
-              <div className="brand-logo-container" style={{ color: '#ffffff', marginBottom: '16px' }}>
-                S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" style={{ filter: 'brightness(0) invert(1)' }} />TTO
+              <div className="brand-logo-container" style={{ marginBottom: '16px' }}>
+                S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
               </div>
               <p>Quiet social proof for premium storefronts.</p>
             </div>
