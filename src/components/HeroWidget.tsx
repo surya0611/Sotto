@@ -16,8 +16,8 @@ const WIDGETS = [
     theme: 'paper',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ flexShrink: 0 }}>
-          <CheckIcon color="#1a1a1a" />
+        <div style={{ width: '56px', height: '56px', borderRadius: '4px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+          <Image src="/images/linen-pants.png" alt="Linen Pants" fill style={{ objectFit: 'cover' }} />
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>Someone in Milan bought <span style={{ fontWeight: 600 }}>Linen Trousers</span></div>
@@ -26,9 +26,9 @@ const WIDGETS = [
       </div>
     ),
     style: {
-      backgroundColor: '#fdfdfc',
+      backgroundColor: '#E8F0FE',
       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E")`,
-      border: '1px solid #E5E5E5',
+      border: '1px solid #C5D5EB',
       borderRadius: '4px',
       padding: '16px 20px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
@@ -61,8 +61,8 @@ const WIDGETS = [
     theme: 'glass',
     render: () => (
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={{ flexShrink: 0 }}>
-          <CheckIcon color="#1a1a1a" />
+        <div style={{ width: '56px', height: '56px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+          <Image src="/images/handheld-fan.jpg" alt="Minimalist Handheld Fan" fill style={{ objectFit: 'cover' }} />
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>24 people joined waitlist for <span style={{ fontWeight: 600 }}>Minimalist Fan</span></div>
@@ -71,9 +71,9 @@ const WIDGETS = [
       </div>
     ),
     style: {
-      backgroundColor: 'rgba(255, 255, 255, 0.4)',
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
+      backgroundColor: 'rgba(255, 255, 255, 0.15)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
       border: '1px solid rgba(255, 255, 255, 0.6)',
       borderRadius: '16px',
       padding: '16px 20px',
