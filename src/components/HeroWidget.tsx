@@ -77,16 +77,39 @@ const WIDGETS = [
 
 export function HeroWidget() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    if (isHovered) return;
     const timer = setInterval(() => {
       setActiveIndex((current) => (current + 1) % WIDGETS.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, []);
+  }, [isHovered]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const xPct = (x / rect.width - 0.5) * 2;
+    const yPct = (y / rect.height - 0.5) * 2;
+    
+    setTilt({ x: yPct * -5, y: xPct * 5 });
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setTilt({ x: 0, y: 0 });
+  };
 
   return (
-    <div style={{ 
+    <div 
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+      style={{ 
       marginTop: '64px', 
       position: 'relative', 
       width: '100%', 
@@ -99,7 +122,11 @@ export function HeroWidget() {
       display: 'flex', 
       alignItems: 'flex-end', 
       justifyContent: 'flex-start', 
-      padding: '32px' 
+      padding: '32px',
+      transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isHovered ? 1.02 : 1})`,
+      transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.5s ease',
+      boxShadow: isHovered ? 'var(--shadow-xl)' : 'none',
+      cursor: 'pointer'
     }}>
       {/* Fake Storefront background */}
       <div style={{ 
