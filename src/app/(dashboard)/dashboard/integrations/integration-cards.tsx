@@ -30,6 +30,11 @@ function IntegrationIcon({ id, defaultIcon }: { id: string; defaultIcon: React.R
     
   if (error) return <>{defaultIcon}</>;
   
+  // Specific scaling for logos that appear too small due to internal SVG padding
+  let scale = 1;
+  if (id === 'woocommerce') scale = 1.5;
+  if (id === 'typeform') scale = 1.3;
+  
   return (
     <img 
       src={src} 
@@ -37,7 +42,12 @@ function IntegrationIcon({ id, defaultIcon }: { id: string; defaultIcon: React.R
       width="36" 
       height="36" 
       onError={() => setError(true)} 
-      style={{ objectFit: 'contain', width: '36px', height: '36px' }} 
+      style={{ 
+        objectFit: 'contain', 
+        width: '36px', 
+        height: '36px',
+        transform: `scale(${scale})`
+      }} 
     />
   );
 }
