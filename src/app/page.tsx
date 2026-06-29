@@ -118,7 +118,7 @@ export default function Home() {
 
           {/* Pricing Section */}
           <section id="pricing" className="pricing-section">
-            <div className="scroll-reveal">
+            <div className="scroll-reveal" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
               <h2 className="hero-title" style={{ fontSize: '2.5rem' }}>Simple, transparent pricing.</h2>
               <p className="hero-subtitle" style={{ fontSize: '1rem', marginTop: '16px', marginLeft: 'auto', marginRight: 'auto' }}>
                 Start for free, upgrade when you need more volume.
