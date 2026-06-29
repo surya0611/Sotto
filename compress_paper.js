@@ -2,7 +2,7 @@ const fs = require('fs');
 const { createCanvas, loadImage } = require('canvas');
 
 async function processImage() {
-  const imagePath = '/Users/suryapratapsingh/.gemini/antigravity/brain/6b818a91-b559-4ac0-ba30-34d88974d736/crumpled_paper_seamless_1782384140509.png';
+  const imagePath = '/Users/suryapratapsingh/.gemini/antigravity/brain/6b818a91-b559-4ac0-ba30-34d88974d736/micro_paper_texture_1782717099634.png';
   const img = await loadImage(imagePath);
   
   const SIZE = 128; // Smaller tile size!

@@ -276,7 +276,9 @@ export function computeWidgetStyles(config: AppearanceConfig): any {
       // Paper uses an optimized PNG base64 texture.
       // We use a linear-gradient of the base color to act as a wash/opacity mask over the texture.
       const [r, g, b] = hexToRGB(c.bg_color);
-      const maskAlpha = (1 - (intensity * 0.8)).toFixed(3); // even at 100% intensity, we wash it slightly so it isn't pure black
+      // Map slider 0-100 to 0-20% texture visibility
+      // maskAlpha = 1 means texture is fully hidden. maskAlpha = 0.8 means 20% visible.
+      const maskAlpha = (1 - (intensity * 0.2)).toFixed(3); 
       const maskColor = `rgba(${r}, ${g}, ${b}, ${maskAlpha})`;
       bg.backgroundImage = `linear-gradient(${maskColor}, ${maskColor}), url("${PAPER_TEXTURE}")`;
       bg.backgroundRepeat = 'repeat';
