@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { HeroWidget } from '@/components/HeroWidget';
+import { FaqSection } from '@/components/Faq';
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -164,6 +165,8 @@ export default function Home() {
               </div>
             </div>
           </section>
+          
+          <FaqSection />
         </main>
 
         <footer className="landing-footer scroll-reveal">
