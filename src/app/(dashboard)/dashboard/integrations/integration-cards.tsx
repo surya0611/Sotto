@@ -34,10 +34,10 @@ function IntegrationIcon({ id, defaultIcon }: { id: string; defaultIcon: React.R
     <img 
       src={src} 
       alt={id} 
-      width="24" 
-      height="24" 
+      width="36" 
+      height="36" 
       onError={() => setError(true)} 
-      style={{ objectFit: 'contain', width: '24px', height: '24px' }} 
+      style={{ objectFit: 'contain', width: '36px', height: '36px' }} 
     />
   );
 }
@@ -161,11 +161,20 @@ export function IntegrationCards({
   const activeIntegration = INTEGRATIONS.find(i => i.id === activeModal);
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
 
+  const big9 = ['shopify', 'stripe', 'razorpay', 'woocommerce', 'magento', 'bigcommerce', 'squarespace', 'typeform', 'google_forms'];
+
   const filteredIntegrations = INTEGRATIONS.filter(integration => {
     const matchesCategory = activeCategory === 'All' || integration.category === activeCategory;
     const matchesSearch = integration.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           integration.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
+  }).sort((a, b) => {
+    const aIndex = big9.indexOf(a.id);
+    const bIndex = big9.indexOf(b.id);
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+    return 0;
   });
 
   return (
