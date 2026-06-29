@@ -132,7 +132,6 @@ export function HeroWidget() {
       <div style={{ 
         position: 'absolute', 
         inset: 0, 
-        opacity: 0.4, 
         pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
@@ -141,23 +140,27 @@ export function HeroWidget() {
       }}>
         <svg width="100%" height="100%" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Nav */}
-          <rect x="40" y="24" width="80" height="12" rx="6" fill="var(--border-hover)" opacity="0.6" />
-          <rect x="680" y="24" width="80" height="12" rx="6" fill="var(--border-hover)" opacity="0.6" />
-          <line x1="0" y1="56" x2="800" y2="56" stroke="var(--border-hover)" strokeWidth="1" opacity="0.5" />
+          <rect x="60" y="30" width="80" height="16" rx="8" fill="var(--fg-subtle)" opacity="0.3" />
+          <rect x="340" y="32" width="40" height="12" rx="6" fill="var(--fg-subtle)" opacity="0.15" />
+          <rect x="400" y="32" width="40" height="12" rx="6" fill="var(--fg-subtle)" opacity="0.15" />
+          <rect x="460" y="32" width="40" height="12" rx="6" fill="var(--fg-subtle)" opacity="0.15" />
+          <rect x="700" y="30" width="40" height="16" rx="8" fill="var(--fg-subtle)" opacity="0.3" />
+          <line x1="0" y1="70" x2="800" y2="70" stroke="var(--border-hover)" strokeWidth="1" opacity="0.8" />
 
           {/* Product Image */}
-          <rect x="40" y="88" width="340" height="340" rx="16" fill="var(--bg-card)" stroke="var(--border-hover)" strokeWidth="2" opacity="0.6" />
+          <rect x="60" y="110" width="320" height="400" rx="16" fill="var(--bg-card)" stroke="var(--border-hover)" strokeWidth="2" opacity="0.8" />
           
           {/* Product Details */}
-          <rect x="420" y="88" width="240" height="24" rx="8" fill="var(--border-hover)" opacity="0.5" />
-          <rect x="420" y="128" width="120" height="16" rx="8" fill="var(--border-hover)" opacity="0.4" />
+          <rect x="420" y="110" width="100" height="10" rx="5" fill="var(--fg-subtle)" opacity="0.2" />
+          <rect x="420" y="130" width="220" height="30" rx="8" fill="var(--fg-subtle)" opacity="0.4" />
+          <rect x="420" y="175" width="80" height="20" rx="6" fill="var(--fg-subtle)" opacity="0.3" />
           
-          <rect x="420" y="176" width="300" height="8" rx="4" fill="var(--border-hover)" opacity="0.3" />
-          <rect x="420" y="196" width="280" height="8" rx="4" fill="var(--border-hover)" opacity="0.3" />
-          <rect x="420" y="216" width="160" height="8" rx="4" fill="var(--border-hover)" opacity="0.3" />
+          <rect x="420" y="215" width="320" height="10" rx="5" fill="var(--fg-subtle)" opacity="0.2" />
+          <rect x="420" y="235" width="300" height="10" rx="5" fill="var(--fg-subtle)" opacity="0.2" />
+          <rect x="420" y="255" width="240" height="10" rx="5" fill="var(--fg-subtle)" opacity="0.2" />
           
           {/* Add to Cart Button */}
-          <rect x="420" y="256" width="340" height="48" rx="8" fill="var(--border-hover)" opacity="0.5" />
+          <rect x="420" y="295" width="320" height="50" rx="12" fill="var(--fg-subtle)" opacity="0.4" />
         </svg>
       </div>
       
