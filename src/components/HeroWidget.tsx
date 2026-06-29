@@ -141,23 +141,23 @@ export function HeroWidget() {
       }}>
         <svg width="100%" height="100%" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Nav */}
-          <rect x="40" y="24" width="80" height="12" rx="6" fill="var(--border-strong)" opacity="0.3" />
-          <rect x="680" y="24" width="80" height="12" rx="6" fill="var(--border-strong)" opacity="0.3" />
-          <line x1="0" y1="56" x2="800" y2="56" stroke="var(--border-strong)" strokeWidth="1" opacity="0.2" />
+          <rect x="40" y="24" width="80" height="12" rx="6" fill="var(--border-hover)" opacity="0.6" />
+          <rect x="680" y="24" width="80" height="12" rx="6" fill="var(--border-hover)" opacity="0.6" />
+          <line x1="0" y1="56" x2="800" y2="56" stroke="var(--border-hover)" strokeWidth="1" opacity="0.5" />
 
           {/* Product Image */}
-          <rect x="40" y="88" width="340" height="340" rx="16" fill="var(--bg-surface)" stroke="var(--border-strong)" strokeWidth="2" opacity="0.4" />
+          <rect x="40" y="88" width="340" height="340" rx="16" fill="var(--bg-card)" stroke="var(--border-hover)" strokeWidth="2" opacity="0.6" />
           
           {/* Product Details */}
-          <rect x="420" y="88" width="240" height="24" rx="8" fill="var(--border-strong)" opacity="0.3" />
-          <rect x="420" y="128" width="120" height="16" rx="8" fill="var(--border-strong)" opacity="0.25" />
+          <rect x="420" y="88" width="240" height="24" rx="8" fill="var(--border-hover)" opacity="0.5" />
+          <rect x="420" y="128" width="120" height="16" rx="8" fill="var(--border-hover)" opacity="0.4" />
           
-          <rect x="420" y="176" width="300" height="8" rx="4" fill="var(--border-strong)" opacity="0.15" />
-          <rect x="420" y="196" width="280" height="8" rx="4" fill="var(--border-strong)" opacity="0.15" />
-          <rect x="420" y="216" width="160" height="8" rx="4" fill="var(--border-strong)" opacity="0.15" />
+          <rect x="420" y="176" width="300" height="8" rx="4" fill="var(--border-hover)" opacity="0.3" />
+          <rect x="420" y="196" width="280" height="8" rx="4" fill="var(--border-hover)" opacity="0.3" />
+          <rect x="420" y="216" width="160" height="8" rx="4" fill="var(--border-hover)" opacity="0.3" />
           
           {/* Add to Cart Button */}
-          <rect x="420" y="256" width="340" height="48" rx="8" fill="var(--border-strong)" opacity="0.25" />
+          <rect x="420" y="256" width="340" height="48" rx="8" fill="var(--border-hover)" opacity="0.5" />
         </svg>
       </div>
       
