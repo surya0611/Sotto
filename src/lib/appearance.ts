@@ -280,7 +280,9 @@ export function computeWidgetStyles(config: AppearanceConfig): any {
       const maskColor = `rgba(${r}, ${g}, ${b}, ${maskAlpha})`;
       bg.backgroundImage = `linear-gradient(${maskColor}, ${maskColor}), url("${PAPER_TEXTURE}")`;
       bg.backgroundRepeat = 'repeat';
-      bg.backgroundSize = '128px 128px'; // Same as the generated tile size
+      // Scale it up significantly larger than the max widget width (320px) 
+      // so it never repeats uniformly across the surface.
+      bg.backgroundSize = '400px 400px'; 
     }
   }
 
