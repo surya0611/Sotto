@@ -72,7 +72,7 @@ export default function Home() {
             <Link href="#pricing" className="badge badge-accent" style={{ marginBottom: '16px', textDecoration: 'none' }}>Free during beta — limited spots</Link>
             <h1 className="hero-title">Social proof, <em style={{ fontStyle: 'italic', fontWeight: 400 }}>sotto voce</em>.</h1>
             <p className="hero-subtitle">
-              Most social proof tools were built for volume. Sotto was built for brands that care what their store looks like.
+              Most social proof tools were built for volume. Sotto was built for brands that care about what their store looks like.
             </p>
             <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
               <Link href="/signup" className="btn btn-primary btn-lg">Try it free — no card required</Link>
