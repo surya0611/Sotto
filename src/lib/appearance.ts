@@ -256,7 +256,9 @@ export function computeWidgetStyles(config: AppearanceConfig): any {
     const intensity = Math.min(100, Math.max(0, c.texture_intensity ?? 20)) / 100;
     
     if (c.surface_style === 'grain') {
-      const svgGrain = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)" opacity="${intensity * 0.5}"/></svg>`;
+      // Map slider 0-100 to opacity 0.25-0.5
+      const grainOpacity = 0.25 + (intensity * 0.25);
+      const svgGrain = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#n)" opacity="${grainOpacity}"/></svg>`;
       const GRAIN_TEXTURE = `data:image/svg+xml,${encodeURIComponent(svgGrain)}`;
       bg.backgroundImage = `url("${GRAIN_TEXTURE}")`;
       bg.backgroundRepeat = 'repeat';
