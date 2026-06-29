@@ -20,8 +20,8 @@ const WIDGETS = [
           <CheckIcon color="#1a1a1a" />
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>Sarah M. from NY bought Aura Pro</div>
-          <div style={{ fontSize: '13px', color: '#888' }}>21h ago</div>
+          <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>Someone in Milan bought <span style={{ fontWeight: 600 }}>Linen Trousers</span></div>
+          <div style={{ fontSize: '13px', color: '#888' }}>2 hours ago</div>
         </div>
       </div>
     ),
@@ -43,8 +43,8 @@ const WIDGETS = [
           <CheckIcon color="#fff" />
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <div style={{ fontSize: '15px', color: '#fff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>Sarah M. from NY bought Aura Pro</div>
-          <div style={{ fontSize: '13px', color: '#B4D496', fontFamily: 'monospace' }}>21h ago</div>
+          <div style={{ fontSize: '15px', color: '#fff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>15 creators downloaded the <strong style={{ fontWeight: 800 }}>UI Kit</strong></div>
+          <div style={{ fontSize: '13px', color: '#B4D496', fontFamily: 'monospace' }}>5 mins ago</div>
         </div>
       </div>
     ),
@@ -65,19 +65,19 @@ const WIDGETS = [
           <CheckIcon color="#1a1a1a" />
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>Sarah M. from NY bought Aura Pro</div>
-          <div style={{ fontSize: '13px', color: '#666' }}>21h ago</div>
+          <div style={{ fontSize: '15px', color: '#1a1a1a', fontWeight: 500 }}>24 people joined waitlist for <span style={{ fontWeight: 600 }}>Minimalist Fan</span></div>
+          <div style={{ fontSize: '13px', color: '#666' }}>Just now</div>
         </div>
       </div>
     ),
     style: {
-      backgroundColor: 'rgba(255, 255, 255, 0.65)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
-      border: '1px solid rgba(255, 255, 255, 0.4)',
+      backgroundColor: 'rgba(255, 255, 255, 0.4)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      border: '1px solid rgba(255, 255, 255, 0.6)',
       borderRadius: '16px',
       padding: '16px 20px',
-      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)'
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.2)'
     }
   }
 ];
