@@ -35,7 +35,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: 'var(--bg)', minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: 'var(--bg)', minHeight: '100vh', position: 'relative' }}>
       
       {/* Aurora Mesh Backdrop */}
       <div className="aurora-container">

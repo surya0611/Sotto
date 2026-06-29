@@ -1068,6 +1068,8 @@ input[type="range"] { accent-color: var(--primary); }
   opacity: 0.4;
   animation: aurora-float 20s infinite ease-in-out alternate;
   border-radius: 50%;
+  transform: translateZ(0);
+  will-change: transform;
 }
 .aurora-blob-1 {
   top: -10%; left: -10%;
