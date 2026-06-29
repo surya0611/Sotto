@@ -151,6 +151,7 @@ a:hover { color: var(--primary-hover); }
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--primary-hover);
+  color: var(--on-primary);
   box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
   transform: translateY(-1px);
 }
@@ -165,6 +166,7 @@ a:hover { color: var(--primary-hover); }
 .btn-secondary:hover:not(:disabled) {
   background: var(--bg-hover);
   border-color: var(--border-hover);
+  color: var(--fg);
 }
 
 .btn-ghost {
@@ -182,6 +184,7 @@ a:hover { color: var(--primary-hover); }
 }
 .btn-danger:hover:not(:disabled) {
   background: #FEE2E2;
+  color: var(--destructive);
 }
 
 .btn-sm { height: 32px; padding: var(--s-1) var(--s-3); font-size: 0.875rem; border-radius: var(--r-sm); }
