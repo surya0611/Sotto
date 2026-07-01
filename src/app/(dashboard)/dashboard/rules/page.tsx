@@ -39,7 +39,7 @@ export default async function RulesPage() {
   const advancedRules = account.widget_config?.advanced_rules || [];
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
       <div>
         <h1 style={{ fontSize: '1.5rem', fontWeight: 600, margin: '0 0 var(--s-2) 0' }}>Advanced Rules Engine</h1>
         <p style={{ color: 'var(--text-muted)', margin: 0 }}>
