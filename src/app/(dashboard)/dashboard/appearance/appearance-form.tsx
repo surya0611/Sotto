@@ -250,34 +250,49 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
           </div>
         </div>
         <div style={{
-          borderRadius: 'var(--radius-lg, 12px)',
-          border: '1px solid var(--border)',
-          overflow: 'hidden',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-          maxWidth: previewMode === 'mobile' ? '375px' : '100%',
-          margin: previewMode === 'mobile' ? '0 auto' : '0',
-          transition: 'max-width 0.3s ease, margin 0.3s ease',
-        }}>
-          <div style={{
-            background: 'var(--bg-elevated, #f5f5f5)',
-            padding: '10px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            borderBottom: '1px solid var(--border)',
-          }}>
-            <div style={{ display: 'flex', gap: '6px' }}>
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f57' }} />
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#febc2e' }} />
-              <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#28c840' }} />
-            </div>
-          </div>
-          <div style={{
-            position: 'relative',
-            height: '300px',
-            background: 'var(--bg-base, #fff)',
+            borderRadius: previewMode === 'mobile' ? '36px' : 'var(--radius-lg, 12px)',
+            border: previewMode === 'mobile' ? '8px solid #000' : '1px solid var(--border)',
             overflow: 'hidden',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+            maxWidth: previewMode === 'mobile' ? '320px' : '100%',
+            margin: previewMode === 'mobile' ? '0 auto' : '0',
+            transition: 'all 0.3s ease',
           }}>
+            {previewMode === 'desktop' ? (
+              <div style={{
+                background: 'var(--bg-elevated, #f5f5f5)',
+                padding: '10px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                borderBottom: '1px solid var(--border)',
+              }}>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f57' }} />
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#febc2e' }} />
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#28c840' }} />
+                </div>
+              </div>
+            ) : (
+              <div style={{
+                background: 'var(--bg-base, #fff)',
+                padding: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                position: 'absolute',
+                top: 0, left: 0, right: 0,
+                zIndex: 10
+              }}>
+                <div style={{ width: '100px', height: '24px', background: '#000', borderRadius: '12px' }} />
+              </div>
+            )}
+            <div style={{
+              position: 'relative',
+              height: previewMode === 'mobile' ? '568px' : '400px',
+              background: 'var(--bg-base, #fff)',
+              overflow: 'hidden',
+              paddingTop: previewMode === 'mobile' ? '48px' : '0',
+            }}>
             <div style={{ padding: '24px', opacity: 0.15 }}>
               <div style={{ height: '16px', width: '60%', background: 'var(--fg)', borderRadius: '4px', marginBottom: '12px' }} />
               <div style={{ height: '12px', width: '90%', background: 'var(--fg)', borderRadius: '4px', marginBottom: '8px' }} />
@@ -289,7 +304,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
               ...getPositionStyles(),
               width: previewMode === 'mobile' ? 'calc(100% - 32px)' : 'max-content',
               maxWidth: previewMode === 'mobile' ? 'none' : `${Math.round(320 * sizeScale)}px`,
-              padding: `${Math.round(16 * sizeScale)}px`,
+              padding: `${Math.round(12 * sizeScale)}px ${Math.round(16 * sizeScale)}px`,
               gap: `${Math.round(12 * sizeScale)}px`,
               opacity: previewVisible ? 1 : 0,
               pointerEvents: 'none',
@@ -464,7 +479,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                     name="show_product_image" 
                     checked={theme.show_product_image} 
                     onChange={(e) => setTheme((prev: any) => ({ ...prev, show_product_image: e.target.checked }))} 
-                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                    style={{ width: '20px', height: '20px', cursor: 'pointer', accentColor: 'var(--primary)' }}
                   />
                   Enable Product Pictures in Notifications
                 </label>
