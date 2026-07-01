@@ -215,43 +215,45 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
   );
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)', maxWidth: '800px' }}>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
       
-      {renderCard(
-        'Active Visitors',
-        'Show off the number of visitors currently active on your pages.',
-        'active-visitors',
-        activeVisitorsEnabled, setActiveVisitorsEnabled,
-        activeVisitorsText, setActiveVisitorsText,
-        activeVisitorsColor, setActiveVisitorsColor,
-        activeVisitorsSize, setActiveVisitorsSize,
-        activeVisitorsIcon, setActiveVisitorsIcon,
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-      )}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: 'var(--s-6)', alignItems: 'start' }}>
+        {renderCard(
+          'Active Visitors',
+          'Show off the number of visitors currently active on your pages.',
+          'active-visitors',
+          activeVisitorsEnabled, setActiveVisitorsEnabled,
+          activeVisitorsText, setActiveVisitorsText,
+          activeVisitorsColor, setActiveVisitorsColor,
+          activeVisitorsSize, setActiveVisitorsSize,
+          activeVisitorsIcon, setActiveVisitorsIcon,
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        )}
 
-      {renderCard(
-        'Page Stream',
-        'Show off the sales of a product over a 24 hour period.',
-        'page-stream',
-        pageStreamEnabled, setPageStreamEnabled,
-        pageStreamText, setPageStreamText,
-        pageStreamColor, setPageStreamColor,
-        pageStreamSize, setPageStreamSize,
-        pageStreamIcon, setPageStreamIcon,
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      )}
+        {renderCard(
+          'Page Stream',
+          'Show off the sales of a product over a 24 hour period.',
+          'page-stream',
+          pageStreamEnabled, setPageStreamEnabled,
+          pageStreamText, setPageStreamText,
+          pageStreamColor, setPageStreamColor,
+          pageStreamSize, setPageStreamSize,
+          pageStreamIcon, setPageStreamIcon,
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        )}
 
-      {renderCard(
-        'Custom Roundups',
-        'Show off the aggregate count of behaviors like subscriptions, reviews, etc.',
-        'custom-roundups',
-        customRoundupsEnabled, setCustomRoundupsEnabled,
-        customRoundupsText, setCustomRoundupsText,
-        customRoundupsColor, setCustomRoundupsColor,
-        customRoundupsSize, setCustomRoundupsSize,
-        customRoundupsIcon, setCustomRoundupsIcon,
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      )}
+        {renderCard(
+          'Custom Roundups',
+          'Show off the aggregate count of behaviors like subscriptions, reviews, etc.',
+          'custom-roundups',
+          customRoundupsEnabled, setCustomRoundupsEnabled,
+          customRoundupsText, setCustomRoundupsText,
+          customRoundupsColor, setCustomRoundupsColor,
+          customRoundupsSize, setCustomRoundupsSize,
+          customRoundupsIcon, setCustomRoundupsIcon,
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        )}
+      </div>
 
       <div style={{ position: 'sticky', bottom: 'var(--s-4)', alignSelf: 'flex-end', zIndex: 10, marginTop: 'var(--s-4)' }}>
         <button type="submit" className="btn btn-primary" disabled={isPending}>
