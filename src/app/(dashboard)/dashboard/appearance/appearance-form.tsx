@@ -249,14 +249,14 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
             </button>
           </div>
         </div>
-        <div style={{
+          <div style={{
+            position: 'relative',
             borderRadius: previewMode === 'mobile' ? '36px' : 'var(--radius-lg, 12px)',
             border: previewMode === 'mobile' ? '8px solid #000' : '1px solid var(--border)',
             overflow: 'hidden',
             boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
             maxWidth: previewMode === 'mobile' ? '320px' : '100%',
             margin: previewMode === 'mobile' ? '0 auto' : '0',
-            transition: 'all 0.3s ease',
           }}>
             {previewMode === 'desktop' ? (
               <div style={{
