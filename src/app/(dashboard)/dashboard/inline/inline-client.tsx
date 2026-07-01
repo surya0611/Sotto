@@ -74,37 +74,32 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
     setIconSetting: (val: string) => void,
     icon: React.ReactNode
   ) => (
-    <div className="card" style={{ borderLeft: enabled ? '4px solid var(--primary)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
-      <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center' }}>
-          <div style={{ fontSize: '24px', background: 'var(--bg-muted)', width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-            {icon}
-          </div>
-          <div>
-            <h2 className="card-title" style={{ margin: 0, fontSize: '1.125rem' }}>{title}</h2>
-            <p className="card-description" style={{ margin: 0 }}>{description}</p>
-          </div>
+    <div className="card" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 2fr', gap: 'var(--s-8)', padding: 'var(--s-8)', borderLeft: enabled ? '4px solid var(--primary)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
+      {/* Left Column: Info & Toggle */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)', paddingRight: 'var(--s-6)', borderRight: '1px solid var(--border)' }}>
+        <div style={{ fontSize: '32px', background: 'var(--bg-muted)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+          {icon}
         </div>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem', cursor: 'pointer' }}>
-          <input 
-            type="checkbox" 
-            checked={enabled}
-            onChange={(e) => setEnabled(e.target.checked)}
-            style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
-          /> 
-          Enabled
-        </label>
+        <div>
+          <h2 className="card-title" style={{ margin: '0 0 var(--s-2) 0', fontSize: '1.25rem' }}>{title}</h2>
+          <p className="card-description" style={{ margin: 0, lineHeight: 1.5 }}>{description}</p>
+        </div>
+        <div style={{ marginTop: 'auto', paddingTop: 'var(--s-4)' }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem', cursor: 'pointer', background: enabled ? 'var(--bg-accent-light)' : 'var(--bg-muted)', padding: 'var(--s-2) var(--s-4)', borderRadius: 'var(--r-full)', border: enabled ? '1px solid var(--primary)' : '1px solid var(--border)' }}>
+            <input 
+              type="checkbox" 
+              checked={enabled}
+              onChange={(e) => setEnabled(e.target.checked)}
+              style={{ width: '18px', height: '18px', accentColor: 'var(--primary)' }}
+            /> 
+            <span style={{ fontWeight: 600, color: enabled ? 'var(--primary)' : 'var(--text-secondary)' }}>{enabled ? 'Module Enabled' : 'Module Disabled'}</span>
+          </label>
+        </div>
       </div>
 
-      <div className="card-content" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)', opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'auto' : 'none' }}>
+      {/* Right Column: Configuration */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)', opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'auto' : 'none' }}>
         
-        <div style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center', marginBottom: 'var(--s-2)' }}>
-          <div style={{ background: 'var(--primary)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
-            1
-          </div>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Design your module</h3>
-        </div>
-
         {dataId === 'active-visitors' && (
           <div className="input-group">
             <label className="input-label">Algorithm Mode</label>
@@ -136,7 +131,7 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
           <p className="input-hint">Use <code>{`{{count}}`}</code> to display the dynamic number.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 'var(--s-4)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s-4)' }}>
           <div className="input-group">
             <label className="input-label">Text Color</label>
             <div style={{ display: 'flex', gap: 'var(--s-2)' }}>
@@ -167,32 +162,25 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
               <option value="18px">Extra Large (18px)</option>
             </select>
           </div>
-
-          <div className="input-group">
-            <label className="input-label">Visual Indicator</label>
-            <select className="input" value={iconSetting} onChange={(e) => setIconSetting(e.target.value)}>
-              <option value="none">None</option>
-              <option value="pulse_green">🟢 Blinking Green Dot</option>
-              <option value="pulse_red">🔴 Blinking Red Dot</option>
-              <option value="fire">🔥 Fire Emoji</option>
-              <option value="eyes">👀 Eyes Emoji</option>
-              <option value="bag">🛍️ Shopping Bag</option>
-            </select>
-          </div>
         </div>
 
-        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--s-6) 0' }} />
-
-        <div style={{ display: 'flex', gap: 'var(--s-4)', alignItems: 'center', marginBottom: 'var(--s-4)' }}>
-          <div style={{ background: 'var(--primary)', width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--accent-text)', flexShrink: 0 }}>
-            2
-          </div>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Install the Embed Code</h3>
+        <div className="input-group">
+          <label className="input-label">Visual Indicator</label>
+          <select className="input" value={iconSetting} onChange={(e) => setIconSetting(e.target.value)}>
+            <option value="none">None</option>
+            <option value="pulse_green">🟢 Blinking Green Dot</option>
+            <option value="pulse_red">🔴 Blinking Red Dot</option>
+            <option value="fire">🔥 Fire Emoji</option>
+            <option value="eyes">👀 Eyes Emoji</option>
+            <option value="bag">🛍️ Shopping Bag</option>
+          </select>
         </div>
+
+        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--s-2) 0' }} />
 
         <div className="input-group" style={{ background: 'var(--bg-base)', padding: 'var(--s-4)', borderRadius: 'var(--r-md)', border: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <label className="input-label">Embed Code</label>
+            <label className="input-label">Embed Code Snippet</label>
             <CopyButton textToCopy={`<span data-sotto-inline="${dataId}"></span>`} />
           </div>
           <pre style={{ 
@@ -204,60 +192,59 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
             color: 'var(--fg)',
             fontSize: '0.9375rem',
             fontFamily: 'monospace',
-            overflowX: 'auto'
+            overflowX: 'auto',
+            margin: 'var(--s-2) 0 0 0'
           }}>
             <code>&lt;span data-sotto-inline="{dataId}"&gt;&lt;/span&gt;</code>
           </pre>
-          <p className="input-hint" style={{ marginTop: 'var(--s-2)' }}>Paste this HTML snippet into your website builder (Shopify, Webflow, etc) exactly where you want the text to appear.</p>
+          <p className="input-hint" style={{ marginTop: 'var(--s-2)' }}>Paste this HTML snippet into your website builder exactly where you want the text to appear.</p>
         </div>
       </div>
     </div>
   );
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-8)' }}>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: 'var(--s-6)', alignItems: 'start' }}>
-        {renderCard(
-          'Active Visitors',
-          'Show off the number of visitors currently active on your pages.',
-          'active-visitors',
-          activeVisitorsEnabled, setActiveVisitorsEnabled,
-          activeVisitorsText, setActiveVisitorsText,
-          activeVisitorsColor, setActiveVisitorsColor,
-          activeVisitorsSize, setActiveVisitorsSize,
-          activeVisitorsIcon, setActiveVisitorsIcon,
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-        )}
+      {renderCard(
+        'Active Visitors',
+        'Display a dynamic counter of visitors currently browsing your store to create authentic scarcity and social proof.',
+        'active-visitors',
+        activeVisitorsEnabled, setActiveVisitorsEnabled,
+        activeVisitorsText, setActiveVisitorsText,
+        activeVisitorsColor, setActiveVisitorsColor,
+        activeVisitorsSize, setActiveVisitorsSize,
+        activeVisitorsIcon, setActiveVisitorsIcon,
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      )}
 
-        {renderCard(
-          'Page Stream',
-          'Show off the sales of a product over a 24 hour period.',
-          'page-stream',
-          pageStreamEnabled, setPageStreamEnabled,
-          pageStreamText, setPageStreamText,
-          pageStreamColor, setPageStreamColor,
-          pageStreamSize, setPageStreamSize,
-          pageStreamIcon, setPageStreamIcon,
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        )}
+      {renderCard(
+        'Page Stream',
+        'Show real-time aggregate sales data over the last 24 hours below your Add to Cart buttons.',
+        'page-stream',
+        pageStreamEnabled, setPageStreamEnabled,
+        pageStreamText, setPageStreamText,
+        pageStreamColor, setPageStreamColor,
+        pageStreamSize, setPageStreamSize,
+        pageStreamIcon, setPageStreamIcon,
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      )}
 
-        {renderCard(
-          'Custom Roundups',
-          'Show off the aggregate count of behaviors like subscriptions, reviews, etc.',
-          'custom-roundups',
-          customRoundupsEnabled, setCustomRoundupsEnabled,
-          customRoundupsText, setCustomRoundupsText,
-          customRoundupsColor, setCustomRoundupsColor,
-          customRoundupsSize, setCustomRoundupsSize,
-          customRoundupsIcon, setCustomRoundupsIcon,
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        )}
-      </div>
+      {renderCard(
+        'Custom Roundups',
+        'Show off the aggregate count of behaviors like newsletter subscriptions or product reviews.',
+        'custom-roundups',
+        customRoundupsEnabled, setCustomRoundupsEnabled,
+        customRoundupsText, setCustomRoundupsText,
+        customRoundupsColor, setCustomRoundupsColor,
+        customRoundupsSize, setCustomRoundupsSize,
+        customRoundupsIcon, setCustomRoundupsIcon,
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      )}
 
       <div style={{ position: 'sticky', bottom: 'var(--s-4)', alignSelf: 'flex-end', zIndex: 10, marginTop: 'var(--s-4)' }}>
-        <button type="submit" className="btn btn-primary" disabled={isPending}>
-          {isPending ? 'Saving...' : 'Save Settings'}
+        <button type="submit" className="btn btn-primary" disabled={isPending} style={{ padding: 'var(--s-3) var(--s-6)', fontSize: '1rem' }}>
+          {isPending ? 'Saving...' : 'Save Inline Settings'}
         </button>
       </div>
 
