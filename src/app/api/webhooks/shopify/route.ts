@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     // Fetch account to get shopify_secret and widget_config
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets, widget_config')
+      .select('integration_secrets, widget_config, domain')
       .eq('id', accountId)
       .single();
 
