@@ -227,6 +227,12 @@ a:hover { color: var(--primary-hover); }
 .input-hint { font-size: 0.8125rem; color: var(--fg-subtle); }
 .input-error-message { font-size: 0.8125rem; color: var(--destructive); }
 
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"] {
+  accent-color: var(--primary);
+}
+
 /* ── Textarea ── */
 .textarea {
   width: 100%;
