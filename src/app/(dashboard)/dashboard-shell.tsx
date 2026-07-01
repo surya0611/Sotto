@@ -104,6 +104,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               className={`sidebar-link ${isActive(item.href) ? 'active' : ''}`}
               onClick={() => setSidebarOpen(false)}
             >
@@ -117,6 +118,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               className={`sidebar-link ${isActive(item.href) ? 'active' : ''}`}
               onClick={() => setSidebarOpen(false)}
             >
@@ -130,6 +132,7 @@ export function DashboardShell({ user, account, children }: DashboardShellProps)
             <Link
               key={item.href}
               href={item.href}
+              prefetch={true}
               className={`sidebar-link ${isActive(item.href) ? 'active' : ''}`}
               onClick={() => setSidebarOpen(false)}
             >
