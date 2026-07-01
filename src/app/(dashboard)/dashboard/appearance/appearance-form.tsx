@@ -186,7 +186,8 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
   // Generate styles using the pure function engine
   const liveStyles = computeWidgetStyles(theme);
 
-  const sizeScale = theme.size === 'small' ? 0.85 : theme.size === 'large' ? 1.15 : 1;
+  const mobileMultiplier = previewMode === 'mobile' ? 0.9 : 1.0;
+  const sizeScale = (theme.size === 'small' ? 0.85 : theme.size === 'large' ? 1.15 : 1) * mobileMultiplier;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-8)' }}>
@@ -326,7 +327,7 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                     flexShrink: 0,
                     overflow: 'hidden'
                   }}>
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Product" />
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100&h=100&fit=crop" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Product" />
                   </div>
                 ) : (
                   <svg width={Math.round(20 * sizeScale)} height={Math.round(20 * sizeScale)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: liveStyles.textStyles?.color || theme.text_color }}>
@@ -336,13 +337,13 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                 )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <p style={{ margin: 0, fontSize: `${Math.round(13 * sizeScale)}px`, opacity: 0.8, lineHeight: 1.4, ...liveStyles.textStyles }}>
-                    Sarah M. from NY bought{' '}
+                    Sarah M. just bought a{' '}
                     <span style={{ fontWeight: 600, textDecoration: 'underline' }}>
-                      Aura Pro
+                      Black Jacket
                     </span>
                   </p>
                   <p style={{ margin: '2px 0 0 0', fontSize: `${Math.round(10 * sizeScale)}px`, opacity: 0.5, lineHeight: 1.3, ...liveStyles.textStyles }}>
-                    21h ago
+                    Just now
                   </p>
                 </div>
               </div>

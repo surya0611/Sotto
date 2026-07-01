@@ -497,9 +497,11 @@
       }
 
       // Apply size
-      var scale = 1;
-      if (theme.size === 'small') scale = 0.85;
-      else if (theme.size === 'large') scale = 1.15;
+      var isMobile = window.innerWidth <= 480;
+      var mobileMultiplier = isMobile ? 0.9 : 1.0;
+      var scale = 1 * mobileMultiplier;
+      if (theme.size === 'small') scale = 0.85 * mobileMultiplier;
+      else if (theme.size === 'large') scale = 1.15 * mobileMultiplier;
       container.style.setProperty('--s-gap', Math.round(12 * scale) + 'px');
       container.style.setProperty('--s-pad-y', Math.round(12 * scale) + 'px');
       container.style.setProperty('--s-pad-x', Math.round(16 * scale) + 'px');
