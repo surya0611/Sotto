@@ -44,7 +44,7 @@ const WIDGETS = [
           <CheckIcon color="#fff" />
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '2px', textAlign: 'left' }}>
-          <div style={{ fontSize: '13px', color: '#fff', fontFamily: 'monospace', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>15 creators downloaded the <strong style={{ fontWeight: 800 }}>UI Kit</strong></div>
+          <div style={{ fontSize: '13px', color: '#fff', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>15 creators downloaded the <strong style={{ fontWeight: 800 }}>UI Kit</strong></div>
           <div style={{ fontSize: '12px', color: '#B4D496', fontFamily: 'monospace' }}>5 mins ago</div>
         </div>
       </div>
@@ -99,23 +99,10 @@ export function HeroWidget() {
 
   return (
     <div 
+      className="hero-widget-box"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      style={{ 
-      marginTop: '64px', 
-      position: 'relative', 
-      width: '100%', 
-      maxWidth: '800px', 
-      height: '360px', 
-      backgroundColor: 'var(--bg-base)', 
-      borderRadius: 'var(--radius-xl)', 
-      border: '1px solid var(--border-subtle)', 
-      overflow: 'hidden', 
-      display: 'flex', 
-      alignItems: 'flex-end', 
-      justifyContent: 'flex-start', 
-      padding: '32px'
-    }}>
+    >
       {/* E-Commerce Wireframe background */}
       <div style={{ 
         position: 'absolute', 
@@ -126,7 +113,7 @@ export function HeroWidget() {
         justifyContent: 'center',
         overflow: 'hidden'
       }}>
-        <svg width="100%" height="100%" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="100%" viewBox="0 0 800 360" preserveAspectRatio="xMinYMax slice" fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Nav */}
           <rect x="60" y="30" width="80" height="16" rx="8" fill="var(--fg-subtle)" opacity="0.3" />
           <rect x="340" y="32" width="40" height="12" rx="6" fill="var(--fg-subtle)" opacity="0.15" />
@@ -153,7 +140,7 @@ export function HeroWidget() {
       </div>
       
       {/* Container for absolute positioning of widgets to allow crossfading */}
-      <div style={{ position: 'relative', width: '380px', height: '100px', zIndex: 10 }}>
+      <div style={{ position: 'relative', width: '100%', maxWidth: '380px', height: '100px', zIndex: 10 }}>
         {WIDGETS.map((widget, index) => {
           const isActive = index === activeIndex;
           

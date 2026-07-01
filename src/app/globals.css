@@ -841,6 +841,11 @@ select.input {
   
   .login-btn { display: none !important; }
   .nav-buttons { gap: 8px !important; }
+  
+  .hero-widget-box {
+    height: 240px !important;
+    padding: 16px !important;
+  }
 }
 @media (max-width: 480px) {
   .stats-grid { grid-template-columns: 1fr; }
@@ -914,6 +919,22 @@ select.input {
 .hero-subtitle {
   font-size: clamp(1rem, 2vw, 1.125rem);
   color: var(--fg-muted); max-width: 520px; line-height: 1.65;
+}
+
+.hero-widget-box {
+  margin-top: 64px;
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 360px;
+  background-color: var(--bg-card); /* mapped var(--bg-base) to var(--bg-card) */
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 32px;
 }
 
 .features-section { padding: var(--s-16) 0; }
