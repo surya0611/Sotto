@@ -138,6 +138,7 @@
       const globalStyle = document.createElement('style');
       globalStyle.id = 'sotto-global-styles';
       globalStyle.textContent = `
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Roboto:wght@400;500;700&family=Oswald:wght@400;600&display=swap');
         @media (max-width: 480px) {
           #sotto-widget-host {
             top: auto !important;

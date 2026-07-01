@@ -210,7 +210,7 @@ export function computeWidgetStyles(config: AppearanceConfig): any {
   const bgRgba = `rgba(${r}, ${g}, ${b}, ${c.bg_opacity / 100})`;
 
   const container: any = {
-    fontFamily: c.surface_style === 'brutalist' ? 'monospace' : c.font_family,
+    fontFamily: c.font_family,
     color: c.text_color,
     position: 'relative',
     zIndex: 0,

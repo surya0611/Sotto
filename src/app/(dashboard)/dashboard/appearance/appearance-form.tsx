@@ -336,7 +336,10 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                 )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <p style={{ margin: 0, fontSize: `${Math.round(13 * sizeScale)}px`, opacity: 0.8, lineHeight: 1.4, ...liveStyles.textStyles }}>
-                    Sarah M. from NY bought Aura Pro
+                    Sarah M. from NY bought{' '}
+                    <span style={{ fontWeight: 600, textDecoration: 'underline' }}>
+                      Aura Pro
+                    </span>
                   </p>
                   <p style={{ margin: '2px 0 0 0', fontSize: `${Math.round(10 * sizeScale)}px`, opacity: 0.5, lineHeight: 1.3, ...liveStyles.textStyles }}>
                     21h ago
@@ -446,9 +449,13 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
               <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                 <label className="input-label">Font Family</label>
                 <select name="font_family" className="input" value={theme.font_family} onChange={handleChange}>
-                  <option value="Inter, sans-serif">Inter</option>
-                  <option value="Georgia, serif">Georgia</option>
-                  <option value="monospace">Monospace</option>
+                  <option value="Inter, sans-serif">Inter (Modern Sans)</option>
+                  <option value="'Roboto', sans-serif">Roboto (Clean Sans)</option>
+                  <option value="'Outfit', sans-serif">Outfit (Geometric Sans)</option>
+                  <option value="Georgia, serif">Georgia (Classic Serif)</option>
+                  <option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
+                  <option value="monospace">Courier (Monospace)</option>
+                  <option value="'Oswald', sans-serif">Oswald (Bold Condensed)</option>
                 </select>
               </div>
 
