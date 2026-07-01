@@ -829,9 +829,18 @@ select.input {
   /* Landing Page Mobile Fixes */
   .landing-nav-inner { padding: 0 var(--s-4); }
   .landing-container { padding: 0 var(--s-4); }
-  .hero-section, .features-section, .pricing-section { padding: var(--s-10) 0; }
+  .hero-section, .features-section { padding: var(--s-10) 0; }
   .landing-footer-grid { grid-template-columns: 1fr; gap: var(--s-6); text-align: center; }
   .landing-footer-bottom { text-align: center; }
+  
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-buttons .btn { width: 100%; }
+  
+  .login-btn { display: none !important; }
+  .nav-buttons { gap: 8px !important; }
 }
 @media (max-width: 480px) {
   .stats-grid { grid-template-columns: 1fr; }

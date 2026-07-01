@@ -41,8 +41,8 @@ export default function Home() {
                 S<img src="/logo.svg" className="brand-logo-icon-inline" alt="o" />TTO
               </div>
             </Link>
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <Link href="/login" className="btn btn-ghost btn-sm">Log in</Link>
+            <div className="nav-buttons" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <Link href="/login" className="btn btn-ghost btn-sm login-btn">Log in</Link>
               <Link href="/signup" className="btn btn-primary btn-sm">Get Started</Link>
             </div>
           </div>
@@ -56,9 +56,8 @@ export default function Home() {
             <p className="hero-subtitle">
               Most social proof tools were built for volume. Sotto was built for brands that care about what their store looks like.
             </p>
-            <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
+            <div className="hero-buttons">
               <Link href="/signup" className="btn btn-primary btn-lg">Try it free — no card required</Link>
-              <Link href="#pricing" className="btn btn-secondary btn-lg">View Pricing</Link>
             </div>
             
             <HeroWidget />
@@ -98,54 +97,8 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Pricing Section */}
-          <section id="pricing" className="pricing-section">
-            <div className="" style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-              <h2 className="hero-title" style={{ fontSize: '2.5rem' }}>Simple, transparent pricing.</h2>
-              <p className="hero-subtitle" style={{ fontSize: '1rem', marginTop: '16px', marginLeft: 'auto', marginRight: 'auto' }}>
-                Start for free, upgrade when you need more volume.
-              </p>
-            </div>
-            
-            <div className="pricing-grid">
-              <div className="pricing-card">
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Free</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>Perfect for testing the waters.</p>
-                <div className="pricing-price">$0<span className="pricing-period">/mo</span></div>
-                <ul className="checklist" style={{ textAlign: 'left', marginTop: '16px', marginBottom: '24px' }}>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Up to 1,000 events/mo</span></li>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">1 Domain</span></li>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Standard Support</span></li>
-                </ul>
-                <Link href="/signup" className="btn btn-secondary w-full" style={{ marginTop: 'auto' }}>Start for free</Link>
-              </div>
-              
-              <div className="pricing-card popular" style={{ animationDelay: '100ms' }}>
-                <div className="pricing-badge">Most Popular</div>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Boutique</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>For growing luxury storefronts.</p>
-                <div className="pricing-price">$49<span className="pricing-period">/mo</span></div>
-                <ul className="checklist" style={{ textAlign: 'left', marginTop: '16px', marginBottom: '24px' }}>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Up to 50,000 events/mo</span></li>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">3 Domains</span></li>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Priority Support</span></li>
-                </ul>
-                <Link href="/signup" className="btn btn-primary w-full" style={{ marginTop: 'auto' }}>Try Boutique free</Link>
-              </div>
-
-              <div className="pricing-card" style={{ animationDelay: '200ms' }}>
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 600 }}>Enterprise</h3>
-                <p style={{ color: 'var(--text-secondary)' }}>High volume, multi-region brands.</p>
-                <div className="pricing-price">$149<span className="pricing-period">/mo</span></div>
-                <ul className="checklist" style={{ textAlign: 'left', marginTop: '16px', marginBottom: '24px' }}>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Up to 500,000 events/mo</span></li>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">10 Domains</span></li>
-                  <li className="checklist-item"><span className="checklist-check" style={{ borderColor: 'var(--accent)', backgroundColor: 'var(--accent)', color: '#fff' }}>✓</span><span className="checklist-text">Dedicated Success Manager</span></li>
-                </ul>
-                <Link href="/signup" className="btn btn-secondary w-full" style={{ marginTop: 'auto' }}>Contact Sales</Link>
-              </div>
-            </div>
-          </section>
+          {/* Pricing Section Removed */}
+          
           
           <FaqSection />
         </main>
@@ -161,7 +114,6 @@ export default function Home() {
             <div>
               <h4 className="landing-footer-heading">Product</h4>
               <Link href="#" className="landing-footer-link">Features</Link>
-              <Link href="#" className="landing-footer-link">Pricing</Link>
               <Link href="#" className="landing-footer-link">Integrations</Link>
               <Link href="#" className="landing-footer-link">Changelog</Link>
             </div>
