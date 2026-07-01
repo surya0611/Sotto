@@ -525,21 +525,15 @@
     
     const showProductImage = theme?.show_product_image !== false;
 
-    if (showProductImage && event.image_url) {
-      visualElement = document.createElement('img');
-      visualElement.className = 'sotto-image';
-      visualElement.src = event.image_url;
-      // Provide an empty alt attribute or default so it's accessible
-      visualElement.alt = "Product image";
-    } else {
-      visualElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      visualElement.setAttribute('class', 'sotto-icon');
-      visualElement.setAttribute('viewBox', '0 0 24 24');
-      visualElement.setAttribute('fill', 'none');
-      visualElement.setAttribute('stroke', 'currentColor');
-      visualElement.setAttribute('stroke-width', '2');
-      visualElement.setAttribute('stroke-linecap', 'round');
-      visualElement.setAttribute('stroke-linejoin', 'round');
+    function createDefaultIcon() {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'sotto-icon');
+      svg.setAttribute('viewBox', '0 0 24 24');
+      svg.setAttribute('fill', 'none');
+      svg.setAttribute('stroke', 'currentColor');
+      svg.setAttribute('stroke-width', '2');
+      svg.setAttribute('stroke-linecap', 'round');
+      svg.setAttribute('stroke-linejoin', 'round');
       
       const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path1.setAttribute('d', 'M22 11.08V12a10 10 0 1 1-5.93-9.14');
@@ -547,8 +541,23 @@
       const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
       polyline.setAttribute('points', '22 4 12 14.01 9 11.01');
       
-      visualElement.appendChild(path1);
-      visualElement.appendChild(polyline);
+      svg.appendChild(path1);
+      svg.appendChild(polyline);
+      return svg;
+    }
+
+    if (showProductImage && event.image_url) {
+      visualElement = document.createElement('img');
+      visualElement.className = 'sotto-image';
+      visualElement.src = event.image_url;
+      visualElement.alt = "Product image";
+      visualElement.onerror = function() {
+        if (visualElement.parentNode) {
+          visualElement.parentNode.replaceChild(createDefaultIcon(), visualElement);
+        }
+      };
+    } else {
+      visualElement = createDefaultIcon();
     }
 
     const contentDiv = document.createElement('div');
