@@ -57,6 +57,12 @@ export async function POST(request: NextRequest) {
     let customerCity = payload.shipping_address?.city;
     const productName = payload.line_items?.[0]?.title || 'A product';
     const productImageUrl = payload.line_items?.[0]?.image_url || payload.line_items?.[0]?.image?.src || payload.image_url || null;
+    
+    const shopDomain = request.headers.get('x-shopify-shop-domain') || account.domain;
+    let productUrl = payload.line_items?.[0]?.url || payload.product_url || null;
+    if (!productUrl && shopDomain && productName !== 'A product') {
+      productUrl = `https://${shopDomain}/search?q=${encodeURIComponent(productName)}`;
+    }
 
     // Resolve IP geolocation if city is missing
     if (!customerCity) {
@@ -124,6 +130,7 @@ export async function POST(request: NextRequest) {
       customer_city: customerCity || null,
       product_name: productName,
       product_image_url: productImageUrl,
+      product_url: productUrl,
       session_id: webhookId || null,
       raw_payload: finalPayload,
     });

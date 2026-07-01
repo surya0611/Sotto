@@ -134,6 +134,24 @@
     host.style.pointerEvents = 'none';
     document.body.appendChild(host);
 
+    if (!document.getElementById('sotto-global-styles')) {
+      const globalStyle = document.createElement('style');
+      globalStyle.id = 'sotto-global-styles';
+      globalStyle.textContent = `
+        @media (max-width: 480px) {
+          #sotto-widget-host {
+            top: auto !important;
+            bottom: 20px !important;
+            left: 0 !important;
+            right: 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+          }
+        }
+      `;
+      document.head.appendChild(globalStyle);
+    }
+
     shadowRoot = host.attachShadow({ mode: 'closed' });
     
     const style = document.createElement('style');
@@ -179,7 +197,7 @@
       .sotto-image {
         width: var(--s-img-size, 48px);
         height: var(--s-img-size, 48px);
-        border-radius: var(--s-img-radius, 4px);
+        border-radius: var(--s-img-radius, 50%);
         object-fit: cover;
         flex-shrink: 0;
         background: rgba(0,0,0,0.03);
@@ -287,25 +305,10 @@
     
     container.addEventListener('click', (e) => {
       if (e.target.closest('.sotto-close')) return; // handled separately
-      track('click');
-      
-      if (event.url) {
-        try {
-          const targetUrl = new URL(event.url, window.location.origin);
-          if (activeConfig && activeConfig.utm && activeConfig.utm.enabled) {
-            targetUrl.searchParams.set('utm_source', activeConfig.utm.source || 'sotto_widget');
-            targetUrl.searchParams.set('utm_medium', activeConfig.utm.medium || 'social_proof');
-            if (activeConfig.utm.campaign) {
-              targetUrl.searchParams.set('utm_campaign', activeConfig.utm.campaign);
-            }
-          }
-          window.location.href = targetUrl.toString();
-          return;
-        } catch(err) {
-          console.error('[Sotto] Invalid event URL:', event.url);
-        }
-      }
+      if (e.target.closest('a')) return; // anchor clicks handled by the anchor element
 
+      // Only track clicks on the widget body, don't navigate
+      track('click');
       hideWidget();
     });
 
@@ -505,6 +508,10 @@
       container.style.setProperty('--s-title-size', Math.round(13 * scale) + 'px');
       container.style.setProperty('--s-msg-size', Math.round(12 * scale) + 'px');
       container.style.setProperty('--s-time-size', Math.round(10 * scale) + 'px');
+      
+      if (theme.image_roundness !== undefined) {
+        container.style.setProperty('--s-img-radius', theme.image_roundness + '%');
+      }
     }
 
     const inner = shadowRoot.getElementById('sotto-inner');
@@ -512,8 +519,10 @@
     inner.innerHTML = ''; 
 
     let visualElement;
+    
+    const showProductImage = theme?.show_product_image !== false;
 
-    if (event.image_url) {
+    if (showProductImage && event.image_url) {
       visualElement = document.createElement('img');
       visualElement.className = 'sotto-image';
       visualElement.src = event.image_url;
@@ -544,7 +553,43 @@
 
     const messageP = document.createElement('p');
     messageP.className = 'sotto-message';
-    messageP.textContent = event.message; 
+    
+    if (event.url && event.product_name && event.message.includes(event.product_name)) {
+      const parts = event.message.split(event.product_name);
+      messageP.appendChild(document.createTextNode(parts[0]));
+      
+      const a = document.createElement('a');
+      
+      let targetUrlStr = event.url;
+      try {
+        const targetUrl = new URL(event.url, window.location.origin);
+        if (activeConfig && activeConfig.utm && activeConfig.utm.enabled) {
+          targetUrl.searchParams.set('utm_source', activeConfig.utm.source || 'sotto_widget');
+          targetUrl.searchParams.set('utm_medium', activeConfig.utm.medium || 'social_proof');
+          if (activeConfig.utm.campaign) {
+            targetUrl.searchParams.set('utm_campaign', activeConfig.utm.campaign);
+          }
+        }
+        targetUrlStr = targetUrl.toString();
+      } catch(e) {}
+
+      a.href = targetUrlStr;
+      a.textContent = event.product_name;
+      a.style.fontWeight = '600';
+      a.style.textDecoration = 'underline';
+      a.style.color = 'inherit';
+      a.addEventListener('click', (e) => {
+        // e.stopPropagation(); // allow it to bubble so container closes, but wait, container handles anchor clicks by returning
+        track('click');
+      });
+      messageP.appendChild(a);
+      
+      if (parts.length > 1) {
+        messageP.appendChild(document.createTextNode(parts.slice(1).join(event.product_name)));
+      }
+    } else {
+      messageP.textContent = event.message; 
+    }
 
     const timeSpan = document.createElement('span');
     timeSpan.className = 'sotto-time';

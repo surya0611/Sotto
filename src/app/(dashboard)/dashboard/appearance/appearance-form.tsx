@@ -52,6 +52,7 @@ const SIZES = [
 export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
   const [isPending, startTransition] = useTransition();
   const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
 
   // Map old config shape to new AppearanceConfig shape if migrating
   const initialAppearance = initialTheme.appearance || {};
@@ -68,6 +69,10 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
     blur_intensity: initialAppearance.blur_intensity ?? 12,
     texture_intensity: initialAppearance.texture_intensity ?? 20,
     sheen_color: initialAppearance.sheen_color || '#00f0ff',
+    
+    // Product Image properties
+    show_product_image: initialAppearance.show_product_image ?? true,
+    image_roundness: initialAppearance.image_roundness ?? 50,
 
     // Legacy / layout properties
     hover_animation: initialTheme.hover_animation || 'none',
@@ -107,6 +112,8 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
       blur_intensity: theme.blur_intensity,
       texture_intensity: theme.texture_intensity,
       sheen_color: theme.sheen_color,
+      show_product_image: theme.show_product_image,
+      image_roundness: theme.image_roundness,
     };
     payload.append('appearance', JSON.stringify(appearanceData));
 
@@ -157,6 +164,17 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
       }
     };
     const transformValue = getTransform(!previewVisible);
+    
+    // If in mobile preview mode, force bottom-center position layout
+    if (previewMode === 'mobile') {
+      return { 
+        ...base, 
+        bottom: '20px', 
+        left: '50%', 
+        transform: previewVisible ? 'translateX(-50%) translate(0,0)' : `translateX(-50%) ${transformValue}`
+      };
+    }
+
     switch (theme.position) {
       case 'bottom-right': return { ...base, bottom: '12px', right: '12px', transform: transformValue };
       case 'top-left': return { ...base, top: '12px', left: '12px', transform: transformValue };
@@ -192,12 +210,53 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
 
       {/* Live Preview */}
       <div style={{ width: '100%' }}>
-        <h3 style={{ marginBottom: 'var(--s-4)', fontSize: '1rem', fontWeight: 600 }}>Live Preview</h3>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s-4)' }}>
+          <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: 0 }}>Live Preview</h3>
+          <div style={{ display: 'flex', background: 'var(--bg-muted)', padding: '2px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+            <button
+              type="button"
+              onClick={() => setPreviewMode('desktop')}
+              style={{
+                padding: '4px 12px',
+                fontSize: '13px',
+                fontWeight: previewMode === 'desktop' ? 600 : 500,
+                color: previewMode === 'desktop' ? 'var(--text)' : 'var(--text-secondary)',
+                background: previewMode === 'desktop' ? 'var(--bg-base)' : 'transparent',
+                borderRadius: '6px',
+                border: 'none',
+                boxShadow: previewMode === 'desktop' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                cursor: 'pointer'
+              }}
+            >
+              Desktop
+            </button>
+            <button
+              type="button"
+              onClick={() => setPreviewMode('mobile')}
+              style={{
+                padding: '4px 12px',
+                fontSize: '13px',
+                fontWeight: previewMode === 'mobile' ? 600 : 500,
+                color: previewMode === 'mobile' ? 'var(--text)' : 'var(--text-secondary)',
+                background: previewMode === 'mobile' ? 'var(--bg-base)' : 'transparent',
+                borderRadius: '6px',
+                border: 'none',
+                boxShadow: previewMode === 'mobile' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                cursor: 'pointer'
+              }}
+            >
+              Mobile
+            </button>
+          </div>
+        </div>
         <div style={{
           borderRadius: 'var(--radius-lg, 12px)',
           border: '1px solid var(--border)',
           overflow: 'hidden',
           boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+          maxWidth: previewMode === 'mobile' ? '375px' : '100%',
+          margin: previewMode === 'mobile' ? '0 auto' : '0',
+          transition: 'max-width 0.3s ease, margin 0.3s ease',
         }}>
           <div style={{
             background: 'var(--bg-elevated, #f5f5f5)',
@@ -228,23 +287,38 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
             <div style={{
               ...liveStyles.containerStyles,
               ...getPositionStyles(),
-              width: 'max-content',
-              maxWidth: `${Math.round(320 * sizeScale)}px`,
+              width: previewMode === 'mobile' ? 'calc(100% - 32px)' : 'max-content',
+              maxWidth: previewMode === 'mobile' ? 'none' : `${Math.round(320 * sizeScale)}px`,
               padding: `${Math.round(16 * sizeScale)}px`,
               gap: `${Math.round(12 * sizeScale)}px`,
               opacity: previewVisible ? 1 : 0,
               pointerEvents: 'none',
-              transform: previewVisible 
-                ? (theme.hover_animation === 'lift' ? 'translateY(-4px)' : 
-                   theme.hover_animation === 'scale' ? 'scale(1.02)' : getPositionStyles().transform) 
-                : getPositionStyles().transform,
+              transform: previewMode === 'mobile' 
+                ? getPositionStyles().transform
+                : (previewVisible 
+                  ? (theme.hover_animation === 'lift' ? 'translateY(-4px)' : 
+                     theme.hover_animation === 'scale' ? 'scale(1.02)' : getPositionStyles().transform) 
+                  : getPositionStyles().transform),
             }}>
               <div style={{ ...liveStyles.bgStyles }} />
               <div style={{ position: 'relative', zIndex: 3, display: 'flex', alignItems: 'center', gap: `${Math.round(12 * sizeScale)}px` }}>
-                <svg width={Math.round(20 * sizeScale)} height={Math.round(20 * sizeScale)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
+                {theme.show_product_image !== false ? (
+                  <div style={{ 
+                    width: Math.round(36 * sizeScale), 
+                    height: Math.round(36 * sizeScale), 
+                    borderRadius: `${theme.image_roundness ?? 50}%`,
+                    background: '#e2e8f0',
+                    flexShrink: 0,
+                    overflow: 'hidden'
+                  }}>
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Product" />
+                  </div>
+                ) : (
+                  <svg width={Math.round(20 * sizeScale)} height={Math.round(20 * sizeScale)} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: liveStyles.textStyles?.color || theme.text_color }}>
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                )}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <p style={{ margin: 0, fontSize: `${Math.round(13 * sizeScale)}px`, opacity: 0.8, lineHeight: 1.4, ...liveStyles.textStyles }}>
                     Sarah M. from NY bought Aura Pro
@@ -380,6 +454,26 @@ export function AppearanceForm({ initialTheme }: { initialTheme: any }) {
                     <input type="color" name="border_color" value={theme.border_color} onChange={handleChange} style={{ width: '32px', height: '32px', padding: 0, border: 'none' }} />
                     <input type="text" className="input" name="border_color" value={theme.border_color} onChange={handleChange} />
                   </div>
+                </div>
+              )}
+
+              <div className="input-group" style={{ gridColumn: '1 / -1', marginTop: '16px' }}>
+                <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
+                  <input 
+                    type="checkbox" 
+                    name="show_product_image" 
+                    checked={theme.show_product_image} 
+                    onChange={(e) => setTheme((prev: any) => ({ ...prev, show_product_image: e.target.checked }))} 
+                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                  />
+                  Enable Product Pictures in Notifications
+                </label>
+              </div>
+
+              {theme.show_product_image && (
+                <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                  <label className="input-label">Image Roundness: {theme.image_roundness}%</label>
+                  <input type="range" name="image_roundness" min="0" max="50" step="1" value={theme.image_roundness} onChange={handleChange} style={{ width: '100%' }} />
                 </div>
               )}
             </div>

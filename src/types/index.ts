@@ -52,6 +52,8 @@ export interface WidgetTheme {
   border_radius: number;
   position: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
   slide_animation: 'slide-up' | 'slide-in-left' | 'slide-in-right';
+  show_product_image?: boolean;
+  image_roundness?: number;
 }
 
 export interface RuleCondition {
@@ -97,6 +99,7 @@ export interface SottoEvent {
   customer_region: string | null;
   product_name: string | null;
   product_image_url: string | null;
+  product_url: string | null;
   raw_payload: Record<string, unknown> | null;
   created_at: string;
 }

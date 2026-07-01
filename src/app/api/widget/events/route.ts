@@ -233,6 +233,7 @@ export async function GET(request: NextRequest) {
             product_id: productName, // Sent to client so it can be added to excluded list
             title: 'High Demand',
             message: msg,
+            product_name: safeProductName,
             image_url: topProduct[1].imageUrl,
             timestamp: new Date().toISOString()
           };
@@ -265,7 +266,7 @@ export async function GET(request: NextRequest) {
 
       let query = supabase
         .from('events')
-        .select('id, customer_name, customer_city, customer_region, product_name, raw_payload, created_at')
+        .select('id, customer_name, customer_city, customer_region, product_name, product_image_url, product_url, raw_payload, created_at')
         .eq('account_id', accountId)
         .eq('event_type', 'purchase')
         .gte('created_at', lookbackDate.toISOString())
@@ -331,8 +332,9 @@ export async function GET(request: NextRequest) {
             id: candidateEvent.id, // Passed so client can exclude it next time
             title: purchaseTemplate ? purchaseTemplate.name : 'Recent Purchase',
             message: finalMessage,
-            image_url: null,
-            url: productUrl,
+            product_name: productName,
+            image_url: candidateEvent.product_image_url,
+            url: candidateEvent.product_url || productUrl,
             timestamp: candidateEvent.created_at
           };
         }
