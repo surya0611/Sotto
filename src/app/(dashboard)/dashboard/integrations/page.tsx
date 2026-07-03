@@ -18,13 +18,20 @@ export default async function IntegrationsPage() {
   if (user) {
     const { data: membership } = await supabase
       .from('account_members')
-      .select('account_id, accounts(integration_secrets)')
+      .select('account_id')
       .eq('user_id', user.id)
       .single();
       
-    if (membership) {
+    if (membership?.account_id) {
       accountId = membership.account_id;
-      secrets = (membership.accounts as any)?.integration_secrets || {};
+      
+      const { data: account } = await supabase
+        .from('accounts')
+        .select('integration_secrets')
+        .eq('id', accountId)
+        .single();
+        
+      secrets = account?.integration_secrets || {};
     }
   }
 
