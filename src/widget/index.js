@@ -678,7 +678,11 @@ function formatTimeAgo(dateString) {
     }
 
     // Initialize Inline elements
-    initInline();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initInline);
+    } else {
+      initInline();
+    }
 
     // Default delay is 3000ms. We could fetch config first, but doing an optimistic poll is fine.
     // We'll let the first poll happen quickly and rely on its delay if any.
