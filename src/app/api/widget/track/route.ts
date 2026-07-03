@@ -65,9 +65,6 @@ export async function POST(request: NextRequest) {
     if (origin && origin.includes('localhost')) {
       // Allow localhost for local development testing
     } else {
-      if (!account || !account.domain) {
-        return NextResponse.json({ error: 'Domain not configured for this account' }, { status: 403, headers: corsHeaders() });
-      }
       if (!origin) {
         return NextResponse.json({ error: 'Missing origin' }, { status: 403, headers: corsHeaders() });
       }
@@ -75,7 +72,14 @@ export async function POST(request: NextRequest) {
       try {
         const originUrl = new URL(origin);
         const originHost = originUrl.hostname.toLowerCase();
-        const accountHost = account.domain.toLowerCase();
+
+        if (!account || !account.domain) {
+          // Auto-discover and set the domain on first ping
+          await supabase.from('accounts').update({ domain: originHost }).eq('id', account_id);
+          if (account) account.domain = originHost;
+        }
+
+        const accountHost = account?.domain?.toLowerCase() || originHost;
 
         if (originHost !== accountHost && !originHost.endsWith('.' + accountHost)) {
           return NextResponse.json({ error: 'Unauthorized domain' }, { status: 403, headers: corsHeaders() });

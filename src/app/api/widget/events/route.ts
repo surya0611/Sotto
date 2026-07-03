@@ -88,9 +88,6 @@ export async function GET(request: NextRequest) {
     if (origin && origin.includes('localhost')) {
       // Allow localhost for local development testing
     } else {
-      if (!account.domain) {
-        return NextResponse.json({ error: 'Domain not configured for this account' }, { status: 403, headers: corsHeaders() });
-      }
       if (!origin) {
         return NextResponse.json({ error: 'Missing origin' }, { status: 403, headers: corsHeaders() });
       }
@@ -98,6 +95,13 @@ export async function GET(request: NextRequest) {
       try {
         const originUrl = new URL(origin);
         const originHost = originUrl.hostname.toLowerCase();
+
+        if (!account.domain) {
+          // Auto-discover and set the domain on first ping
+          await supabase.from('accounts').update({ domain: originHost }).eq('id', accountId);
+          account.domain = originHost;
+        }
+
         const accountHost = account.domain.toLowerCase();
 
         if (originHost !== accountHost && !originHost.endsWith('.' + accountHost)) {
