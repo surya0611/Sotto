@@ -525,6 +525,8 @@ function formatTimeAgo(dateString) {
     return true;
   }
 
+  let isPolling = false;
+  
   async function poll() {
     if (isPolling || isSuppressed()) return;
     if (isConversionPage) return; 
