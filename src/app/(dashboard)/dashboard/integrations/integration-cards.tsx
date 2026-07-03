@@ -169,7 +169,8 @@ export function IntegrationCards({
   };
 
   const activeIntegration = INTEGRATIONS.find(i => i.id === activeModal);
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+  const rawUrl = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+  const appUrl = rawUrl.replace('https://trysotto.in', 'https://www.trysotto.in');
 
   const big9 = ['shopify', 'stripe', 'razorpay', 'woocommerce', 'magento', 'bigcommerce', 'squarespace', 'typeform', 'google_forms'];
 
