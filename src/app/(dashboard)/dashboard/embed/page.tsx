@@ -34,8 +34,11 @@ export default async function EmbedPage() {
 
   const isInstalled = account?.widget_config?.is_installed === true;
 
-
-  const widgetScript = `<script src="${appUrl}/widget.min.js?v=2" data-account-id="${accountId}" async defer></script>`;
+  // Force www.trysotto.in to avoid CORS preflight 308 redirects on the apex domain
+  const rawUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.trysotto.in';
+  const appUrl = rawUrl.replace('https://trysotto.in', 'https://www.trysotto.in');
+  
+  const widgetScript = `<script src="${appUrl}/widget.min.js" data-account-id="${accountId}" async defer></script>`;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
