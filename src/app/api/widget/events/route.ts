@@ -364,7 +364,8 @@ export async function GET(request: NextRequest) {
       rules: {
         advanced_rules: config.advanced_rules,
         suppress_rules: config.suppress_rules,
-        max_per_page: config.max_per_page || 20
+        max_per_page: config.max_per_page || 20,
+        frequency_cap: config.frequency_cap || 10
       }
     }, { headers: responseHeaders });
 

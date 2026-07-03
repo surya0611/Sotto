@@ -559,14 +559,16 @@ function formatTimeAgo(dateString) {
       const rules = data.rules || {};
       if (!evaluateAdvancedRules(rules.advanced_rules)) {
         console.log('[Sotto] Aborted by Advanced Rules');
+        isPolling = false;
         return; // Abort silently
       }
 
-      const frequencyCap = data.timing?.frequency_cap || 5; // Fallback if missing
+      const frequencyCap = rules.frequency_cap || 10; // Fallback if missing
       const maxPerPage = rules.max_per_page || 20;
 
       if (pageDisplayCount >= maxPerPage || getSessionDisplays() >= frequencyCap) {
         console.log('[Sotto] Aborted by Limits (MaxPerPage or FrequencyCap)');
+        isPolling = false;
         return; // Abort silently
       }
 
