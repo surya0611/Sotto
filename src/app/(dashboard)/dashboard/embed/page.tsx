@@ -24,7 +24,6 @@ export default async function EmbedPage() {
   }
 
   const accountId = membership.account_id;
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
   const { data: account } = await supabase
     .from('accounts')
