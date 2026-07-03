@@ -75,17 +75,42 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
     icon: React.ReactNode
   ) => (
     <div className="card" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 2fr', gap: 'var(--s-8)', padding: 'var(--s-8)', borderLeft: enabled ? '4px solid var(--primary)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
-      {/* Left Column: Info & Toggle */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)', paddingRight: 'var(--s-6)', borderRight: '1px solid var(--border)' }}>
-        <div style={{ fontSize: '32px', background: 'var(--bg-muted)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-          {icon}
+      {/* Left Column: Info, Toggle, and Embed Code */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)', paddingRight: 'var(--s-6)', borderRight: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)' }}>
+          <div style={{ fontSize: '32px', background: 'var(--bg-muted)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
+            {icon}
+          </div>
+          <div>
+            <h2 className="card-title" style={{ margin: '0 0 var(--s-2) 0', fontSize: '1.25rem' }}>{title}</h2>
+            <p className="card-description" style={{ margin: 0, lineHeight: 1.5 }}>{description}</p>
+          </div>
         </div>
-        <div>
-          <h2 className="card-title" style={{ margin: '0 0 var(--s-2) 0', fontSize: '1.25rem' }}>{title}</h2>
-          <p className="card-description" style={{ margin: 0, lineHeight: 1.5 }}>{description}</p>
-        </div>
-        <div style={{ marginTop: 'auto', paddingTop: 'var(--s-4)' }}>
-          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem', cursor: 'pointer', background: enabled ? 'var(--bg-accent-light)' : 'var(--bg-muted)', padding: 'var(--s-2) var(--s-4)', borderRadius: 'var(--r-full)', border: enabled ? '1px solid var(--primary)' : '1px solid var(--border)' }}>
+        
+        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>
+          <div className="input-group" style={{ background: 'var(--bg-base)', padding: 'var(--s-4)', borderRadius: 'var(--r-md)', border: '1px solid var(--border)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label className="input-label" style={{ margin: 0 }}>Embed Snippet</label>
+              <CopyButton textToCopy={`<span data-sotto-inline="${dataId}"></span>`} />
+            </div>
+            <pre style={{ 
+              display: 'block', 
+              background: 'var(--bg)', 
+              padding: 'var(--s-3)', 
+              borderRadius: 'var(--r-sm)', 
+              border: '1px solid var(--border)',
+              color: 'var(--fg)',
+              fontSize: '0.8125rem',
+              fontFamily: 'monospace',
+              overflowX: 'auto',
+              margin: 'var(--s-2) 0 0 0'
+            }}>
+              <code>&lt;span data-sotto-inline="{dataId}"&gt;&lt;/span&gt;</code>
+            </pre>
+            <p className="input-hint" style={{ marginTop: 'var(--s-2)', fontSize: '0.75rem' }}>Paste this HTML snippet into your website builder exactly where you want the text to appear.</p>
+          </div>
+
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--s-2)', fontSize: '0.9375rem', cursor: 'pointer', background: enabled ? 'var(--bg-accent-light)' : 'var(--bg-muted)', padding: 'var(--s-2) var(--s-4)', borderRadius: 'var(--r-full)', border: enabled ? '1px solid var(--primary)' : '1px solid var(--border)', alignSelf: 'flex-start' }}>
             <input 
               type="checkbox" 
               checked={enabled}
@@ -174,30 +199,6 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
             <option value="eyes">👀 Eyes Emoji</option>
             <option value="bag">🛍️ Shopping Bag</option>
           </select>
-        </div>
-
-        <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: 'var(--s-2) 0' }} />
-
-        <div className="input-group" style={{ background: 'var(--bg-base)', padding: 'var(--s-4)', borderRadius: 'var(--r-md)', border: '1px solid var(--border)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <label className="input-label">Embed Code Snippet</label>
-            <CopyButton textToCopy={`<span data-sotto-inline="${dataId}"></span>`} />
-          </div>
-          <pre style={{ 
-            display: 'block', 
-            background: 'var(--bg)', 
-            padding: 'var(--s-4)', 
-            borderRadius: 'var(--r-sm)', 
-            border: '1px solid var(--border)',
-            color: 'var(--fg)',
-            fontSize: '0.9375rem',
-            fontFamily: 'monospace',
-            overflowX: 'auto',
-            margin: 'var(--s-2) 0 0 0'
-          }}>
-            <code>&lt;span data-sotto-inline="{dataId}"&gt;&lt;/span&gt;</code>
-          </pre>
-          <p className="input-hint" style={{ marginTop: 'var(--s-2)' }}>Paste this HTML snippet into your website builder exactly where you want the text to appear.</p>
         </div>
       </div>
     </div>
