@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import type { Metadata } from 'next';
 import { IntegrationCards } from './integration-cards';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,13 +26,18 @@ export default async function IntegrationsPage() {
     if (membership?.account_id) {
       accountId = membership.account_id;
       
-      const { data: account } = await supabase
-        .from('accounts')
-        .select('integration_secrets')
-        .eq('id', accountId)
+      const supabaseAdmin = createSupabaseClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      );
+      
+      const { data: accountSecretData } = await supabaseAdmin
+        .from('account_secrets')
+        .select('secrets')
+        .eq('account_id', accountId)
         .single();
         
-      secrets = account?.integration_secrets || {};
+      secrets = accountSecretData?.secrets || {};
     }
   }
 

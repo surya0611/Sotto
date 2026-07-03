@@ -3,6 +3,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
+
 export async function saveIntegrationSecret(integrationId: string, secret: string) {
   const supabase = await createClient();
   
@@ -17,13 +19,19 @@ export async function saveIntegrationSecret(integrationId: string, secret: strin
     
   if (!membership) throw new Error('No account found');
   
-  const { data: account } = await supabase
-    .from('accounts')
-    .select('integration_secrets')
-    .eq('id', membership.account_id)
+  // Use Service Role to access account_secrets since it has NO RLS policies for authenticated users
+  const supabaseAdmin = createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+  
+  const { data: accountSecretData } = await supabaseAdmin
+    .from('account_secrets')
+    .select('secrets')
+    .eq('account_id', membership.account_id)
     .single();
     
-  const currentSecrets = (account?.integration_secrets as Record<string, string>) || {};
+  const currentSecrets = (accountSecretData?.secrets as Record<string, string>) || {};
   
   if (secret === '') {
     delete currentSecrets[`${integrationId}_secret`];
@@ -31,10 +39,18 @@ export async function saveIntegrationSecret(integrationId: string, secret: strin
     currentSecrets[`${integrationId}_secret`] = secret;
   }
   
-  await supabase
-    .from('accounts')
-    .update({ integration_secrets: currentSecrets })
-    .eq('id', membership.account_id);
+  const { error } = await supabaseAdmin
+    .from('account_secrets')
+    .upsert({ 
+      account_id: membership.account_id,
+      secrets: currentSecrets,
+      updated_at: new Date().toISOString()
+    });
+    
+  if (error) {
+    console.error('Error saving secrets:', error);
+    throw new Error('Failed to save integration secret');
+  }
     
   revalidatePath('/dashboard/integrations');
 }
