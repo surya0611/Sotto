@@ -74,7 +74,7 @@ export function InlineClient({ initialConfig }: { initialConfig: any }) {
     setIconSetting: (val: string) => void,
     icon: React.ReactNode
   ) => (
-    <div className="card" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 2fr', gap: 'var(--s-8)', padding: 'var(--s-8)', borderLeft: enabled ? '4px solid var(--primary)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
+    <div className="card" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 'var(--s-8)', padding: 'var(--s-8)', borderLeft: enabled ? '4px solid var(--primary)' : '4px solid var(--border)', transition: 'all 0.2s' }}>
       {/* Left Column: Info, Toggle, and Embed Code */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)', paddingRight: 'var(--s-6)', borderRight: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-4)' }}>
