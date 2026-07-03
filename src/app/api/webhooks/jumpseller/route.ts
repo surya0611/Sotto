@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -24,7 +24,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const jumpseller_secret = account.integration_secrets?.jumpseller_secret;
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const jumpseller_secret = secretData?.secrets?.jumpseller_secret;
     if (!jumpseller_secret) {
       return NextResponse.json({ error: 'Jumpseller integration not configured' }, { status: 401 });
     }

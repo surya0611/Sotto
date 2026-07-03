@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // Fetch account to get easebuzz_secret (Salt)
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -37,7 +37,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const easebuzzSalt = account.integration_secrets?.easebuzz_secret;
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const easebuzzSalt = secretData?.secrets?.easebuzz_secret;
     if (!easebuzzSalt) {
       return NextResponse.json({ error: 'Easebuzz integration not configured' }, { status: 400 });
     }

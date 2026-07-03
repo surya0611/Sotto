@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -24,7 +24,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const secret3dcart = account.integration_secrets?.['3dcart_secret'];
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const secret3dcart = secretData?.secrets?.['3dcart_secret'];
     if (!secret3dcart) {
       return NextResponse.json({ error: '3dcart integration not configured' }, { status: 401 });
     }

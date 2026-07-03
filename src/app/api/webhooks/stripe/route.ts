@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -25,7 +25,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const stripeSecret = account.integration_secrets?.stripe_secret;
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const stripeSecret = secretData?.secrets?.stripe_secret;
     if (!stripeSecret) {
       return NextResponse.json({ error: 'Stripe integration not configured' }, { status: 401 });
     }

@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     // Fetch account to check if cratejoy is connected and get the secret if applicable
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -26,7 +26,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const cratejoySecret = account.integration_secrets?.cratejoy_secret;
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const cratejoySecret = secretData?.secrets?.cratejoy_secret;
     if (!cratejoySecret) {
       return NextResponse.json({ error: 'Cratejoy integration not configured' }, { status: 401 });
     }

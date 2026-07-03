@@ -24,10 +24,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing account_id' }, { status: 400 });
     }
 
-    // Fetch account to get shopify_secret and widget_config
+    // Fetch account to get widget_config and domain
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets, widget_config, domain')
+      .select('widget_config, domain')
       .eq('id', accountId)
       .single();
 
@@ -35,7 +35,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const shopifySecret = account.integration_secrets?.shopify_secret;
+    // Fetch integration secrets
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const shopifySecret = secretData?.secrets?.shopify_secret;
     if (!shopifySecret) {
       return NextResponse.json({ error: 'Shopify integration not configured' }, { status: 400 });
     }

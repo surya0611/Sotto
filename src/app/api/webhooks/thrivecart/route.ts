@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -24,7 +24,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const thrivecart_secret = account.integration_secrets?.thrivecart_secret;
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const thrivecart_secret = secretData?.secrets?.thrivecart_secret;
     if (!thrivecart_secret) {
       return NextResponse.json({ error: 'ThriveCart integration not configured' }, { status: 401 });
     }

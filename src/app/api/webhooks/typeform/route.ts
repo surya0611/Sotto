@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
     const { data: account, error: accountError } = await supabaseAdmin
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -34,7 +34,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const secret = account.integration_secrets?.typeform_secret;
+    const { data: secretData } = await supabaseAdmin.from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const secret = secretData?.secrets?.typeform_secret;
     if (!secret) {
       return NextResponse.json({ error: 'Typeform secret not configured' }, { status: 403 });
     }

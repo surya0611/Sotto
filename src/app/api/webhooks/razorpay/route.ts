@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     // Fetch account to get razorpay_secret
     const { data: account, error: accountError } = await supabase
       .from('accounts')
-      .select('integration_secrets')
+      .select('')
       .eq('id', accountId)
       .single();
 
@@ -34,7 +34,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Account not found' }, { status: 404 });
     }
 
-    const razorpaySecret = account.integration_secrets?.razorpay_secret;
+    const { data: secretData } = await supabase
+      .from('account_secrets')
+      .select('secrets')
+      .eq('account_id', accountId)
+      .single();
+
+    const razorpaySecret = secretData?.secrets?.razorpay_secret;
     if (!razorpaySecret) {
       return NextResponse.json({ error: 'Razorpay integration not configured' }, { status: 400 });
     }
