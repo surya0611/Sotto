@@ -35,7 +35,7 @@ export default async function EmbedPage() {
   const isInstalled = account?.widget_config?.is_installed === true;
 
 
-  const widgetScript = `<script src="${appUrl}/widget.min.js" data-account-id="${accountId}" async defer></script>`;
+  const widgetScript = `<script src="${appUrl}/widget.min.js?v=2" data-account-id="${accountId}" async defer></script>`;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s-6)' }}>

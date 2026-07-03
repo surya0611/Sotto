@@ -302,7 +302,7 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
             <h2 className="card-title">Install the Embed Code</h2>
             <p className="card-description">Place this script right before the closing <code>&lt;/body&gt;</code> tag on all your website pages.</p>
           </div>
-          <CopyButton textToCopy={`<script src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.min.js" data-account-id="${accountId}" async defer></script>`} />
+          <CopyButton textToCopy={`<script src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.min.js?v=2" data-account-id="${accountId}" async defer></script>`} />
         </div>
 
         <div className="card-content">
@@ -316,7 +316,7 @@ export function WidgetForm({ initialConfig, accountId }: { initialConfig: Partia
             color: 'var(--fg)',
             fontFamily: 'monospace'
           }}>
-            <code>{`<script src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.min.js" data-account-id="${accountId}" async defer></script>`}</code>
+            <code>{`<script src="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/widget.min.js?v=2" data-account-id="${accountId}" async defer></script>`}</code>
           </pre>
         </div>
       </div>
