@@ -33,8 +33,8 @@ Sotto consists of two main components:
 ![Sotto Dashboard Customization](.github/assets/dashboard-appearance-2.png)
 
 ### Storefront Integration
-[Placeholder: Link to desktop storefront GIF]
-[Placeholder: Link to mobile storefront GIF]
+![Sotto Desktop Storefront Widget](.github/assets/storefront-desktop.png)
+![Sotto Mobile Storefront Widget](.github/assets/storefront-mobile.png)
 
 ## Features
 
