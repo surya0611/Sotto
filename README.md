@@ -1,13 +1,13 @@
 <div align="center">
   <h3>Sotto - Social Proof & Marketing Infrastructure</h3>
-  <p>A high-performance SaaS that integrates with 20+ e-commerce platforms to inject real-time social proof directly into client storefronts.</p>
+  <p>A high-performance SaaS integrating with 20+ e-commerce platforms to inject real-time social proof directly into client storefronts.</p>
 
   <div>
     <a href="https://www.trysotto.in">Live Demo</a>
     <span>&nbsp;·&nbsp;</span>
-    <a href="#architecture">Architecture</a>
-    <span>&nbsp;·&nbsp;</span>
     <a href="#features">Features</a>
+    <span>&nbsp;·&nbsp;</span>
+    <a href="#architecture-and-engineering">Architecture</a>
   </div>
 </div>
 
@@ -17,9 +17,11 @@
 
 Sotto is a production-ready marketing widget designed to help e-commerce stores increase their conversion rates by displaying real-time purchase data and simulated active visitor counts. 
 
-It consists of two main components:
-1. **The Merchant Dashboard**: A Next.js (App Router) web application where store owners configure their widget's appearance, set advanced display rules, and connect to over 20 supported e-commerce platforms (Shopify, Stripe, WooCommerce, etc.).
-2. **The Injectable Widget**: A lightweight, highly-optimized vanilla JavaScript widget (`widget.min.js`) that clients embed on their storefronts. It utilizes the Shadow DOM to render animated popups while entirely bypassing the host site's CSS scoping rules to prevent style bleed.
+It was built on the core assumption that as AI continues to lower the barrier to entry for software and product creation, the number of independent online businesses will rise exponentially. In a highly saturated market, establishing trust through highly customized, brand-conscious social proof will become the primary differentiator for emerging storefronts.
+
+Sotto consists of two main components:
+1. **The Merchant Dashboard**: A Next.js (App Router) web application where store owners configure their widget's appearance, set advanced behavioral rules, and connect to over 20 supported e-commerce platforms (Shopify, Stripe, WooCommerce, etc.).
+2. **The Injectable Widget**: A lightweight, highly-optimized vanilla JavaScript widget (`widget.min.js`) that clients embed directly into their storefront HTML.
 
 ## Showcase
 
@@ -33,9 +35,26 @@ It consists of two main components:
 [Placeholder: Link to desktop storefront GIF]
 [Placeholder: Link to mobile storefront GIF]
 
-## Architecture & Engineering
+## Features
 
-Building a third-party widget that runs on an external website introduces unique engineering challenges that standard web applications do not face. Here is how Sotto solves them:
+Sotto goes beyond standard popup notifications by offering deep visual customization and advanced behavioral targeting, ensuring the widget feels like a native extension of the client's brand rather than an obtrusive third-party add-on.
+
+### Deep Customizability & Brand Consciousness
+Merchants can finely tune every visual aspect of their widgets. From exact hex colors and custom typography to border radius, dynamic sheen animations, and stylized brutalist drop shadows, the dashboard provides the granular control necessary for brands to perfectly match their exact design language. 
+
+### Multi-Format Social Proof
+- **Popup Widgets**: Unobtrusive, animated notifications that slide into the corner of the screen to showcase recent purchases.
+- **In-Line Widgets**: Contextual text snippets embedded directly within the page content (e.g., rendering "24 people are viewing this" natively below a product's "Add to Cart" button).
+
+### Advanced Behavioral Targeting
+Merchants have granular control over when, where, and how often widgets appear:
+- **Frequency Capping**: Limit the number of impressions per session to avoid fatiguing the user.
+- **URL Targeting**: Show specific notifications only on designated pages (e.g., product pages vs. checkout pages).
+- **Suppression Rules**: Hide widgets entirely on specific URLs to prevent distractions during high-intent funnel steps.
+
+## Architecture and Engineering
+
+Building a third-party widget that executes within an external website introduces unique engineering challenges that standard web applications do not face. Here is how Sotto solves them:
 
 ### 1. Shadow DOM CSS Isolation
 When injecting a widget into thousands of different Shopify or WooCommerce stores, inheriting the host site's CSS (like `!important` tags or global `div` margins) will immediately break the widget's layout. Sotto utilizes the Shadow DOM API (`attachShadow`) to create an encapsulated DOM tree that is completely impervious to the parent site's CSS, ensuring pixel-perfect rendering across any environment.
@@ -45,9 +64,6 @@ To optimize latency, the widget pings Vercel Edge functions. A major hurdle invo
 
 ### 3. Secure Webhook Ingestion Engine
 Sotto supports webhook ingestion from 20+ platforms. Webhook secrets are not stored alongside standard account metadata; they are isolated in a separate, secure `account_secrets` table with restricted Row Level Security (RLS) policies. The ingestion engine dynamically computes HMAC SHA-256 signatures to verify the authenticity of incoming purchase events from platforms like Shopify before caching them in the database.
-
-### 4. Frequency Capping & Event Filtering
-To prevent spamming end-users, the widget maintains stateful session data via `localStorage` (for impression counts) and implements advanced rule-evaluation logic client-side. The backend API (`/api/widget/events`) aggregates events into rolling windows (e.g., "Trending Store") and performs deduplication to ensure visitors see fresh, relevant data without violating frequency caps.
 
 ## Tech Stack
 
