@@ -30,6 +30,7 @@ Sotto consists of two main components:
 ### Dashboard Experience
 ![Sotto Dashboard Overview](.github/assets/dashboard-overview.png)
 ![Sotto Dashboard Appearance](.github/assets/dashboard-appearance.png)
+![Sotto Dashboard Customization](.github/assets/dashboard-appearance-2.png)
 
 ### Storefront Integration
 [Placeholder: Link to desktop storefront GIF]
