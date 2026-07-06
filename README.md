@@ -28,8 +28,8 @@ Sotto consists of two main components:
 *Note to recruiters and reviewers: Screenshots and demonstrations of the dashboard configuration and live widget are included below.*
 
 ### Dashboard Experience
-[Placeholder: Link to desktop dashboard screenshot]
-[Placeholder: Link to mobile dashboard screenshot]
+![Sotto Dashboard Overview](.github/assets/dashboard-overview.png)
+![Sotto Dashboard Appearance](.github/assets/dashboard-appearance.png)
 
 ### Storefront Integration
 [Placeholder: Link to desktop storefront GIF]
