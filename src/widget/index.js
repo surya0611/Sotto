@@ -1,5 +1,18 @@
 import { computeWidgetStyles } from '../lib/appearance';
 
+/**
+ * Sotto Widget Core
+ * -----------------
+ * This script is injected directly into client storefronts (e.g., Shopify, WooCommerce).
+ * 
+ * Engineering Constraints Solved:
+ * 1. Shadow DOM Isolation: Uses `attachShadow({ mode: 'closed' })` to prevent the host 
+ *    website's CSS (like aggressive !important rules) from bleeding into the widget UI.
+ * 2. Cross-Origin Polling: Handles ITP and CORS limitations by fetching from the 
+ *    Vercel Edge API and falling back gracefully on network errors.
+ * 3. Client-Side Frequency Capping: Uses `localStorage` to respect merchant-defined 
+ *    max-per-page and frequency caps without requiring server-side session bloat.
+ */
 (function() {
   // Sotto MVP - Unified Widget & Pixel Script
   // Served asynchronously from public/widget.js
