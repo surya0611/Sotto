@@ -23,6 +23,15 @@ Sotto consists of two main components:
 1. **The Merchant Dashboard**: A Next.js (App Router) web application where store owners configure their widget's appearance, set advanced behavioral rules, and connect to over 20 supported e-commerce platforms (Shopify, Stripe, WooCommerce, etc.).
 2. **The Injectable Widget**: A lightweight, highly-optimized vanilla JavaScript widget (`widget.min.js`) that clients embed directly into their storefront HTML.
 
+## Tech Stack
+
+- **Framework**: Next.js (App Router)
+- **Database**: Supabase (PostgreSQL, Edge Functions, Auth, RLS)
+- **Styling**: Vanilla CSS Modules (to maintain high performance and explicit design token control)
+- **Deployment**: Vercel
+- **Widget Core**: Vanilla JavaScript (`esbuild` for minification and bundling)
+- **AI Integration**: OpenAI (for dynamically generated marketing copy on purchase events)
+
 ## Showcase
 
 *Note to recruiters and reviewers: Screenshots and demonstrations of the dashboard configuration and live widget are included below.*
@@ -65,15 +74,6 @@ To optimize latency, the widget pings Vercel Edge functions. A major hurdle invo
 
 ### 3. Secure Webhook Ingestion Engine
 Sotto supports webhook ingestion from 20+ platforms. Webhook secrets are not stored alongside standard account metadata; they are isolated in a separate, secure `account_secrets` table with restricted Row Level Security (RLS) policies. The ingestion engine dynamically computes HMAC SHA-256 signatures to verify the authenticity of incoming purchase events from platforms like Shopify before caching them in the database.
-
-## Tech Stack
-
-- **Framework**: Next.js (App Router)
-- **Database**: Supabase (PostgreSQL, Edge Functions, Auth, RLS)
-- **Styling**: Vanilla CSS Modules (to maintain high performance and explicit design token control)
-- **Deployment**: Vercel
-- **Widget Core**: Vanilla JavaScript (`esbuild` for minification and bundling)
-- **AI Integration**: OpenAI (for dynamically generated marketing copy on purchase events)
 
 ## Running Locally
 
