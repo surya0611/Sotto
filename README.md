@@ -1,93 +1,104 @@
-<div align="center">
-  <h3>Sotto - Social Proof & Marketing Infrastructure</h3>
-  <p>A high-performance SaaS integrating with 20+ e-commerce platforms to inject real-time social proof directly into client storefronts.</p>
+# Sotto
 
-  <div>
-    <a href="https://www.trysotto.in">Live Demo</a>
-    <span>&nbsp;·&nbsp;</span>
-    <a href="#features">Features</a>
-    <span>&nbsp;·&nbsp;</span>
-    <a href="#architecture-and-engineering">Architecture</a>
-  </div>
-</div>
+**Brand-native social proof for design-conscious ecommerce stores.**
 
----
+[Live product](https://www.trysotto.in) · [Case study ↗](https://surya-portfolio-beige.vercel.app/work/sotto)
 
-## Overview
+> **UNRESOLVED /** I built the product before I learned distribution.
 
-Sotto is a production-ready marketing widget designed to help e-commerce stores increase their conversion rates by displaying real-time purchase data and simulated active visitor counts. 
+**Status:** Production-ready · 20+ integrations · 2 pilot testers · Distribution not started yet
 
-It was built on the core assumption that as AI continues to lower the barrier to entry for software and product creation, the number of independent online businesses will rise exponentially. In a highly saturated market, establishing trust through highly customized, brand-conscious social proof will become the primary differentiator for emerging storefronts.
+## Why I built it
 
-Sotto consists of two main components:
-1. **The Merchant Dashboard**: A Next.js (App Router) web application where store owners configure their widget's appearance, set advanced behavioral rules, and connect to over 20 supported e-commerce platforms (Shopify, Stripe, WooCommerce, etc.).
-2. **The Injectable Widget**: A lightweight, highly-optimized vanilla JavaScript widget (`widget.min.js`) that clients embed directly into their storefront HTML.
+I saw an intrusive social-proof popup on an otherwise beautifully designed storefront. The tactic itself made sense; the way it showed up did not. It looked obviously third-party, broke the visual language of the site, and made the experience feel cheaper.
 
-## Tech Stack
+Sotto started with a simple question: **why can't social proof feel native to the brand using it?**
 
-- **Framework**: Next.js (App Router)
-- **Database**: Supabase (PostgreSQL, Edge Functions, Auth, RLS)
-- **Styling**: Vanilla CSS Modules (to maintain high performance and explicit design token control)
-- **Deployment**: Vercel
-- **Widget Core**: Vanilla JavaScript (`esbuild` for minification and bundling)
-- **AI Integration**: OpenAI (for dynamically generated marketing copy on purchase events)
+The product gives merchants control over both appearance and behaviour, so the trust signal can fit the storefront instead of fighting it.
+
+## What I built
+
+Sotto has two main parts:
+
+1. **Merchant dashboard** — configure appearance, behaviour, targeting and integrations.
+2. **Injectable storefront widget** — a lightweight widget that runs inside external ecommerce sites.
+
+It supports popup and inline formats, 20+ ecommerce/payment integrations, purchase-event ingestion, real active-visitor counts and an optional simulated active-visitor signal for merchants who choose to use one.
+
+## Product decisions
+
+### Brand-native by default
+
+Merchants can control colour, typography, radius, animation, shadows and other visual details instead of choosing from a handful of generic notification templates.
+
+### Behaviour matters as much as appearance
+
+Frequency capping, URL targeting and suppression rules let merchants control when the product appears and when it should stay out of the way.
+
+### Real and simulated activity are separate choices
+
+Sotto supports real purchase/activity data and real active-visitor counts. It also allows a merchant to explicitly configure a simulated active-visitor signal.
+
+### The widget has to survive someone else's website
+
+Because Sotto runs inside external storefronts, the product has to deal with host-site CSS, browser cross-origin rules, redirects and webhook authenticity rather than assuming a controlled environment.
 
 ## Showcase
 
-*Note to recruiters and reviewers: Screenshots and demonstrations of the dashboard configuration and live widget are included below.*
+### Merchant dashboard
 
-### Dashboard Experience
+The control surface for configuring appearance, behaviour, targeting and integrations.
+
 ![Sotto Dashboard Overview](.github/assets/dashboard-overview.png)
 ![Sotto Dashboard Appearance](.github/assets/dashboard-appearance.png)
 ![Sotto Dashboard Customization](.github/assets/dashboard-appearance-2.png)
 
-### Storefront Integration
+### Storefront experience
+
+How Sotto appears inside the merchant's own storefront across desktop and mobile.
+
 ![Sotto Desktop Storefront Widget](.github/assets/storefront-desktop.png)
 ![Sotto Mobile Storefront Widget](.github/assets/storefront-mobile.png)
 
-## Features
+## What made it difficult
 
-Sotto goes beyond standard popup notifications by offering deep visual customization and advanced behavioral targeting, ensuring the widget feels like a native extension of the client's brand rather than an obtrusive third-party add-on.
+### Shadow DOM isolation
 
-### Deep Customizability & Brand Consciousness
-Merchants can finely tune every visual aspect of their widgets. From exact hex colors and custom typography to border radius, dynamic sheen animations, and stylized brutalist drop shadows, the dashboard provides the granular control necessary for brands to perfectly match their exact design language. 
+External storefront CSS can easily break an injected widget. Sotto uses Shadow DOM isolation so global rules, including aggressive `!important` styles, do not leak into the widget.
 
-### Multi-Format Social Proof
-- **Popup Widgets**: Unobtrusive, animated notifications that slide into the corner of the screen to showcase recent purchases.
-- **In-Line Widgets**: Contextual text snippets embedded directly within the page content (e.g., rendering "24 people are viewing this" natively below a product's "Add to Cart" button).
+### Cross-origin and domain routing
 
-### Advanced Behavioral Targeting
-Merchants have granular control over when, where, and how often widgets appear:
-- **Frequency Capping**: Limit the number of impressions per session to avoid fatiguing the user.
-- **URL Targeting**: Show specific notifications only on designated pages (e.g., product pages vs. checkout pages).
-- **Suppression Rules**: Hide widgets entirely on specific URLs to prevent distractions during high-intent funnel steps.
+Webhook and widget requests have to survive browser CORS rules and redirects between apex and `www` domains. That forced the implementation to treat routing details as product reliability concerns rather than deployment trivia.
 
-## Architecture and Engineering
+### Verified webhook ingestion
 
-Building a third-party widget that executes within an external website introduces unique engineering challenges that standard web applications do not face. Here is how Sotto solves them:
+Webhook secrets are isolated from ordinary account metadata, and incoming events are authenticated before being accepted.
 
-### 1. Shadow DOM CSS Isolation
-When injecting a widget into thousands of different Shopify or WooCommerce stores, inheriting the host site's CSS (like `!important` tags or global `div` margins) will immediately break the widget's layout. Sotto utilizes the Shadow DOM API (`attachShadow`) to create an encapsulated DOM tree that is completely impervious to the parent site's CSS, ensuring pixel-perfect rendering across any environment.
+## Current state
 
-### 2. CORS & Apex Domain Edge-Routing
-To optimize latency, the widget pings Vercel Edge functions. A major hurdle involved cross-origin preflight requests being blocked when making POST requests to an apex domain (`trysotto.in`) due to strict 308 Permanent Redirects to the `www` subdomain. Sotto's infrastructure handles origin discovery and enforces strict `www.` routing for all generated webhook endpoints to seamlessly bypass Safari and Chrome's strict ITP cross-site tracking protections.
+The product is production-ready and the integrations are usable. I currently have **two pilot testers** who run online stores, but I have not done meaningful distribution yet.
 
-### 3. Secure Webhook Ingestion Engine
-Sotto supports webhook ingestion from 20+ platforms. Webhook secrets are not stored alongside standard account metadata; they are isolated in a separate, secure `account_secrets` table with restricted Row Level Security (RLS) policies. The ingestion engine dynamically computes HMAC SHA-256 signatures to verify the authenticity of incoming purchase events from platforms like Shopify before caching them in the database.
+That is the part I am learning next.
 
-## Running Locally
+## Build process
 
-To run the Sotto dashboard and API environment locally:
+I owned the problem definition, product logic, requirements, flows, UX decisions, edge cases, testing and iteration. Implementation was AI-assisted with **Antigravity**.
+
+## Tech stack
+
+- Next.js
+- Supabase / PostgreSQL
+- CSS Modules
+- Vercel
+- Vanilla JavaScript widget bundle
+- OpenAI for generated purchase-event copy
+
+## Run locally
 
 ```bash
-# Install dependencies
 npm install
-
-# Build the lightweight widget bundle (public/widget.min.js)
 npm run build:widget
-
-# Start the Next.js development server
 npm run dev
 ```
 
-You will need a Supabase instance running with the appropriate tables (`accounts`, `events`, `account_secrets`) and a `.env.local` file containing your `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
+A Supabase instance and the required local environment variables are needed for the full dashboard/API flow.
